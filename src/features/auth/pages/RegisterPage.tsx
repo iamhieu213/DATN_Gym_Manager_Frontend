@@ -1,13 +1,12 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
 
-type RegisterPageProps = {
-    onClose: () => void;
-    onOpenLogin?: () => void;
-};
+type RegisterPageProps = {};
 
-function RegisterPage({ onClose, onOpenLogin }: RegisterPageProps) {
+function RegisterPage({}: RegisterPageProps) {
     const bgRef = useRef<HTMLImageElement | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -24,8 +23,7 @@ function RegisterPage({ onClose, onOpenLogin }: RegisterPageProps) {
     }, []);
 
     const switchToLogin = () => {
-        onClose();
-        onOpenLogin?.();
+        navigate('/login');
     };
 
     return (
@@ -48,7 +46,7 @@ function RegisterPage({ onClose, onOpenLogin }: RegisterPageProps) {
 
                 <button
                     type="button"
-                    onClick={onClose}
+                    onClick={() => navigate('/')}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-[#c3f400] hover:text-[#c3f400]"
                     aria-label="Đóng đăng ký"
                 >

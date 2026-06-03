@@ -1,4 +1,5 @@
 import { useEffect, useRef, type PointerEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../assets/kinetic-hero.png';
 import elenaVolkImage from '../assets/trainers/elena-volk.png';
 import jaxVanceImage from '../assets/trainers/jax-vance.png';
@@ -71,12 +72,8 @@ function WorkoutIcon({ name }: { name: string }) {
   );
 }
 
-type LandingPageProps = {
-  onOpenLogin: () => void;
-  onOpenRegister: () => void;
-};
-
-function LandingPage({ onOpenLogin, onOpenRegister }: LandingPageProps) {
+function LandingPage() {
+  const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const spotlightRef = useRef<HTMLDivElement | null>(null);
 
@@ -297,7 +294,7 @@ function LandingPage({ onOpenLogin, onOpenRegister }: LandingPageProps) {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={onOpenLogin}
+              onClick={() => navigate('/login')}
               className="rounded-full border border-white/15 px-5 py-2 font-mono text-sm font-bold uppercase text-white transition-all duration-300 hover:border-[#c3f400] hover:text-[#c3f400]"
             >
               Đăng nhập
@@ -305,7 +302,7 @@ function LandingPage({ onOpenLogin, onOpenRegister }: LandingPageProps) {
 
             <button
               type="button"
-              onClick={onOpenRegister}
+              onClick={() => navigate('/register')}
               className="rounded-full bg-[#c3f400] px-5 py-2 font-mono text-sm font-bold uppercase text-[#283500] transition-all duration-300 hover:scale-105 hover:bg-white"
             >
               Tham gia
@@ -342,7 +339,7 @@ function LandingPage({ onOpenLogin, onOpenRegister }: LandingPageProps) {
             >
               <button
                 type="button"
-                onClick={onOpenRegister}
+                onClick={() => navigate('/register')}
                 className="group relative inline-flex overflow-hidden rounded-lg bg-[#c3f400] px-12 py-5 text-2xl font-black text-[#283500]"
               >
                 <span className="relative z-10">THAM GIA NGAY</span>
@@ -488,7 +485,7 @@ function LandingPage({ onOpenLogin, onOpenRegister }: LandingPageProps) {
             >
               <button
                 type="button"
-                onClick={onOpenRegister}
+                onClick={() => navigate('/register')}
                 className="group relative inline-flex overflow-hidden rounded-full bg-[#c3f400] px-16 py-6 text-2xl font-black text-[#283500] shadow-2xl shadow-[#c3f400]/20"
               >
                 <span className="relative z-10">GIỮ CHỖ NGAY</span>

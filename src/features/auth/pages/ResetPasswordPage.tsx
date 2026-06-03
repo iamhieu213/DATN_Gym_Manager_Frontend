@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
 
-type ResetPasswordPageProps = {
-  onBackToLogin: () => void;
-  onSuccess?: () => void;
-};
+type ResetPasswordPageProps = {};
 
-function ResetPasswordPage({ onBackToLogin, onSuccess }: ResetPasswordPageProps) {
+function ResetPasswordPage({}: ResetPasswordPageProps) {
+  const navigate = useNavigate();
   const bgRef = useRef<HTMLImageElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
 
@@ -92,7 +91,7 @@ function ResetPasswordPage({ onBackToLogin, onSuccess }: ResetPasswordPageProps)
     setTimeout(() => {
       setLoading(false);
       alert('Đặt lại mật khẩu thành công!');
-      onSuccess?.();
+      navigate('/login');
     }, 1500);
   };
 
@@ -115,7 +114,7 @@ function ResetPasswordPage({ onBackToLogin, onSuccess }: ResetPasswordPageProps)
         </div>
         <button
           type="button"
-          onClick={onBackToLogin}
+          onClick={() => navigate('/')}
           className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-[#c3f400] hover:text-[#c3f400]"
           aria-label="Quay lại"
         >
@@ -217,7 +216,7 @@ function ResetPasswordPage({ onBackToLogin, onSuccess }: ResetPasswordPageProps)
           <div className="mt-10 text-center">
             <button
               type="button"
-              onClick={onBackToLogin}
+              onClick={() => navigate('/login')}
               className="group flex items-center justify-center gap-2 font-mono text-sm uppercase text-[#c4c9ac] transition-all hover:text-[#abd600]"
             >
               <span className="transition-transform group-hover:-translate-x-1" aria-hidden="true">

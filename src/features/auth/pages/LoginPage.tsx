@@ -1,13 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
 
-type LoginPageProps = {
-  onClose: () => void;
-  onOpenRegister?: () => void;
-  onOpenForgotPassword?: () => void;
-};
+type LoginPageProps = {};
 
-function LoginPage({ onClose, onOpenRegister, onOpenForgotPassword }: LoginPageProps) {
+function LoginPage({}: LoginPageProps) {
+  const navigate = useNavigate();
   const bgRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -45,7 +43,7 @@ function LoginPage({ onClose, onOpenRegister, onOpenForgotPassword }: LoginPageP
 
         <button
           type="button"
-          onClick={onClose}
+          onClick={() => navigate('/')}
           className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-[#c3f400] hover:text-[#c3f400]"
           aria-label="Đóng đăng nhập"
         >
@@ -105,10 +103,7 @@ function LoginPage({ onClose, onOpenRegister, onOpenForgotPassword }: LoginPageP
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => {
-                    onClose();
-                    onOpenForgotPassword?.();
-                  }}
+                  onClick={() => navigate('/forgot-password')}
                   className="font-mono text-sm text-[#c8c6c5] transition-colors hover:text-white"
                 >
                   Quên mật khẩu?
@@ -148,7 +143,7 @@ function LoginPage({ onClose, onOpenRegister, onOpenForgotPassword }: LoginPageP
 
             <p className="mt-10 text-center text-[#b7b5b4]">
               Chưa có tài khoản?
-              <button type="button" onClick={() => (onClose(), onOpenRegister?.())} className="ml-1 font-bold text-[#c3f400] hover:underline">Tham gia ngay</button>
+              <button type="button" onClick={() => navigate('/register')} className="ml-1 font-bold text-[#c3f400] hover:underline">Tham gia ngay</button>
             </p>
           </section>
         </div>

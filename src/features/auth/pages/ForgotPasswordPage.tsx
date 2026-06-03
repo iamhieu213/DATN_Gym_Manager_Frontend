@@ -1,12 +1,11 @@
 import { useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { requestForgotPasswordOtp } from '../services/authApi';
 
-type ForgotPasswordPageProps = {
-  onBackToLogin?: () => void;
-  onOtpSent?: () => void;
-};
+type ForgotPasswordPageProps = {};
 
-function ForgotPasswordPage({ onBackToLogin, onOtpSent }: ForgotPasswordPageProps) {
+function ForgotPasswordPage({}: ForgotPasswordPageProps) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +27,7 @@ function ForgotPasswordPage({ onBackToLogin, onOtpSent }: ForgotPasswordPageProp
       }
 
       alert(data.message || 'Mã OTP đã được gửi đến email của bạn.');
-      onOtpSent?.();
+      navigate('/reset-password');
     } catch (error) {
       alert(error instanceof Error ? error.message : 'Có lỗi xảy ra.');
     } finally {
@@ -105,7 +104,7 @@ function ForgotPasswordPage({ onBackToLogin, onOtpSent }: ForgotPasswordPageProp
           <div className="mt-12 text-center">
             <button
               type="button"
-              onClick={onBackToLogin}
+              onClick={() => navigate('/login')}
               className="inline-flex items-center gap-2 font-mono text-sm uppercase text-[#c4c9ac] transition-colors hover:text-[#c3f400]"
             >
               <span aria-hidden="true">←</span>
