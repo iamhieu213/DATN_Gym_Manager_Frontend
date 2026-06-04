@@ -1,12 +1,23 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
+import { registerUser } from '../services/authApi';
+
+import Swal from 'sweetalert2';
 
 type RegisterPageProps = {};
 
-function RegisterPage({}: RegisterPageProps) {
+function RegisterPage({ }: RegisterPageProps) {
     const bgRef = useRef<HTMLImageElement | null>(null);
     const navigate = useNavigate();
+
+    //1.Dinh nghia cac state quan ly du lieu nhap vao form
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -25,6 +36,49 @@ function RegisterPage({}: RegisterPageProps) {
     const switchToLogin = () => {
         navigate('/login');
     };
+
+    const handleSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+
+        if (!name.trim() || !email.trim() || !phone.trim() || !dateOfBirth.trim() || !password.trim()) {
+            alert('Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const res = await registerUser({ name, email, phone, dateOfBirth, password });
+
+            sessionStorage.setItem('auth_email', res.data.email);
+            sessionStorage.setItem('registerToken', res.data.registerToken);
+
+            await Swal.fire({
+                icon: 'success',
+                title: 'Đăng ký thành công',
+                text: res.message || 'Mã OTP đã được gửi đến email của bạn.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            navigate('/verify-register');
+
+        } catch (error: any) {
+            const errMsg = error.response?.data?.message || 'Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.';
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: errMsg,
+                footer: "<a href=\"#\">Why do I have this issue?</a>"
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    //4.Xu ly dang ky bang Google
+    const handleGoogleRegister = () => {
+        window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+    }
 
     return (
         <div className="login-overlay fixed inset-0 z-100 flex min-h-screen flex-col overflow-y-auto bg-[#131313] text-[#e5e2e1]">
@@ -68,66 +122,52 @@ function RegisterPage({}: RegisterPageProps) {
                         </p>
                     </div>
 
-                    <form className="space-y-6" onSubmit={(event) => event.preventDefault()}>
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
                                 Họ và tên
                             </label>
-                            <input
-                                type="text"
-                                placeholder="Nguyễn Văn A"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]"
-                            />
+                            <input id="reg-name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Nguyễn Văn A"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
                         </div>
-
                         <div>
                             <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
                                 Email
                             </label>
-                            <input
-                                type="email"
-                                placeholder="email@example.com"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]"
-                            />
+                            <input id="reg-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@example.com"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
                         </div>
 
                         <div>
                             <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
                                 Số điện thoại
                             </label>
-                            <input
-                                type="tel"
-                                placeholder="+84 ..."
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]"
-                            />
+                            <input id="reg-phone" type="phone" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="09xxxxxxxx"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
                         </div>
 
                         <div>
                             <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
                                 Ngày sinh
                             </label>
-                            <input
-                                type="date"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]"
-                            />
+                            <input id="reg-dob" type="date" required value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} placeholder="dd/mm/yyyy"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
                         </div>
 
                         <div>
                             <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
                                 Mật khẩu
                             </label>
-                            <input
-                                type="password"
-                                placeholder="••••••••"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]"
-                            />
+                            <input id="reg-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
                         </div>
 
                         <button
                             type="submit"
-                            className="login-primary-button w-full rounded-lg bg-[#c3f400] py-5 text-xl font-black uppercase text-[#283500] transition-all active:scale-[0.98]"
+                            disabled={loading}
+                            className="login-primary-button w-full rounded-lg bg-[#c3f400] py-5 text-xl font-black uppercase text-[#283500] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Tạo tài khoản
+                            {loading ? 'Đang gửi thông tin...' : 'Tạo tài khoản'}
                         </button>
 
                         <div className="relative flex items-center py-2">
@@ -140,6 +180,7 @@ function RegisterPage({}: RegisterPageProps) {
 
                         <button
                             type="button"
+                            onClick={handleGoogleRegister}
                             className="flex w-full items-center justify-center rounded-lg border border-white/10 bg-white/3 py-4 font-mono text-sm text-white transition-all hover:bg-white/10 active:scale-[0.98]"
                         >
                             <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">

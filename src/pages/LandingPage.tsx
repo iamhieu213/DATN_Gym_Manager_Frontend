@@ -1,6 +1,7 @@
 import { useEffect, useRef, type PointerEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import heroImage from '../assets/kinetic-hero.png';
+import { Zap, Heart, Dumbbell, HeartPulse } from 'lucide-react';
+import heroImage from '../assets/gym_hero_bg.png';
 import elenaVolkImage from '../assets/trainers/elena-volk.png';
 import jaxVanceImage from '../assets/trainers/jax-vance.png';
 import marcusReedImage from '../assets/trainers/marcus-reed.png';
@@ -50,32 +51,95 @@ const trainers = [
 
 function WorkoutIcon({ name }: { name: string }) {
   if (name === 'bolt') {
-    return (
-      <svg viewBox="0 0 24 24" className="h-16 w-16" aria-hidden="true">
-        <path fill="currentColor" d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z" />
-      </svg>
-    );
+    return <Zap className="h-16 w-16 text-[#c3f400] fill-current" />;
   }
 
   if (name === 'recovery') {
-    return (
-      <svg viewBox="0 0 24 24" className="h-16 w-16" aria-hidden="true">
-        <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M12 4v16M5 12c3 0 5-2 7-8 2 6 4 8 7 8M6 18c3-1 5-3 6-6 1 3 3 5 6 6" />
-      </svg>
-    );
+    return <HeartPulse className="h-16 w-16 text-[#c3f400]" />;
   }
 
-  return (
-    <svg viewBox="0 0 24 24" className="h-16 w-16" aria-hidden="true">
-      <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M4 10v4M8 7v10M16 7v10M20 10v4M8 12h8" />
-    </svg>
-  );
+  return <Dumbbell className="h-16 w-16 text-[#c3f400]" />;
 }
+
+// 1. Component Giao diện Dashboard Mockup kính bán trong suốt siêu nhỏ (Mini Mockup)
+const MiniDashboardMockup = () => {
+  return (
+    <div className="glass-card relative overflow-hidden rounded-3xl border border-white/10 bg-[#131313]/60 p-5 shadow-2xl backdrop-blur-2xl w-full">
+      {/* Top bar */}
+      <div className="flex justify-between items-center border-b border-white/5 pb-3 mb-4">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+        </div>
+        <span className="text-[9px] font-mono tracking-widest text-white/30 uppercase">Kinetic Noir OS</span>
+        <div className="w-5 h-5 rounded-full bg-[#c3f400]/20 flex items-center justify-center text-[#c3f400]">
+          <Zap size={10} className="fill-current" />
+        </div>
+      </div>
+      {/* Grid */}
+      <div className="grid grid-cols-3 gap-2.5 mb-4">
+        <div className="bg-white/3 border border-white/5 rounded-xl p-2.5 flex flex-col gap-1.5">
+          <span className="text-[7px] font-mono tracking-widest text-[#71717a] uppercase">Hội viên mới</span>
+          <div className="text-[11px] font-mono font-bold text-[#c3f400]">+12.4%</div>
+        </div>
+        <div className="bg-white/3 border border-white/5 rounded-xl p-2.5 flex flex-col gap-1.5">
+          <span className="text-[7px] font-mono tracking-widest text-[#71717a] uppercase">Calo tiêu hao</span>
+          <div className="text-[11px] font-mono font-bold text-white">142.5K kcal</div>
+        </div>
+        <div className="bg-white/3 border border-white/5 rounded-xl p-2.5 flex flex-col gap-1.5">
+          <span className="text-[7px] font-mono tracking-widest text-[#71717a] uppercase">Mục tiêu tuần</span>
+          <div className="text-[11px] font-mono font-bold text-[#c3f400]">94.8%</div>
+        </div>
+      </div>
+      {/* Chart preview */}
+      <div className="bg-white/3 border border-white/5 rounded-xl p-4 flex flex-col gap-3">
+        <div className="flex justify-between items-center">
+          <span className="text-[7px] font-mono tracking-widest text-[#71717a] uppercase">Tần suất luyện tập (giờ)</span>
+          <span className="text-[8px] font-mono font-bold text-[#c3f400] px-1.5 py-0.5 bg-[#c3f400]/10 rounded-md">LIVE</span>
+        </div>
+        <div className="h-20 flex items-end gap-1.5 pb-1">
+          <div className="grow bg-white/5 rounded-t-sm h-[35%] transition-all"></div>
+          <div className="grow bg-white/5 rounded-t-sm h-[45%] transition-all"></div>
+          <div className="grow bg-white/5 rounded-t-sm h-[40%] transition-all"></div>
+          <div className="grow bg-white/5 rounded-t-sm h-[60%] transition-all"></div>
+          <div className="grow bg-white/5 rounded-t-sm h-[52%] transition-all"></div>
+          <div className="grow bg-[#c3f400]/30 rounded-t-sm h-[75%] transition-all"></div>
+          <div className="grow bg-[#c3f400] rounded-t-sm h-[95%] transition-all"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function LandingPage() {
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const spotlightRef = useRef<HTMLDivElement | null>(null);
+  const dashboardMockupRef = useRef<HTMLDivElement | null>(null);
+
+  // 2. Lắng nghe sự kiện cuộn chuột để phóng to Mockup Dashboard (Scroll Zoom)
+  useEffect(() => {
+    const handleScroll = () => {
+      const mockup = dashboardMockupRef.current;
+      if (!mockup) return;
+
+      const scrollY = window.scrollY;
+      
+      // Phóng to nhẹ nhàng khi cuộn chuột và chuyển dịch góc nghiêng
+      const scaleValue = 1 + scrollY * 0.0004;
+      const rotateY = -15 + scrollY * 0.008;
+      const rotateX = 10 - scrollY * 0.004;
+
+      // Đặt giới hạn scale tối đa để tránh quá to
+      const boundedScale = Math.min(scaleValue, 1.15);
+
+      mockup.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(${boundedScale})`;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const revealObserver = new IntersectionObserver(
@@ -277,10 +341,23 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#131313] font-sans text-[#e5e2e1] antialiased selection:bg-[#c3f400] selection:text-[#161e00]">
+      {/* Thêm CSS Keyframes tùy chỉnh tự chứa để trôi nổi thiết bị trong Hero */}
+      <style>{`
+        @keyframes float-mockup {
+          0%, 100% { transform: perspective(1000px) rotateY(-15deg) rotateX(10deg) translateY(0); }
+          50% { transform: perspective(1000px) rotateY(-15deg) rotateX(10deg) translateY(-12px); }
+        }
+        @keyframes float-phone {
+          0%, 100% { transform: translateY(0) scale(1.02); }
+          50% { transform: translateY(-16px) scale(1.02); }
+        }
+      `}</style>
+
       <canvas ref={canvasRef} id="mesh-canvas" aria-hidden="true" />
       <div ref={spotlightRef} className="mouse-spotlight" aria-hidden="true" />
 
-      <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#131313]/80 shadow-2xl shadow-[#c3f400]/10 backdrop-blur-xl">
+      {/* Top Navigation */}
+      <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#131313]/80 shadow-2xl shadow-[#c3f400]/5 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-16">
           <a href="#hero" className="text-xl font-black tracking-tight text-white md:text-2xl">
             KINETIC NOIR
@@ -311,48 +388,108 @@ function LandingPage() {
         </nav>
       </header>
 
+      {/* Main Sections */}
       <main>
-        <section id="hero" className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-5 pt-24 text-center md:px-16">
-          <div className="relative z-10 max-w-5xl">
-            <span className="hero-reveal hero-reveal-1 mb-6 block font-mono text-sm uppercase tracking-[0.4em] text-[#c3f400]">
-              Hiệu suất không thỏa hiệp
-            </span>
-            <h1 className="hero-reveal hero-reveal-2 mb-8 select-none text-[52px] font-black leading-none text-white md:text-[88px]" aria-label={headline}>
-              {headline.split('').map((char, index) => (
+        {/* HERO SECTION: Hai cột cao cấp có Floating Dashboard Mockup + Glow CTA */}
+        <section id="hero" className="relative flex min-h-screen items-center justify-center overflow-hidden px-5 pt-28 pb-16 md:px-16">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-7xl items-center text-left">
+            {/* Cột trái: Tiêu đề & Glow CTA */}
+            <div className="space-y-8 max-w-2xl">
+              <span className="hero-reveal hero-reveal-1 inline-block font-mono text-sm uppercase tracking-[0.4em] text-[#c3f400]">
+                Hiệu suất không thỏa hiệp
+              </span>
+              <h1 className="hero-reveal hero-reveal-2 select-none text-[42px] leading-none text-white md:text-[68px] font-black" aria-label={headline}>
+                {headline.split('').map((char, index) => (
+                  <span
+                    className="reveal-char"
+                    style={{ transitionDelay: `${index * 40}ms` }}
+                    key={`${char}-${index}`}
+                    aria-hidden="true"
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
+              </h1>
+              <p className="hero-reveal hero-reveal-3 text-base md:text-lg leading-relaxed text-[#c4c9ac]">
+                Vượt qua giới hạn tiềm năng của bạn. Trải nghiệm hệ thống tập luyện cường độ cao dành cho những người theo đuổi kỷ luật và sức mạnh.
+              </p>
+              
+              {/* CTA Glow button */}
+              <div className="hero-reveal hero-reveal-4 flex flex-wrap gap-4 items-center">
                 <span
-                  className="reveal-char"
-                  style={{ transitionDelay: `${index * 40}ms` }}
-                  key={`${char}-${index}`}
-                  aria-hidden="true"
+                  className="magnetic-wrap"
+                  onPointerMove={handleMagneticMove}
+                  onPointerLeave={resetMagnetic}
                 >
-                  {char === ' ' ? '\u00A0' : char}
+                  <button
+                    type="button"
+                    onClick={() => navigate('/register')}
+                    className="relative inline-flex items-center justify-center overflow-hidden rounded-full bg-[#c3f400] px-10 py-4.5 text-lg font-black text-[#283500] shadow-[0_0_30px_rgba(195,244,0,0.4)] hover:shadow-[0_0_50px_rgba(195,244,0,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      THAM GIA NGAY <Zap size={16} className="animate-pulse fill-current inline text-[#283500]" />
+                    </span>
+                    <span className="absolute inset-0 translate-y-full bg-white transition-transform duration-300 group-hover:translate-y-0" />
+                  </button>
                 </span>
-              ))}
-            </h1>
-            <p className="hero-reveal hero-reveal-3 mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#c4c9ac]">
-              Vượt qua giới hạn tiềm năng của bạn. Trải nghiệm hệ thống tập luyện cường độ cao dành cho những người theo đuổi kỷ luật và sức mạnh.
-            </p>
-            <span
-              className="magnetic-wrap hero-reveal hero-reveal-4"
-              onPointerMove={handleMagneticMove}
-              onPointerLeave={resetMagnetic}
-            >
-              <button
-                type="button"
-                onClick={() => navigate('/register')}
-                className="group relative inline-flex overflow-hidden rounded-lg bg-[#c3f400] px-12 py-5 text-2xl font-black text-[#283500]"
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/dashboard')}
+                  className="rounded-full border border-white/10 bg-white/5 px-8 py-4.5 font-mono text-sm font-bold uppercase text-white transition-all duration-300 hover:border-[#c3f400] hover:text-[#c3f400] hover:bg-white/10 cursor-pointer"
+                >
+                  Xem Dashboard
+                </button>
+              </div>
+            </div>
+
+            {/* Cột phải: Floating Dashboard & Phone Mockup */}
+            <div className="flex items-center justify-center relative w-full h-100 md:h-125">
+              {/* Glow background */}
+              <div className="absolute w-72 h-72 bg-[#c3f400]/10 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse"></div>
+
+              {/* Dashboard Preview Mockup (Scroll Zoom) */}
+              <div
+                ref={dashboardMockupRef}
+                style={{ transform: 'perspective(1000px) rotateY(-15deg) rotateX(10deg)' }}
+                className="absolute w-11/12 max-w-115 transition-transform duration-100 ease-out z-10 animate-[float-mockup_6s_ease-in-out_infinite]"
               >
-                <span className="relative z-10">THAM GIA NGAY</span>
-                <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-500 group-hover:scale-x-100" />
-              </button>
-            </span>
-          </div>
-          <div className="pointer-events-none absolute inset-0 opacity-10 blur-[100px]">
-            <div className="absolute right-0 top-20 h-96 w-96 rounded-full bg-[#c3f400]" />
-            <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-white" />
+                <MiniDashboardMockup />
+              </div>
+
+              {/* Mobile app preview mockup floating in front */}
+              <div className="absolute right-4 bottom-4 w-40 border border-white/15 bg-[#131313]/90 rounded-[28px] p-3.5 shadow-2xl z-20 backdrop-blur-xl animate-[float-phone_5s_ease-in-out_infinite_1.5s] md:right-8">
+                {/* Speaker & notch */}
+                <div className="w-16 h-3 bg-black/60 mx-auto rounded-full mb-3 flex items-center justify-center gap-1">
+                  <div className="w-8 h-0.5 bg-white/20 rounded-full"></div>
+                  <div className="w-1 h-1 bg-white/20 rounded-full"></div>
+                </div>
+                {/* Phone screen container */}
+                <div className="space-y-2 select-none">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[7px] font-bold font-mono text-white/40">KINETIC 09</span>
+                    <span className="text-[7px] text-[#c3f400]">86%</span>
+                  </div>
+                  <div className="bg-white/3 rounded-lg p-2 border border-white/5 space-y-1">
+                    <div className="text-[8px] font-bold text-white">Daily Target</div>
+                    <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+                      <div className="bg-[#c3f400] h-full w-[70%]"></div>
+                    </div>
+                  </div>
+                  <div className="bg-white/3 rounded-lg p-2 border border-white/5 flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <div className="text-[6px] text-white/50">Heart Rate</div>
+                      <div className="text-[9px] font-bold text-red-500">142 BPM</div>
+                    </div>
+                    <Heart size={12} className="text-red-500 fill-current" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
+        {/* STORY SECTION */}
         <section id="story" className="relative overflow-hidden px-5 py-32 md:px-16">
           <div className="mx-auto grid max-w-7xl items-center gap-16 md:grid-cols-2">
             <div className="relative z-10 space-y-12">
@@ -390,6 +527,7 @@ function LandingPage() {
           </div>
         </section>
 
+        {/* COUNTER SECTION */}
         <section id="stats" className="border-y border-white/5 bg-[#0e0e0e] px-5 py-24 md:px-16">
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 text-center md:grid-cols-3">
             {stats.map((stat, index) => (
@@ -407,6 +545,7 @@ function LandingPage() {
           </div>
         </section>
 
+        {/* FEATURE CARDS SECTION: Hover Lift & Neon Borders */}
         <section id="paths" className="overflow-hidden px-5 py-32 md:px-16">
           <div className="mx-auto max-w-7xl">
             <div className="mb-20 text-center">
@@ -418,7 +557,10 @@ function LandingPage() {
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
               {workoutPaths.map((path) => (
-                <article className={`glass-card animate-float group relative overflow-hidden rounded-2xl p-8 ${path.delay}`} key={path.label}>
+                <article
+                  className={`glass-card animate-float group relative overflow-hidden rounded-2xl p-8 transition-all duration-500 hover:-translate-y-3 hover:border-[#c3f400]/40 hover:shadow-[0_15px_40px_rgba(195,244,0,0.12)] ${path.delay}`}
+                  key={path.label}
+                >
                   <div className="absolute right-0 top-0 p-6 text-white/20 opacity-40 transition-opacity group-hover:opacity-100">
                     <WorkoutIcon name={path.icon} />
                   </div>
@@ -436,6 +578,7 @@ function LandingPage() {
           </div>
         </section>
 
+        {/* TRAINERS SECTION */}
         <section id="trainers" className="bg-[#1c1b1b] px-5 py-32 md:px-16">
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
@@ -472,6 +615,7 @@ function LandingPage() {
           </div>
         </section>
 
+        {/* FINAL CTA SECTION: Neon Glow Pulsing Button */}
         <section id="final-cta" className="relative overflow-hidden border-t border-white/5 px-5 py-40 text-center md:px-16">
           <div className="relative z-10 mx-auto max-w-7xl">
             <h2 className="fade-up mb-8 text-[48px] font-black leading-none text-white md:text-[80px]">ĐÊM NAY THUỘC VỀ BẠN.</h2>
@@ -486,7 +630,7 @@ function LandingPage() {
               <button
                 type="button"
                 onClick={() => navigate('/register')}
-                className="group relative inline-flex overflow-hidden rounded-full bg-[#c3f400] px-16 py-6 text-2xl font-black text-[#283500] shadow-2xl shadow-[#c3f400]/20"
+                className="group relative inline-flex overflow-hidden rounded-full bg-[#c3f400] px-16 py-6 text-2xl font-black text-[#283500] shadow-[0_0_30px_rgba(195,244,0,0.3)] hover:shadow-[0_0_60px_rgba(195,244,0,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <span className="relative z-10">GIỮ CHỖ NGAY</span>
                 <span className="absolute inset-0 translate-y-full bg-white transition-transform duration-500 group-hover:translate-y-0" />
@@ -497,6 +641,7 @@ function LandingPage() {
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="border-t border-white/5 bg-[#0e0e0e] py-12">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-5 md:flex-row md:flex-nowrap md:px-16">
           <div className="shrink-0 whitespace-nowrap text-3xl font-black text-white">KINETIC NOIR</div>

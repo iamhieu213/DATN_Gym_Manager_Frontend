@@ -90,7 +90,7 @@ function DashboardPage() {
 
       {/* Metric Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white/[0.015] backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
+        <div className="bg-white/1.5 backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
           <span className="text-[11px] font-bold text-[#71717a] uppercase tracking-widest">Hội viên hoạt động</span>
           <div className="flex items-end justify-between mt-2">
             <span className="text-3xl font-bold text-white tracking-tighter">2.842</span>
@@ -101,7 +101,7 @@ function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white/[0.015] backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
+        <div className="bg-white/1.5 backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
           <span className="text-[11px] font-bold text-[#71717a] uppercase tracking-widest">Doanh thu tháng</span>
           <div className="flex items-end justify-between mt-2">
             <span className="text-3xl font-bold text-white tracking-tighter">142,5M</span>
@@ -112,7 +112,7 @@ function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white/[0.015] backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
+        <div className="bg-white/1.5 backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
           <span className="text-[11px] font-bold text-[#71717a] uppercase tracking-widest">Tỉ lệ giữ chân</span>
           <div className="flex items-end justify-between mt-2">
             <span className="text-3xl font-bold text-white tracking-tighter">94.8%</span>
@@ -123,7 +123,7 @@ function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white/[0.015] backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
+        <div className="bg-white/1.5 backdrop-blur-md border border-white/5 rounded-xl p-6 flex flex-col gap-1">
           <span className="text-[11px] font-bold text-[#71717a] uppercase tracking-widest">Tỉ lệ hủy gói</span>
           <div className="flex items-end justify-between mt-2">
             <span className="text-3xl font-bold text-white tracking-tighter">1.2%</span>
@@ -137,7 +137,7 @@ function DashboardPage() {
 
       {/* Revenue Analytics & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white/[0.015] border border-white/5 rounded-xl p-6 space-y-8">
+        <div className="lg:col-span-2 bg-white/1.5 border border-white/5 rounded-xl p-6 space-y-8">
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-lg font-bold text-white">Tăng trưởng doanh thu</h3>
@@ -197,7 +197,7 @@ function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white/[0.015] border border-white/5 rounded-xl p-6 flex flex-col">
+        <div className="bg-white/1.5 border border-white/5 rounded-xl p-6 flex flex-col">
           <h3 className="text-lg font-bold text-white mb-6">Nhật ký hệ thống</h3>
           <div className="space-y-6 flex-1">
             {logs.map((log) => (
@@ -228,7 +228,7 @@ function DashboardPage() {
 
       {/* Management Tables & Grids */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-8 bg-white/[0.015] border border-white/5 rounded-xl overflow-hidden">
+        <div className="lg:col-span-8 bg-white/1.5 border border-white/5 rounded-xl overflow-hidden">
           <div className="p-6 border-b border-white/5 flex justify-between items-center">
             <h3 className="text-lg font-bold text-white">Giao dịch gần đây</h3>
             <button type="button" className="text-xs font-bold text-[#c3f400] hover:underline cursor-pointer">Xem tất cả</button>
@@ -236,7 +236,7 @@ function DashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="text-[10px] font-bold text-[#71717a] uppercase tracking-widest border-b border-white/5 bg-white/[0.02]">
+                <tr className="text-[10px] font-bold text-[#71717a] uppercase tracking-widest border-b border-white/5 bg-white/2">
                   <th className="px-6 py-4">Mã Giao Dịch</th>
                   <th className="px-6 py-4">Hội Viên</th>
                   <th className="px-6 py-4">Số Tiền</th>
@@ -247,7 +247,7 @@ function DashboardPage() {
               </thead>
               <tbody className="text-sm divide-y divide-white/5">
                 {transactions.map((t) => (
-                  <tr key={t.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={t.id} className="hover:bg-white/2 transition-colors">
                     <td className="px-6 py-4 font-mono text-xs text-[#c3f400]">{t.id}</td>
                     <td className="px-6 py-4 font-medium text-white">{t.member}</td>
                     <td className="px-6 py-4 text-white">{t.amount}</td>
@@ -275,7 +275,7 @@ function DashboardPage() {
           </div>
         </div>
 
-        <div className="lg:col-span-4 bg-white/[0.015] border border-white/5 rounded-xl flex flex-col">
+        <div className="lg:col-span-4 bg-white/1.5 border border-white/5 rounded-xl flex flex-col">
           <div className="p-6 border-b border-white/5">
             <h3 className="text-lg font-bold text-white">Hiệu suất Huấn luyện viên</h3>
           </div>
@@ -312,8 +312,8 @@ function DashboardPage() {
       </div>
 
       {/* Ambient Glows */}
-      <div className="fixed top-0 right-0 w-[600px] h-[600px] bg-[#c3f400]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
-      <div className="fixed bottom-0 left-64 w-[400px] h-[400px] bg-[#c3f400]/3 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+      <div className="fixed top-0 right-0 w-150 h-150 bg-[#c3f400]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+      <div className="fixed bottom-0 left-64 w-100 h-100 bg-[#c3f400]/3 rounded-full blur-[100px] pointer-events-none -z-10"></div>
     </div>
   );
 }

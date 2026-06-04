@@ -1,6 +1,14 @@
-import type { ForgotPasswordRequest, ForgotPasswordResponse } from '../types/auth.types';
+import axios from 'axios';
+import type { ForgotPasswordRequest, ForgotPasswordResponse, RegisterRequest, RegisterResponse } from '../types/auth.types';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'http://localhost:3000';
+
+export async function registerUser(
+  payload: RegisterRequest,
+): Promise<RegisterResponse> {
+  const response = await axios.post<RegisterResponse>(`${API_BASE_URL}/auth/register`, payload);
+  return response.data;
+}
 
 export async function requestForgotPasswordOtp(
   payload: ForgotPasswordRequest,

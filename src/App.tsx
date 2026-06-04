@@ -1,41 +1,39 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import LoginPage from './features/auth/pages/LoginPage';
-import RegisterPage from './features/auth/pages/RegisterPage';
-import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage';
-import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
-import AdminLayout from './components/AdminLayout';
-import DashboardPage from './pages/DashboardPage';
+import { authRoutes } from './routes/auth.routes';
+import { adminRoutes } from './routes/admin.routes';
+
+// Load lazy trang Landing chính
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+
+// Giao diện loading đơn giản khi tải các trang lazy
+const PageLoader = () => (
+  <div className="fixed inset-0 flex items-center justify-center bg-[#131313] text-[#c3f400] font-mono text-lg z-9999">
+    <div className="flex flex-col items-center gap-4">
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c3f400]/20 border-t-[#c3f400]" />
+      <span className="tracking-widest uppercase text-xs">ĐANG TẢI DỮ LIỆU...</span>
+    </div>
+  </div>
+);
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* === Các Route Công khai (Public Routes) === */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {/* 1. Trang chủ công khai */}
+          <Route path="/" element={<LandingPage />} />
 
-        {/* === Các Route Quản trị (Admin Dashboard Routes) === */}
-        <Route path="/dashboard" element={<AdminLayout />}>
-          <Route index element={<DashboardPage />} />
-          {/* Các Route con placeholder cho menu hoạt động */}
-          <Route path="members" element={<div className="p-8 text-white">Tính năng quản lý Hội viên đang phát triển...</div>} />
-          <Route path="pts" element={<div className="p-8 text-white">Tính năng quản lý Huấn luyện viên đang phát triển...</div>} />
-          <Route path="staff" element={<div className="p-8 text-white">Tính năng quản lý Nhân sự đang phát triển...</div>} />
-          <Route path="packages" element={<div className="p-8 text-white">Tính năng quản lý Gói tập đang phát triển...</div>} />
-          <Route path="bookings" element={<div className="p-8 text-white">Tính năng quản lý Lịch đặt chỗ đang phát triển...</div>} />
-          <Route path="payments" element={<div className="p-8 text-white">Tính năng quản lý Thanh toán đang phát triển...</div>} />
-          <Route path="reports" element={<div className="p-8 text-white">Tính năng quản lý Báo cáo đang phát triển...</div>} />
-          <Route path="equipment" element={<div className="p-8 text-white">Tính năng quản lý Trang thiết bị đang phát triển...</div>} />
-          <Route path="maintenance" element={<div className="p-8 text-white">Tính năng quản lý Bảo trì đang phát triển...</div>} />
-        </Route>
+          {/* 2. Nhóm Route Xác thực (Auth Module Routes) */}
+          {authRoutes}
 
-        {/* Tự động điều hướng về trang chủ nếu URL không khớp */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+          {/* 3. Nhóm Route Quản lý Admin (Dashboard Layout & Routes) */}
+          {adminRoutes}
+
+          {/* Tự động điều hướng về trang chủ nếu URL không khớp */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
