@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
+import { resetPassword } from '../services/authApi';
+import { KeyRound, ShieldCheck, RefreshCw, ArrowLeft } from 'lucide-react';
+
 
 type ResetPasswordPageProps = {};
 
@@ -67,7 +70,7 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
 
   const strength = getStrength(password);
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (!password.trim() || !confirmPassword.trim()) {
@@ -85,14 +88,34 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
       return;
     }
 
+    const resetPasswordToken = sessionStorage.getItem('resetPasswordToken');
+    if (!resetPasswordToken) {
+      alert('Yêu cầu đặt lại mật khẩu đã hết hạn hoặc không hợp lệ. Vui lòng thực hiện lại từ đầu.');
+      navigate('/forgot-password');
+      return;
+    }
+
     setLoading(true);
 
-    // Giả lập quá trình API đặt lại mật khẩu
-    setTimeout(() => {
-      setLoading(false);
-      alert('Đặt lại mật khẩu thành công!');
+    try {
+      await resetPassword({
+        resetPasswordToken,
+        newPassword: password,
+        confirmNewPassword: confirmPassword,
+      });
+
+      // Clear sessions
+      sessionStorage.removeItem('resetPasswordToken');
+      sessionStorage.removeItem('auth_email');
+
+      alert('Đặt lại mật khẩu thành công! Bạn có thể đăng nhập ngay.');
       navigate('/login');
-    }, 1500);
+    } catch (error: any) {
+      const errMsg = error.response?.data?.message || 'Đặt lại mật khẩu thất bại.';
+      alert(errMsg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -131,7 +154,7 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
           {/* Header */}
           <div className="mb-10 text-center md:text-left">
             <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#abd600]/20 bg-[#abd600]/10">
-              <span className="text-xl text-[#abd600]">🔄</span>
+              <RefreshCw className="h-6 w-6 text-[#abd600]" />
             </div>
             <h1 className="mb-2 text-3xl font-extrabold tracking-tight text-white md:text-4xl">
               Đặt lại mật khẩu
@@ -152,9 +175,7 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
                 Mật khẩu mới
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors group-focus-within:text-[#abd600]">
-                  🔑
-                </span>
+                <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30 transition-colors group-focus-within:text-[#abd600]" />
                 <input
                   className="w-full rounded-lg border-b-2 border-white/10 bg-black/60 py-4 pl-12 pr-4 text-white placeholder:text-white/20 transition-all duration-300 focus:border-[#abd600] focus:bg-black/90 focus:outline-none focus:ring-0"
                   id="new_password"
@@ -176,9 +197,7 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
                 Xác nhận mật khẩu mới
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors group-focus-within:text-[#abd600]">
-                  🛡️
-                </span>
+                <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30 transition-colors group-focus-within:text-[#abd600]" />
                 <input
                   className="w-full rounded-lg border-b-2 border-white/10 bg-black/60 py-4 pl-12 pr-4 text-white placeholder:text-white/20 transition-all duration-300 focus:border-[#abd600] focus:bg-black/90 focus:outline-none focus:ring-0"
                   id="confirm_password"
@@ -219,9 +238,7 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
               onClick={() => navigate('/login')}
               className="group flex items-center justify-center gap-2 font-mono text-sm uppercase text-[#c4c9ac] transition-all hover:text-[#abd600]"
             >
-              <span className="transition-transform group-hover:-translate-x-1" aria-hidden="true">
-                ←
-              </span>
+              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
               Quay lại đăng nhập
             </button>
           </div>

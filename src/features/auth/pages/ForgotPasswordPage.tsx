@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { requestForgotPasswordOtp } from '../services/authApi';
-
+import heroImage from '../../../assets/kinetic-hero.png';
+import Swal from 'sweetalert2';
 type ForgotPasswordPageProps = {};
 
-function ForgotPasswordPage({}: ForgotPasswordPageProps) {
+function ForgotPasswordPage({ }: ForgotPasswordPageProps) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,11 @@ function ForgotPasswordPage({}: ForgotPasswordPageProps) {
     event.preventDefault();
 
     if (!email.trim()) {
-      alert('Vui lòng nhập email.');
+      Swal.fire({
+        title: 'Vui lòng nhập địa chỉ email.',
+        icon: "error",
+        draggable: false
+      });
       return;
     }
 
@@ -22,27 +27,43 @@ function ForgotPasswordPage({}: ForgotPasswordPageProps) {
     try {
       const data = await requestForgotPasswordOtp({ email });
 
-      if (data.token) {
-        sessionStorage.setItem('forgotPasswordToken', data.token);
-      }
+      // Save email for OTP page verification
+      sessionStorage.setItem('auth_email', email);
 
-      alert(data.message || 'Mã OTP đã được gửi đến email của bạn.');
-      navigate('/reset-password');
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Có lỗi xảy ra.');
+      Swal.fire({
+        title: data.message || 'Mã OTP đã được gửi về gmail của bạn.',
+        icon: "success",
+        draggable: true
+      });
+      navigate('/verify-forgot-password'); // Redirect to verification page
+    } catch (error: any) {
+      const errMsg = error.response?.data?.message || 'Có lỗi xảy ra.';
+      Swal.fire({
+        title: errMsg || 'Có lỗi xảy ra.',
+        icon: "error",
+        draggable: false
+      });
+      alert(errMsg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-overlay fixed inset-0 z-100 flex min-h-screen items-center justify-center overflow-y-auto bg-[#131313] p-5 text-[#e5e2e1] selection:bg-[#c3f400] selection:text-black md:p-16">
-      <div className="fixed inset-0 z-0 overflow-hidden bg-[radial-gradient(circle_at_20%_30%,rgba(195,244,0,0.05)_0%,transparent_40%),radial-gradient(circle_at_80%_70%,rgba(195,244,0,0.03)_0%,transparent_40%)]">
+    <div className="login-overlay fixed inset-0 isolate z-100 flex min-h-screen items-center justify-center overflow-y-auto bg-[#131313] p-5 text-[#e5e2e1] selection:bg-[#c3f400] selection:text-black md:p-16">
+      <div className="fixed inset-0 z-0 overflow-hidden">
+        <img
+          className="h-full w-full object-cover opacity-55 grayscale brightness-75 blur-[1px]"
+          src={heroImage}
+          alt="Nền phòng gym cao cấp"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-[#131313]/90 via-[#131313]/35 to-[#131313]/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.2),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.14),transparent_42%)]" />
         <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[40%] animate-pulse rounded-full bg-[#c3f400]/5 blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] animate-pulse rounded-full bg-[#c3f400]/5 blur-[120px] [animation-delay:2s]" />
       </div>
 
-      <header className="fixed top-0 z-50 flex w-full items-center justify-between border-b border-white/10 px-5 py-4 backdrop-blur-xl md:px-16">
+      <header className="fixed top-0 z-10 flex w-full items-center justify-between border-b border-white/10 px-5 py-4 backdrop-blur-xl md:px-16">
         <div className="text-2xl font-black uppercase tracking-tight text-[#c3f400]">
           KINETIC NOIR
         </div>

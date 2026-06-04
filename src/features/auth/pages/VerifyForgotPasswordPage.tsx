@@ -4,8 +4,7 @@ function VerifyForgotPasswordPage() {
   return (
     <OtpVerificationForm
       mode="forgot-password"
-      endpoint="http://localhost:8080/auth/verify-forgot-password-otp"
-      tokenStorageKey="forgotPasswordToken"
+      endpoint="/auth/verify-forgot-password-otp"
       onVerified={() => {
         window.location.href = '/reset-password';
       }}

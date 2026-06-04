@@ -1,12 +1,20 @@
 import { lazy } from 'react';
 import { Route } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute';
 
 // Load lazy layout admin và trang dashboard
 const AdminLayout = lazy(() => import('../components/AdminLayout'));
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
 
 export const adminRoutes = (
-  <Route path="/dashboard" element={<AdminLayout />}>
+  <Route
+    path="/dashboard"
+    element={
+      <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+        <AdminLayout />
+      </ProtectedRoute>
+    }
+  >
     <Route index element={<DashboardPage />} />
     
     {/* Các trang con phục vụ quản lý */}

@@ -1,13 +1,22 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
+import { loginUser } from '../services/authApi';
+import Swal from 'sweetalert2';
 
 type LoginPageProps = {};
 
-function LoginPage({}: LoginPageProps) {
+function LoginPage({ }: LoginPageProps) {
   const navigate = useNavigate();
   const bgRef = useRef<HTMLImageElement | null>(null);
+  const spotlightRef = useRef<HTMLDivElement | null>(null); // <-- Thêm ref cho spotlight
 
+  // 1. Định nghĩa State lưu trữ thông tin đăng nhập
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // 2. Hiệu ứng di chuyển nền Parallax theo chuột
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       const moveX = (event.clientX - window.innerWidth / 2) * 0.01;
@@ -16,6 +25,12 @@ function LoginPage({}: LoginPageProps) {
       if (bgRef.current) {
         bgRef.current.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
       }
+
+      // Cập nhật tọa độ thẳng vào inline style của spotlight để ghi đè CSS mặc định
+      if (spotlightRef.current) {
+        spotlightRef.current.style.setProperty('--spotlight-x', `${event.clientX}px`);
+        spotlightRef.current.style.setProperty('--spotlight-y', `${event.clientY}px`);
+      }
     };
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -23,20 +38,76 @@ function LoginPage({}: LoginPageProps) {
     return () => document.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // 3. Hàm xử lý gửi yêu cầu đăng nhập lên backend
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    // Kiểm tra dữ liệu đầu vào cơ bản
+    if (!email.trim() || !password.trim()) {
+      Swal.fire({
+        icon: "error",
+        title: "Đăng nhập thất bại",
+        text: "Vui lòng điền đầy đủ email và mật khẩu.",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Gọi API đăng nhập sử dụng Axios
+      const res = await loginUser({ email, password });
+
+      // Lưu trữ tokens vào localStorage để dùng cho các yêu cầu sau
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('refreshToken', res.data.refreshToken);
+
+      Swal.fire({
+        icon: "success",
+        title: "Đăng nhập thành công",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      navigate('/dashboard');
+    } catch (error: any) {
+      // Lấy thông báo lỗi chi tiết từ backend (nếu có)
+      const errMsg = error.response?.data?.message || 'Email hoặc mật khẩu không chính xác.';
+      Swal.fire({
+        icon: "error",
+        title: "Đăng nhập thất bại",
+        text: errMsg,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 4. Xử lý khi nhấn đăng nhập Google (mở link OAuth)
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:3000/auth/google';
+  };
+
   return (
-    <div className="login-overlay fixed inset-0 z-100 flex min-h-screen flex-col overflow-hidden bg-[#131313] text-[#e5e2e1]">
-      <div className="fixed inset-0 -z-10 overflow-hidden">
+    <div className="login-overlay fixed inset-0 isolate z-100 flex min-h-screen flex-col overflow-hidden bg-[#131313] text-[#e5e2e1]">
+      {/* Background Section */}
+      <div className="fixed inset-0 z-0 overflow-hidden">
         <img
           ref={bgRef}
-          className="h-full w-full object-cover opacity-20 grayscale brightness-50 blur-[2px]"
+          className="h-full w-full object-cover opacity-55 grayscale brightness-75 blur-[1px]"
           src={heroImage}
           alt="Nền phòng gym cao cấp phong cách điện ảnh"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-[#131313] via-[#131313]/30 to-[#131313]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.16),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.1),transparent_42%)]" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#131313]/90 via-[#131313]/35 to-[#131313]/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.2),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.14),transparent_42%)]" />
+        <div ref={spotlightRef} className="mouse-spotlight" />
       </div>
 
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between border-b border-white/10 bg-[#131313]/10 px-5 py-4 backdrop-blur-xl md:px-16">
+      {/* Navigation */}
+      <nav className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between border-b border-white/10 bg-[#131313]/10 px-5 py-4 backdrop-blur-xl md:px-16">
         <div className="text-xl font-black tracking-tight text-white md:text-2xl">
           KINETIC NOIR
         </div>
@@ -51,7 +122,8 @@ function LoginPage({}: LoginPageProps) {
         </button>
       </nav>
 
-      <main className="flex flex-1 items-center justify-center px-5 py-12">
+      {/* Main Form container */}
+      <main className="relative z-10 flex flex-1 items-center justify-center px-5 py-12">
         <div className="relative w-full max-w-md">
           <div className="pointer-events-none absolute -inset-12 overflow-hidden opacity-20 blur-3xl">
             <div className="h-full w-full animate-pulse rounded-full bg-[#c3f400] mix-blend-screen" />
@@ -67,13 +139,19 @@ function LoginPage({}: LoginPageProps) {
               </p>
             </div>
 
-            <form className="space-y-8" onSubmit={(event) => event.preventDefault()}>
+            {/* Thẻ Form kết nối onSubmit */}
+            <form className="space-y-8" onSubmit={handleSubmit}>
+
+              {/* Input Email */}
               <div className="group relative">
                 <input
                   id="email"
                   type="email"
                   placeholder=" "
+                  value={email} // <-- Gán state email
+                  onChange={(event) => setEmail(event.target.value)} // <-- Cập nhật state
                   className="peer block w-full rounded-lg border-0 border-b border-white/20 bg-white/5 px-4 pb-2 pt-6 text-white outline-none transition-all duration-300 focus:border-[#c3f400] focus:ring-0"
+                  required
                 />
                 <label
                   htmlFor="email"
@@ -84,12 +162,16 @@ function LoginPage({}: LoginPageProps) {
                 <div className="absolute bottom-0 left-0 h-px w-0 bg-[#c3f400] transition-all duration-500 group-focus-within:w-full" />
               </div>
 
+              {/* Input Password */}
               <div className="group relative">
                 <input
                   id="password"
                   type="password"
                   placeholder=" "
+                  value={password} // <-- Gán state password
+                  onChange={(event) => setPassword(event.target.value)} // <-- Cập nhật state
                   className="peer block w-full rounded-lg border-0 border-b border-white/20 bg-white/5 px-4 pb-2 pt-6 text-white outline-none transition-all duration-300 focus:border-[#c3f400] focus:ring-0"
+                  required
                 />
                 <label
                   htmlFor="password"
@@ -100,6 +182,7 @@ function LoginPage({}: LoginPageProps) {
                 <div className="absolute bottom-0 left-0 h-px w-0 bg-[#c3f400] transition-all duration-500 group-focus-within:w-full" />
               </div>
 
+              {/* Quên mật khẩu */}
               <div className="flex justify-end">
                 <button
                   type="button"
@@ -110,12 +193,14 @@ function LoginPage({}: LoginPageProps) {
                 </button>
               </div>
 
+              {/* Nút hành động */}
               <div className="space-y-4 pt-4">
                 <button
                   type="submit"
-                  className="login-primary-button w-full rounded-full bg-[#c3f400] py-4 text-xl font-black uppercase tracking-tight text-[#556d00] transition-all duration-300 active:scale-95"
+                  disabled={loading} // <-- Disable khi đang gọi API
+                  className="login-primary-button w-full rounded-full bg-[#c3f400] py-4 text-xl font-black uppercase tracking-tight text-[#556d00] transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Đăng nhập
+                  {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                 </button>
 
                 <div className="relative flex items-center py-4">
@@ -126,8 +211,10 @@ function LoginPage({}: LoginPageProps) {
                   <div className="grow border-t border-white/10" />
                 </div>
 
+                {/* Đăng nhập bằng Google */}
                 <button
                   type="button"
+                  onClick={handleGoogleLogin}
                   className="flex w-full items-center justify-center rounded-full border border-white/10 bg-white/3 py-3 font-mono text-sm text-white backdrop-blur-xl transition-all duration-300 hover:bg-white/10 active:scale-95"
                 >
                   <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
@@ -141,9 +228,16 @@ function LoginPage({}: LoginPageProps) {
               </div>
             </form>
 
+            {/* Chuyển hướng sang trang đăng ký */}
             <p className="mt-10 text-center text-[#b7b5b4]">
               Chưa có tài khoản?
-              <button type="button" onClick={() => navigate('/register')} className="ml-1 font-bold text-[#c3f400] hover:underline">Tham gia ngay</button>
+              <button
+                type="button"
+                onClick={() => navigate('/register')}
+                className="ml-1 font-bold text-[#c3f400] hover:underline"
+              >
+                Tham gia ngay
+              </button>
             </p>
           </section>
         </div>

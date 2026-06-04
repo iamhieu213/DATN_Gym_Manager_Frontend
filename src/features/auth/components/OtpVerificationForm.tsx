@@ -1,13 +1,16 @@
-import { useRef, useState, type ClipboardEvent, type FormEvent, type KeyboardEvent } from 'react';
+import { useRef, useState, useEffect, type ClipboardEvent, type FormEvent, type KeyboardEvent } from 'react';
 import heroImage from '../../../assets/kinetic-hero.png';
+import apiClient from '../services/apiClient';
+import { LockKeyhole } from 'lucide-react';
+import { requestForgotPasswordOtp } from '../services/authApi';
+import Swal from 'sweetalert2';
 
 type OtpMode = 'register' | 'forgot-password';
 
 type OtpVerificationFormProps = {
   mode: OtpMode;
   endpoint: string;
-  tokenStorageKey?: string;
-  onVerified?: () => void;
+  onVerified?: (data?: any) => void;
   onBack?: () => void;
 };
 
@@ -33,7 +36,6 @@ const modeConfig = {
 function OtpVerificationForm({
   mode,
   endpoint,
-  tokenStorageKey,
   onVerified,
   onBack,
 }: OtpVerificationFormProps) {
@@ -41,6 +43,58 @@ function OtpVerificationForm({
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [otp, setOtp] = useState(Array(6).fill(''));
   const [loading, setLoading] = useState(false);
+
+  // 1. Khai báo State đếm ngược 10 phút (600 giây)
+  const [timeLeft, setTimeLeft] = useState(600);
+
+  // 2. Chạy bộ đếm ngược
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  // 3. Helper format giây thành định dạng MM:SS
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  // 4. Hàm xử lý khi nhấn "Gửi lại mã"
+  const handleResend = async () => {
+    if (timeLeft > 0) return;
+    const email = sessionStorage.getItem('auth_email') || '';
+
+    try {
+      if (mode === 'forgot-password') {
+        await requestForgotPasswordOtp({ email });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Để nhận mã OTP đăng ký mới, vui lòng quay lại trang Đăng ký và gửi lại thông tin!",
+        });
+        return;
+      }
+
+      setTimeLeft(600); // Reset bộ đếm về 10 phút
+      Swal.fire({
+        title: "Mã OTP mới đã được gửi về gmail của bạn.",
+        icon: "success",
+        draggable: true
+      });
+    } catch (error) {
+   
+      Swal.fire({
+        title: "Không thể gửi lại mã OTP. Vui lòng thử lại sau.",
+        icon: "error",
+        draggable: true
+      });
+    }
+  };
 
   const updateOtp = (index: number, value: string) => {
     const digit = value.replace(/\D/g, '').slice(-1);
@@ -87,40 +141,49 @@ function OtpVerificationForm({
       return;
     }
 
-    const token = tokenStorageKey ? sessionStorage.getItem(tokenStorageKey) : null;
-
+    const email = sessionStorage.getItem('auth_email') || '';
     setLoading(true);
 
     try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          otp: code,
-          token,
-        }),
-      });
+      let bodyData = {};
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || 'Xác thực OTP thất bại.');
+      if (mode === 'register') {
+        const registerToken = sessionStorage.getItem('registerToken') || '';
+        bodyData = {
+          email,
+          registerToken,
+          otpCode: code,
+        };
+      } else {
+        bodyData = {
+          email,
+          otpCode: code,
+        };
       }
 
-      if (tokenStorageKey) {
-        sessionStorage.removeItem(tokenStorageKey);
+      // Gọi API qua Axios
+      const res = await apiClient.post(endpoint, bodyData);
+
+      // Nếu là Quên mật khẩu, lưu lại resetPasswordToken từ backend
+      if (mode === 'forgot-password' && res.data.data?.resetPasswordToken) {
+        sessionStorage.setItem('resetPasswordToken', res.data.data.resetPasswordToken);
       }
 
-      onVerified?.();
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Có lỗi xảy ra.');
+      // Xóa các session tạm khi đăng ký thành công
+      if (mode === 'register') {
+        sessionStorage.removeItem('registerToken');
+        sessionStorage.removeItem('auth_email');
+      }
+
+      onVerified?.(res.data);
+    } catch (error: any) {
+      const errMsg = error.response?.data?.message || 'Xác thực OTP thất bại.';
+      alert(errMsg);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="login-overlay fixed inset-0 z-100 min-h-screen overflow-y-auto bg-[#131313] text-[#e5e2e1]">
@@ -142,7 +205,7 @@ function OtpVerificationForm({
 
         <section className="otp-panel flex w-full max-w-120 flex-col items-center rounded-4xl border border-white/10 bg-white/3 p-8 backdrop-blur-2xl md:p-12">
           <div className="mb-8 rounded-full border border-[#abd600]/20 bg-[#abd600]/10 p-4">
-            <span className="text-4xl text-[#abd600]">🔐</span>
+            <LockKeyhole className="h-10 w-10 text-[#abd600]" />
           </div>
 
           <div className="mb-10 text-center">
@@ -185,9 +248,14 @@ function OtpVerificationForm({
           <div className="mt-10 flex flex-col items-center gap-4">
             <button
               type="button"
-              className="font-mono text-sm uppercase text-[#abd600] transition-all hover:brightness-125"
+              onClick={handleResend}
+              disabled={timeLeft > 0}
+              className={`font-mono text-sm uppercase transition-all ${timeLeft > 0
+                ? 'text-[#abd600]/50 cursor-not-allowed'
+                : 'text-[#abd600] hover:brightness-125 cursor-pointer'
+                }`}
             >
-              {config.resendText} <span className="text-[10px] opacity-60">(0:59)</span>
+              {config.resendText} <span className="text-[10px] opacity-60">({formatTime(timeLeft)})</span>
             </button>
 
             <button
