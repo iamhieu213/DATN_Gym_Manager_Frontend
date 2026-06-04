@@ -9,6 +9,7 @@ type RegisterPageProps = {};
 
 function RegisterPage({ }: RegisterPageProps) {
     const bgRef = useRef<HTMLImageElement | null>(null);
+    const spotlightRef = useRef<HTMLDivElement | null>(null); // <-- Khai báo ref cho spotlight
     const navigate = useNavigate();
 
     //1.Dinh nghia cac state quan ly du lieu nhap vao form
@@ -26,6 +27,12 @@ function RegisterPage({ }: RegisterPageProps) {
 
             if (bgRef.current) {
                 bgRef.current.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
+            }
+
+            // Cập nhật tọa độ thẳng vào inline style của spotlight để ghi đè CSS mặc định
+            if (spotlightRef.current) {
+                spotlightRef.current.style.setProperty('--spotlight-x', `${event.clientX}px`);
+                spotlightRef.current.style.setProperty('--spotlight-y', `${event.clientY}px`);
             }
         };
 
@@ -81,19 +88,20 @@ function RegisterPage({ }: RegisterPageProps) {
     }
 
     return (
-        <div className="login-overlay fixed inset-0 z-100 flex min-h-screen flex-col overflow-y-auto bg-[#131313] text-[#e5e2e1]">
-            <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="login-overlay fixed inset-0 isolate z-100 flex min-h-screen flex-col overflow-y-auto bg-[#131313] text-[#e5e2e1]">
+            <div className="fixed inset-0 z-0 overflow-hidden">
                 <img
                     ref={bgRef}
-                    className="h-full w-full object-cover opacity-30 grayscale brightness-50 blur-[2px]"
+                    className="h-full w-full object-cover opacity-55 grayscale brightness-75 blur-[1px]"
                     src={heroImage}
                     alt="Nền phòng gym cao cấp"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-[#131313] via-[#131313]/30 to-[#131313]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.16),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.1),transparent_42%)]" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#131313]/90 via-[#131313]/35 to-[#131313]/80" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.2),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.14),transparent_42%)]" />
+                <div ref={spotlightRef} className="mouse-spotlight" />
             </div>
 
-            <nav className="mx-auto flex w-full max-w-7xl items-center justify-between border-b border-white/10 bg-[#131313]/10 px-5 py-4 backdrop-blur-xl md:px-16">
+            <nav className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between border-b border-white/10 bg-[#131313]/10 px-5 py-4 backdrop-blur-xl md:px-16">
                 <div className="text-xl font-black tracking-tight text-white md:text-2xl">
                     KINETIC NOIR
                 </div>
@@ -108,7 +116,7 @@ function RegisterPage({ }: RegisterPageProps) {
                 </button>
             </nav>
 
-            <main className="flex flex-1 items-center justify-center px-5 py-12">
+            <main className="relative z-10 flex flex-1 items-center justify-center px-5 py-12">
                 <section className="login-panel w-full max-w-lg rounded-2xl border border-white/10 bg-white/3 p-8 shadow-2xl shadow-black/50 backdrop-blur-2xl md:p-10">
                     <div className="mb-10 text-center">
                         <span className="mb-2 block font-mono text-sm uppercase tracking-widest text-[#c3f400]">

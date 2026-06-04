@@ -4,8 +4,7 @@ function VerifyRegisterPage() {
   return (
     <OtpVerificationForm
       mode="register"
-      endpoint="http://localhost:8080/auth/verify-register-otp"
-      tokenStorageKey="registerToken"
+      endpoint="/auth/verify-register"
       onVerified={() => {
         window.location.href = '/login';
       }}

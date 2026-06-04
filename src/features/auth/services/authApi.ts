@@ -1,32 +1,50 @@
-import axios from 'axios';
-import type { ForgotPasswordRequest, ForgotPasswordResponse, RegisterRequest, RegisterResponse } from '../types/auth.types';
+import apiClient from './apiClient';
+import type { 
+  RegisterRequest, RegisterResponse,
+  VerifyRegisterRequest, VerifyRegisterResponse,
+  LoginRequest, LoginResponse,
+  ForgotPasswordRequest, ForgotPasswordResponse,
+  VerifyForgotPasswordRequest, VerifyForgotPasswordResponse,
+  ResetPasswordRequest, ResetPasswordResponse
+} from '../types/auth.types';
 
-const API_BASE_URL = 'http://localhost:3000';
-
-export async function registerUser(
-  payload: RegisterRequest,
-): Promise<RegisterResponse> {
-  const response = await axios.post<RegisterResponse>(`${API_BASE_URL}/auth/register`, payload);
+// 1. Đăng ký tài khoản mới (gửi OTP tới email)
+export async function registerUser(payload: RegisterRequest): Promise<RegisterResponse> {
+  const response = await apiClient.post<RegisterResponse>('/auth/register', payload);
   return response.data;
 }
 
-export async function requestForgotPasswordOtp(
-  payload: ForgotPasswordRequest,
-): Promise<ForgotPasswordResponse> {
-  const res = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+// 2. Xác thực mã OTP đăng ký để tạo tài khoản
+export async function verifyRegisterOtp(payload: VerifyRegisterRequest): Promise<VerifyRegisterResponse> {
+  const response = await apiClient.post<VerifyRegisterResponse>('/auth/verify-register', payload);
+  return response.data;
+}
 
-  const data = await res.json();
+// 3. Đăng nhập bằng Email/Password
+export async function loginUser(payload: LoginRequest): Promise<LoginResponse> {
+  const response = await apiClient.post<LoginResponse>('/auth/login', payload);
+  return response.data;
+}
 
-  if (!res.ok) {
-    throw new Error(data.message || 'Không thể gửi mã OTP.');
-  }
+// 4. Yêu cầu mã OTP Quên mật khẩu
+export async function requestForgotPasswordOtp(payload: ForgotPasswordRequest): Promise<ForgotPasswordResponse> {
+  const response = await apiClient.post<ForgotPasswordResponse>('/auth/request-forgot-password-otp', payload);
+  return response.data;
+}
 
-  return data;
+// 5. Xác thực mã OTP Quên mật khẩu để lấy Reset Token
+export async function verifyForgotPasswordOtp(payload: VerifyForgotPasswordRequest): Promise<VerifyForgotPasswordResponse> {
+  const response = await apiClient.post<VerifyForgotPasswordResponse>('/auth/verify-forgot-password-otp', payload);
+  return response.data;
+}
+
+// 6. Đặt lại mật khẩu mới bằng Reset Token
+export async function resetPassword(payload: ResetPasswordRequest): Promise<ResetPasswordResponse> {
+  const response = await apiClient.post<ResetPasswordResponse>('/auth/reset-password', payload);
+  return response.data;
+}
+
+// 7. Đăng xuất tài khoản
+export async function logoutUser(refreshToken: string): Promise<void> {
+  await apiClient.post('/auth/logout', { refreshToken });
 }
