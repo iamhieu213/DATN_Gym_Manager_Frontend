@@ -4,7 +4,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 // Load lazy layout admin và trang dashboard
 const AdminLayout = lazy(() => import('../components/AdminLayout'));
-const DashboardPage = lazy(() => import('../pages/DashboardPage'));
+const DashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'));
 
 export const adminRoutes = (
   <Route

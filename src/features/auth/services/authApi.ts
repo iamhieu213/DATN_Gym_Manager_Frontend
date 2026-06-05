@@ -48,3 +48,9 @@ export async function resetPassword(payload: ResetPasswordRequest): Promise<Rese
 export async function logoutUser(refreshToken: string): Promise<void> {
   await apiClient.post('/auth/logout', { refreshToken });
 }
+
+// 8. Lấy thông tin cá nhân của người đăng nhập
+export async function getMyProfile(): Promise<any> {
+  const response = await apiClient.get<any>('/users/me');
+  return response.data;
+}

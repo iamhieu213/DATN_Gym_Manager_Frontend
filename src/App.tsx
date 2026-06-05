@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
 
 // Load lazy trang Landing chính
 const LandingPage = lazy(() => import('./pages/LandingPage'));
-
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 // Giao diện loading đơn giản khi tải các trang lazy
 const PageLoader = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-[#131313] text-[#c3f400] font-mono text-lg z-9999">
@@ -31,7 +31,7 @@ function App() {
           {adminRoutes}
 
           {/* Tự động điều hướng về trang chủ nếu URL không khớp */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
