@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
   allowedRoles: UserRole[];
 }
 
-function decodeJwt(token: string) {
+export function decodeJwt(token: string) {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

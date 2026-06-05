@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { getMyProfile, logoutUser } from '../features/auth/services/authApi';
 import {
   LayoutDashboard,
   Users,
@@ -24,6 +26,81 @@ function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [userProfile, setUserProfile] = useState<{
+    name: string;
+    avatarUrl: string | null;
+    role: string;
+  } | null>(null);
+
+  // Lấy thông tin cá nhân của tài khoản đăng nhập
+  useEffect(() => {
+    getMyProfile()
+      .then((res: any) => {
+        if (res.success) {
+          setUserProfile(res.data);
+        }
+      })
+      .catch((err: any) => {
+        console.error("Lỗi khi tải thông tin cá nhân:", err);
+      });
+  }, []);
+
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'ADMIN':
+        return 'Quản trị viên';
+      case 'STAFF':
+        return 'Nhân viên vận hành';
+      default:
+        return 'Nhân viên';
+    }
+  };
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Đăng xuất?',
+      text: 'Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy',
+      background: '#09090b',
+      color: '#fafafa',
+      confirmButtonColor: '#c3f400',
+      cancelButtonColor: '#27272a',
+      customClass: {
+        confirmButton: 'text-black font-bold',
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const refreshToken = localStorage.getItem('refreshToken');
+          if (refreshToken) {
+            await logoutUser(refreshToken);
+          }
+        } catch (err) {
+          console.error("Lỗi khi gọi API logout:", err);
+        } finally {
+          // Xóa token ở client trong mọi trường hợp
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          
+          // Thông báo đăng xuất thành công
+          Swal.fire({
+            title: 'Đã đăng xuất!',
+            text: 'Bạn đã đăng xuất khỏi hệ thống thành công.',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false,
+            background: '#09090b',
+            color: '#fafafa',
+          }).then(() => {
+            navigate('/login');
+          });
+        }
+      }
+    });
+  };
 
   // Tách biệt menu điều hướng
   const menuItems = [
@@ -47,9 +124,8 @@ function AdminLayout() {
   return (
     <div className="flex min-h-screen bg-[#09090b] text-[#fafafa] font-sans antialiased selection:bg-[#c3f400] selection:text-black">
       {/* SIDEBAR (THANH ĐIỀU HƯỚNG TRÁI) */}
-      <aside className={`fixed h-full border-r border-white/5 bg-[#09090b] flex flex-col z-50 transition-all duration-300 ${
-        isCollapsed ? 'w-16' : 'w-64'
-      }`}>
+      <aside className={`fixed h-full border-r border-white/5 bg-[#09090b] flex flex-col z-50 transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'
+        }`}>
         {/* Brand Logo Header */}
         <div className="p-4 flex items-center justify-between border-b border-white/5">
           <div className="flex items-center gap-2 overflow-hidden">
@@ -94,13 +170,11 @@ function AdminLayout() {
                     <Link
                       key={item.path}
                       to={item.path}
-                      className={`flex items-center rounded-md transition-all text-left ${
-                        isCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
-                      } ${
-                        isActive
+                      className={`flex items-center rounded-md transition-all text-left ${isCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
+                        } ${isActive
                           ? 'bg-[#c3f400]/8 text-[#c3f400] border-r-2 border-[#c3f400]'
                           : 'text-[#71717a] hover:text-white hover:bg-white/5'
-                      }`}
+                        }`}
                       title={isCollapsed ? item.label : undefined}
                     >
                       <Icon size={18} className="shrink-0" />
@@ -118,23 +192,23 @@ function AdminLayout() {
             isCollapsed ? 'justify-center p-1.5' : 'gap-3 p-2'
           }`}>
             <img
-              alt="Marcus"
-              className="w-8 h-8 rounded-full border border-white/10 shrink-0"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPyVOx7u_qADtod-mYf-cX6jmiwaYre8VU2IZS9niiYnZwgHCuwrzNwKhdUtA72rSl6nIUuX9Q1cByyDgnGRLPEtsfJsDNjxw0HPEAzwfxm3vTqyq2vQFD-7ssxooXRdI3H0Ct3uMVD_7SVF81OQGsBNCU0gR5QHENFZo63IFshnT_ID5gpfGs14TJl1uXy6MV4t9kdbeVp9lCVOF4pnmYPWOmJqqfI1D-TAfj-Zktw5XXZUuIQkI28MtPoR4la0m6U09XV_-xh7E"
+              alt={userProfile?.name || "User Avatar"}
+              className="w-8 h-8 rounded-full border border-white/10 shrink-0 object-cover"
+              src={userProfile?.avatarUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&h=100"}
             />
             {!isCollapsed && (
               <div className="flex-1 min-w-0 transition-opacity duration-300">
-                <div className="text-xs font-bold text-white truncate">Marcus Thorne</div>
-                <div className="text-[10px] text-[#71717a] truncate">Giám đốc quản lý</div>
+                <div className="text-xs font-bold text-white truncate">
+                  {userProfile?.name || "Đang tải..."}
+                </div>
+                <div className="text-[10px] text-[#71717a] truncate">
+                  {userProfile ? getRoleLabel(userProfile.role) : "---"}
+                </div>
               </div>
             )}
             {!isCollapsed && (
               <button
-                onClick={() => {
-                  if (confirm('Bạn muốn đăng xuất?')) {
-                    navigate('/');
-                  }
-                }}
+                onClick={handleLogout}
                 className="text-[#71717a] hover:text-red-500 transition-colors cursor-pointer"
                 title="Đăng xuất"
               >
@@ -144,11 +218,7 @@ function AdminLayout() {
           </div>
           {isCollapsed && (
             <button
-              onClick={() => {
-                if (confirm('Bạn muốn đăng xuất?')) {
-                  navigate('/');
-                }
-              }}
+              onClick={handleLogout}
               className="w-full flex justify-center mt-2 p-2 rounded-md text-[#71717a] hover:text-red-500 hover:bg-white/5 transition-colors cursor-pointer"
               title="Đăng xuất"
             >
@@ -159,9 +229,8 @@ function AdminLayout() {
       </aside>
 
       {/* MAIN CONTENT AREA */}
-      <div className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ${
-        isCollapsed ? 'ml-16' : 'ml-64'
-      }`}>
+      <div className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ${isCollapsed ? 'ml-16' : 'ml-64'
+        }`}>
         {/* Top Header Bar */}
         <header className="h-16 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md sticky top-0 z-40 px-8 flex items-center justify-between">
           {/* Thanh tìm kiếm */}
