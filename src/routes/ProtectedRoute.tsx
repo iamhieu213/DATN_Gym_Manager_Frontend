@@ -25,6 +25,17 @@ export function decodeJwt(token: string) {
   }
 }
 
+import Swal from 'sweetalert2';
+
+const swalDark = {
+  background: '#09090b',
+  color: '#fafafa',
+  confirmButtonColor: '#c3f400',
+  customClass: {
+    confirmButton: 'text-black font-bold'
+  }
+};
+
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const token = localStorage.getItem('accessToken');
 
@@ -35,17 +46,39 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
   const payload = decodeJwt(token);
 
-  // 2. Kiểm tra token hết hạn
-  if (!payload || (payload.exp && payload.exp * 1000 < Date.now())) {
+  // 2. Kiểm tra token
+  if (!payload) {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
     return <Navigate to="/login" replace />;
+  }
+
+  // Nếu access token hết hạn, chỉ redirect khi KHÔNG có refresh token
+  if (payload.exp && payload.exp * 1000 < Date.now()) {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      Swal.fire({
+        title: 'Hết phiên đăng nhập!',
+        text: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+        icon: 'warning',
+        confirmButtonText: 'Đăng nhập lại',
+        ...swalDark
+      });
+      return <Navigate to="/login" replace />;
+    }
   }
 
   // 3. Kiểm tra phân quyền
   if (!allowedRoles.includes(payload.role)) {
-    alert('Tài khoản của bạn không có quyền truy cập vào khu vực này!');
+    Swal.fire({
+      title: 'Không có quyền truy cập!',
+      text: 'Tài khoản của bạn không có quyền truy cập vào khu vực này!',
+      icon: 'error',
+      confirmButtonText: 'Quay lại',
+      ...swalDark
+    });
     return <Navigate to="/" replace />;
   }
 
