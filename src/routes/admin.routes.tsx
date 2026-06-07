@@ -5,7 +5,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 // Load lazy layout admin và trang dashboard
 const AdminLayout = lazy(() => import('../components/AdminLayout'));
 const DashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'));
-
+const AdminEquipmentPage = lazy(() => import('../pages/admin/AdminEquipmentPage'));
 export const adminRoutes = (
   <Route
     path="/dashboard"
@@ -25,7 +25,7 @@ export const adminRoutes = (
     <Route path="bookings" element={<div className="p-8 text-white">Tính năng quản lý Lịch đặt chỗ đang phát triển...</div>} />
     <Route path="payments" element={<div className="p-8 text-white">Tính năng quản lý Thanh toán đang phát triển...</div>} />
     <Route path="reports" element={<div className="p-8 text-white">Tính năng quản lý Báo cáo đang phát triển...</div>} />
-    <Route path="equipment" element={<div className="p-8 text-white">Tính năng quản lý Trang thiết bị đang phát triển...</div>} />
+    <Route path="equipment" element={<AdminEquipmentPage />} />
     <Route path="maintenance" element={<div className="p-8 text-white">Tính năng quản lý Bảo trì đang phát triển...</div>} />
   </Route>
 );
