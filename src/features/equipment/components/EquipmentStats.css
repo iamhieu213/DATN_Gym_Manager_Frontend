@@ -1,0 +1,98 @@
+/* d:/DATN/GYM-Frontend/src/features/equipment/components/EquipmentStats.css */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stats-card {
+  background-color: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px; /* min-h-35 equivalent */
+  transition: transform 0.3s, border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.stats-card:hover {
+  transform: translateY(-4px);
+}
+
+.stats-card.border-l-active {
+  border-left: 2px solid #c3f400;
+}
+
+.stats-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.stats-value-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.stats-val {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+}
+
+.stats-val.color-active {
+  color: #c3f400;
+}
+
+.stats-val.color-warning {
+  color: #fbbf24; /* amber-400 */
+}
+
+.stats-val.color-danger {
+  color: #ef4444; /* red-500 */
+}
+
+.status-text {
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 600;
+}
+
+.status-text.color-active {
+  color: #c3f400;
+  font-weight: 700;
+}
+
+.status-text.color-gray {
+  color: #71717a;
+}
+
+.status-text.color-warning {
+  color: #fbbf24;
+}
+
+.status-text.color-danger {
+  color: #ef4444;
+  font-weight: 700;
+}

@@ -10,6 +10,7 @@ import {
   Trash2
 } from 'lucide-react';
 import type { EquipmentItem, EquipmentStatus } from '../types';
+import './EquipmentTable.css';
 
 interface EquipmentTableProps {
   equipments: EquipmentItem[];
@@ -76,33 +77,33 @@ export default function EquipmentTable({
   };
 
   return (
-    <div className="xl:col-span-2 space-y-6">
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+    <div className="table-section">
+      <div className="actions-row">
         {/* Bulk Action Bar */}
         {selectedIds.length > 0 ? (
-          <div className="flex flex-wrap items-center gap-2 bg-[#c3f400]/5 border border-[#c3f400]/20 rounded-lg px-3 py-1.5 text-xs text-white animate-fade-in">
-            <span className="font-bold text-[#c3f400] mr-1">Đã chọn {selectedIds.length} máy:</span>
+          <div className="bulk-action-bar">
+            <span className="bulk-badge">Đã chọn {selectedIds.length} máy:</span>
             <button
               onClick={() => onBulkUpdateStatus('OPERATIONAL')}
-              className="px-2 py-1 bg-white/5 hover:bg-white/10 rounded font-bold cursor-pointer transition-all text-[10px]"
+              className="btn-bulk"
             >
               Hoạt động
             </button>
             <button
               onClick={() => onBulkUpdateStatus('UNDER_MAINTENANCE')}
-              className="px-2 py-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 rounded font-bold cursor-pointer transition-all text-[10px]"
+              className="btn-bulk-warning"
             >
               Bảo trì
             </button>
             <button
               onClick={() => onBulkUpdateStatus('OUT_OF_SERVICE')}
-              className="px-2 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded font-bold cursor-pointer transition-all text-[10px]"
+              className="btn-bulk-danger"
             >
               Báo hỏng
             </button>
             <button
               onClick={onBulkDelete}
-              className="px-2.5 py-1 bg-red-600 text-white font-bold rounded hover:bg-red-500 cursor-pointer transition-all ml-2 text-[10px]"
+              className="btn-bulk-delete"
             >
               Xóa hết
             </button>
@@ -111,96 +112,96 @@ export default function EquipmentTable({
           <div />
         )}
 
-        <div className="relative w-full md:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#71717a] h-4 w-4" />
+        <div className="search-wrapper">
+          <Search className="search-icon" />
           <input
             type="text"
             placeholder="Tìm tên hoặc mã thiết bị..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-white/5 border border-white/5 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-[#71717a] focus:ring-1 focus:ring-[#c3f400] focus:border-[#c3f400] focus:outline-none"
+            className="search-input"
           />
         </div>
       </div>
 
       {/* Table Container */}
-      <div className="bg-white/1.5 border border-white/5 rounded-xl overflow-hidden shadow-2xl flex flex-col">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
+      <div className="table-container">
+        <div className="table-scroll-wrapper">
+          <table className="equipment-table">
             <thead>
-              <tr className="border-b border-white/5 bg-white/2">
-                <th className="px-6 py-4 w-12 text-center">
+              <tr className="table-header-row">
+                <th className="table-cell-check">
                   <input
                     type="checkbox"
                     checked={isAllSelectedOnPage}
                     onChange={handleSelectAll}
-                    className="rounded border-white/10 bg-white/5 text-[#c3f400] focus:ring-0 cursor-pointer"
+                    className="table-checkbox"
                   />
                 </th>
-                <th className="px-6 py-4 text-[10px] font-bold text-[#71717a] uppercase tracking-widest">
+                <th className="table-cell-header">
                   Tên thiết bị / Vị trí
                 </th>
-                <th className="px-6 py-4 text-[10px] font-bold text-[#71717a] uppercase tracking-widest">
+                <th className="table-cell-header">
                   Trạng thái
                 </th>
-                <th className="px-6 py-4 text-[10px] font-bold text-[#71717a] uppercase tracking-widest">
+                <th className="table-cell-header">
                   Mã thiết bị
                 </th>
                 <th className="px-6 py-4"></th>
               </tr>
             </thead>
-            <tbody className="text-sm divide-y divide-white/5">
+            <tbody className="table-body">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-[#71717a] text-sm">
+                  <td colSpan={5} style={{ padding: '48px 24px', textAlign: 'center', color: '#71717a', fontSize: '0.875rem' }}>
                     Đang tải danh sách trang thiết bị...
                   </td>
                 </tr>
               ) : currentItems.length > 0 ? (
                 currentItems.map(item => (
-                  <tr key={item.id} className="hover:bg-white/2 transition-colors group">
-                    <td className="px-6 py-4 text-center">
+                  <tr key={item.id} className="table-row">
+                    <td className="table-cell-check">
                       <input
                         type="checkbox"
                         checked={selectedIds.includes(item.id)}
                         onChange={e => handleSelectItem(item.id, e.target.checked)}
-                        className="rounded border-white/10 bg-white/5 text-[#c3f400] focus:ring-0 cursor-pointer"
+                        className="table-checkbox"
                       />
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="table-cell-content">
                       <div>
-                        <div className="font-bold text-white group-hover:text-[#c3f400] transition-colors">
+                        <div className="item-name">
                           {item.name}
                         </div>
-                        <div className="text-[10px] text-[#71717a] mt-0.5">
+                        <div className="item-details">
                           Vị trí: {item.location} • Bảo dưỡng: {item.lastServiceDate}
                           {item.note && ` • Ghi chú: ${item.note}`}
                         </div>
                       </div>
                     </td>
 
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
+                    <td className="table-cell-content">
+                      <div className="status-badge-wrapper">
                         {item.status === 'OPERATIONAL' && (
                           <>
-                            <CheckCircle2 className="w-4 h-4 text-[#c3f400] fill-[#c3f400]/10" />
-                            <span className="text-[#c3f400] text-[10px] font-bold uppercase tracking-wider">
+                            <CheckCircle2 className="status-icon operational" size={16} />
+                            <span className="status-text operational">
                               Hoạt động
                             </span>
                           </>
                         )}
                         {item.status === 'UNDER_MAINTENANCE' && (
                           <>
-                            <Wrench className="w-4 h-4 text-amber-400 fill-amber-400/10" />
-                            <span className="text-amber-400 text-[10px] font-bold uppercase tracking-wider">
+                            <Wrench className="status-icon maintenance" size={16} />
+                            <span className="status-text maintenance">
                               Bảo trì
                             </span>
                           </>
                         )}
                         {item.status === 'OUT_OF_SERVICE' && (
                           <>
-                            <XCircle className="w-4 h-4 text-red-500 fill-red-500/10" />
-                            <span className="text-red-500 text-[10px] font-bold uppercase tracking-wider">
+                            <XCircle className="status-icon broken" size={16} />
+                            <span className="status-text broken">
                               Hỏng
                             </span>
                           </>
@@ -208,20 +209,20 @@ export default function EquipmentTable({
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 font-mono text-xs text-[#71717a]">{item.code}</td>
+                    <td className="table-cell-code">{item.code}</td>
 
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end gap-1.5">
+                    <td className="table-cell-content">
+                      <div className="row-actions">
                         <button
                           onClick={() => onEdit(item)}
-                          className="p-1.5 text-blue-400 hover:text-blue-300 rounded hover:bg-blue-500/10 cursor-pointer transition-all"
+                          className="btn-row-action edit"
                           title="Sửa thiết bị"
                         >
                           <Edit size={14} />
                         </button>
                         <button
                           onClick={() => onDelete(item.id)}
-                          className="p-1.5 text-red-400 hover:text-red-300 rounded hover:bg-red-500/10 cursor-pointer transition-all"
+                          className="btn-row-action delete"
                           title="Xóa thiết bị"
                         >
                           <Trash2 size={14} />
@@ -232,7 +233,7 @@ export default function EquipmentTable({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-[#71717a] text-sm">
+                  <td colSpan={5} style={{ padding: '48px 24px', textAlign: 'center', color: '#71717a', fontSize: '0.875rem' }}>
                     Không tìm thấy thiết bị nào khớp với từ khóa tìm kiếm.
                   </td>
                 </tr>
@@ -242,27 +243,27 @@ export default function EquipmentTable({
         </div>
 
         {/* Pagination Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-white/5 bg-white/1">
-          <div className="text-xs text-[#71717a]">
+        <div className="pagination-bar">
+          <div className="pagination-info">
             Hiển thị{' '}
-            <span className="font-semibold text-white">
+            <span>
               {filteredEquipments.length === 0 ? 0 : indexOfFirstItem + 1}
             </span>{' '}
             -{' '}
-            <span className="font-semibold text-white">
+            <span>
               {Math.min(indexOfLastItem, filteredEquipments.length)}
             </span>{' '}
-            trong số <span className="font-semibold text-white">{filteredEquipments.length}</span>{' '}
+            trong số <span>{filteredEquipments.length}</span>{' '}
             thiết bị
           </div>
 
           {totalPages > 1 && (
-            <div className="flex items-center gap-1">
+            <div className="pagination-controls">
               <button
                 type="button"
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="p-1.5 rounded-lg border border-white/5 bg-white/2 text-[#71717a] hover:text-white hover:bg-white/5 disabled:opacity-30 disabled:hover:text-[#71717a] disabled:hover:bg-transparent cursor-pointer transition-all"
+                className="btn-pagination-arrow"
               >
                 <ChevronLeft size={14} />
               </button>
@@ -274,11 +275,7 @@ export default function EquipmentTable({
                     key={pageNum}
                     type="button"
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`w-7 h-7 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      currentPage === pageNum
-                        ? 'bg-[#c3f400] text-black shadow-[0_0_10px_rgba(195,244,0,0.35)]'
-                        : 'border border-white/5 bg-white/2 text-[#71717a] hover:text-white hover:bg-white/5'
-                    }`}
+                    className={`btn-page-number ${currentPage === pageNum ? 'active' : ''}`}
                   >
                     {pageNum}
                   </button>
@@ -289,7 +286,7 @@ export default function EquipmentTable({
                 type="button"
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages || totalPages === 0}
-                className="p-1.5 rounded-lg border border-white/5 bg-white/2 text-[#71717a] hover:text-white hover:bg-white/5 disabled:opacity-30 disabled:hover:text-[#71717a] disabled:hover:bg-transparent cursor-pointer transition-all"
+                className="btn-pagination-arrow"
               >
                 <ChevronRight size={14} />
               </button>
