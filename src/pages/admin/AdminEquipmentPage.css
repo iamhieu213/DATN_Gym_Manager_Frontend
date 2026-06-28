@@ -1,0 +1,150 @@
+/* d:/DATN/GYM-Frontend/src/pages/admin/AdminEquipmentPage.css */
+
+.equipment-page-container {
+  padding: 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.equipment-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .equipment-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.equipment-title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.equipment-title-icon {
+  color: #c3f400;
+  height: 32px;
+  width: 32px;
+}
+
+.equipment-subtitle {
+  color: #71717a;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.equipment-header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-action-outline {
+  padding: 10px 16px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action-outline:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-action-outline:active {
+  transform: scale(0.95);
+}
+
+.btn-action-warning {
+  padding: 10px 16px;
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action-warning:hover {
+  background-color: rgba(245, 158, 11, 0.2);
+}
+
+.btn-action-warning:active {
+  transform: scale(0.95);
+}
+
+.btn-action-primary {
+  padding: 10px 20px;
+  background-color: #c3f400;
+  color: #000;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-action-primary:active {
+  transform: scale(0.95);
+}
+
+.equipment-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (min-width: 1280px) {
+  .equipment-layout-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* GLOW */
+.glow-bottom-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: -10;
+  width: 600px;
+  height: 400px;
+  background-color: rgba(195, 244, 0, 0.03);
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}

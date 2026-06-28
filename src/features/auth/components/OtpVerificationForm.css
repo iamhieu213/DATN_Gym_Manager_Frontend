@@ -1,0 +1,274 @@
+/* d:/DATN/GYM-Frontend/src/features/auth/components/OtpVerificationForm.css */
+
+.otp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  min-height: 100vh;
+  overflow-y: auto;
+  background-color: #131313;
+  color: #e5e2e1;
+}
+
+.otp-bg-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.otp-bg-img {
+  height: 100%;
+  width: 100%;
+  transform: scale(1.1);
+  object-fit: cover;
+  filter: brightness(0.2) blur(4px);
+}
+
+.otp-bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(19,19,19,0.9), #131313);
+}
+
+.otp-main {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .otp-main {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+.otp-logo-container {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.otp-logo-text {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  color: #abd600;
+  text-transform: uppercase;
+}
+
+.otp-panel {
+  display: flex;
+  width: 100%;
+  max-width: 480px; /* max-w-120 */
+  flex-direction: column;
+  align-items: center;
+  border-radius: 32px; /* rounded-4xl */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.03);
+  padding: 32px;
+  backdrop-filter: blur(40px);
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .otp-panel {
+    padding: 48px;
+  }
+}
+
+.otp-icon-wrapper {
+  margin-bottom: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(171, 214, 0, 0.2);
+  background-color: rgba(171, 214, 0, 0.1);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.otp-icon {
+  height: 40px;
+  width: 40px;
+  color: #abd600;
+}
+
+.otp-header-text {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.otp-title {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 900;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .otp-title {
+    font-size: 2.25rem; /* text-4xl */
+  }
+}
+
+.otp-desc {
+  margin: 0 auto;
+  max-width: 320px;
+  color: #c4c9ac;
+  line-height: 1.5;
+}
+
+.otp-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.otp-inputs-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .otp-inputs-row {
+    gap: 12px;
+  }
+}
+
+.otp-input-field {
+  aspect-ratio: 1/1;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  text-align: center;
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700;
+  color: #abd600;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .otp-input-field {
+    height: 64px;
+    width: 56px;
+  }
+}
+
+.otp-input-field:focus {
+  transform: scale(1.05);
+  border-color: #abd600;
+  background-color: rgba(171, 214, 0, 0.05);
+}
+
+.btn-otp-submit {
+  width: 100%;
+  border-radius: 9999px;
+  background-color: #c3f400;
+  padding: 20px 0;
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 40px -10px rgba(171, 214, 0, 0.5);
+  transition: all 0.2s;
+}
+
+.btn-otp-submit:hover {
+  transform: scale(1.02);
+}
+
+.btn-otp-submit:active {
+  transform: scale(0.95);
+}
+
+.btn-otp-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.otp-footer-actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-otp-resend {
+  background: none;
+  border: none;
+  font-family: monospace;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.btn-otp-resend.disabled {
+  color: rgba(171, 214, 0, 0.5);
+  cursor: not-allowed;
+}
+
+.btn-otp-resend.active {
+  color: #abd600;
+  cursor: pointer;
+}
+
+.btn-otp-resend.active:hover {
+  filter: brightness(1.25);
+}
+
+.btn-otp-back {
+  background: none;
+  border: none;
+  font-family: monospace;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  color: #c4c9ac;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.2);
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-otp-back:hover {
+  color: #fff;
+}
+
+.otp-protocol {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  opacity: 0.3;
+}
+
+.protocol-line {
+  height: 1px;
+  width: 48px;
+  background-color: #fff;
+}
+
+.protocol-text {
+  font-family: monospace;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: #fff;
+}

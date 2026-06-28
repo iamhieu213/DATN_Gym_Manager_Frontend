@@ -2,16 +2,17 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
+import './App.css';
 
 // Load lazy trang Landing chính
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 // Giao diện loading đơn giản khi tải các trang lazy
 const PageLoader = () => (
-  <div className="fixed inset-0 flex items-center justify-center bg-[#131313] text-[#c3f400] font-mono text-lg z-9999">
-    <div className="flex flex-col items-center gap-4">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c3f400]/20 border-t-[#c3f400]" />
-      <span className="tracking-widest uppercase text-xs">ĐANG TẢI DỮ LIỆU...</span>
+  <div className="page-loader">
+    <div className="loader-content">
+      <div className="loader-spinner" />
+      <span className="loader-text">ĐANG TẢI DỮ LIỆU...</span>
     </div>
   </div>
 );

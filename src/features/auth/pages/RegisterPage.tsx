@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
 import { registerUser } from '../services/authApi';
-
 import Swal from 'sweetalert2';
+import './RegisterPage.css';
 
 type RegisterPageProps = {};
 
@@ -88,110 +88,145 @@ function RegisterPage({ }: RegisterPageProps) {
     }
 
     return (
-        <div className="login-overlay fixed inset-0 isolate z-100 flex min-h-screen flex-col overflow-y-auto bg-[#131313] text-[#e5e2e1]">
-            <div className="fixed inset-0 z-0 overflow-hidden">
+        <div className="register-overlay">
+            <div className="register-bg-container">
                 <img
                     ref={bgRef}
-                    className="h-full w-full object-cover opacity-55 grayscale brightness-75 blur-[1px]"
+                    className="register-bg-img"
                     src={heroImage}
                     alt="Nền phòng gym cao cấp"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-[#131313]/90 via-[#131313]/35 to-[#131313]/80" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.2),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.14),transparent_42%)]" />
+                <div className="register-bg-gradient" />
+                <div className="register-bg-radial" />
                 <div ref={spotlightRef} className="mouse-spotlight" />
             </div>
 
-            <nav className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between border-b border-white/10 bg-[#131313]/10 px-5 py-4 backdrop-blur-xl md:px-16">
-                <div className="text-xl font-black tracking-tight text-white md:text-2xl">
+            <nav className="register-nav">
+                <div className="register-logo">
                     KINETIC NOIR
                 </div>
 
                 <button
                     type="button"
                     onClick={() => navigate('/')}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-[#c3f400] hover:text-[#c3f400]"
+                    className="btn-close"
                     aria-label="Đóng đăng ký"
                 >
                     X
                 </button>
             </nav>
 
-            <main className="relative z-10 flex flex-1 items-center justify-center px-5 py-12">
-                <section className="login-panel w-full max-w-lg rounded-2xl border border-white/10 bg-white/3 p-8 shadow-2xl shadow-black/50 backdrop-blur-2xl md:p-10">
-                    <div className="mb-10 text-center">
-                        <span className="mb-2 block font-mono text-sm uppercase tracking-widest text-[#c3f400]">
+            <main className="register-main">
+                <section className="register-panel">
+                    <div className="register-panel-header">
+                        <span className="register-tagline">
                             Nâng cấp hành trình tập luyện
                         </span>
-                        <h1 className="mb-4 text-3xl font-black tracking-tight text-white md:text-4xl">
+                        <h1 className="register-title">
                             BẮT ĐẦU NGAY
                         </h1>
-                        <p className="text-[#c8c6c5]">
+                        <p className="register-desc">
                             Tham gia cộng đồng KINETIC NOIR dành cho những người theo đuổi hiệu suất đỉnh cao.
                         </p>
                     </div>
 
-                    <form className="space-y-6" onSubmit={handleSubmit}>
+                    <form className="register-form" onSubmit={handleSubmit}>
                         <div>
-                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
+                            <label className="register-input-label" htmlFor="reg-name">
                                 Họ và tên
                             </label>
-                            <input id="reg-name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Nguyễn Văn A"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
+                            <input
+                                id="reg-name"
+                                type="text"
+                                required
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Nguyễn Văn A"
+                                className="register-input"
+                            />
                         </div>
                         <div>
-                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
+                            <label className="register-input-label" htmlFor="reg-email">
                                 Email
                             </label>
-                            <input id="reg-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@example.com"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
+                            <input
+                                id="reg-email"
+                                type="email"
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="email@example.com"
+                                className="register-input"
+                            />
                         </div>
 
                         <div>
-                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
+                            <label className="register-input-label" htmlFor="reg-phone">
                                 Số điện thoại
                             </label>
-                            <input id="reg-phone" type="phone" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="09xxxxxxxx"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
+                            <input
+                                id="reg-phone"
+                                type="text"
+                                required
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder="09xxxxxxxx"
+                                className="register-input"
+                            />
                         </div>
 
                         <div>
-                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
+                            <label className="register-input-label" htmlFor="reg-dob">
                                 Ngày sinh
                             </label>
-                            <input id="reg-dob" type="date" required value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} placeholder="dd/mm/yyyy"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
+                            <input
+                                id="reg-dob"
+                                type="date"
+                                required
+                                value={dateOfBirth}
+                                onChange={(e) => setDateOfBirth(e.target.value)}
+                                placeholder="dd/mm/yyyy"
+                                className="register-input"
+                            />
                         </div>
 
                         <div>
-                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]">
+                            <label className="register-input-label" htmlFor="reg-password">
                                 Mật khẩu
                             </label>
-                            <input id="reg-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
-                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all focus:border-[#c3f400]" />
+                            <input
+                                id="reg-password"
+                                type="password"
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                className="register-input"
+                            />
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="login-primary-button w-full rounded-lg bg-[#c3f400] py-5 text-xl font-black uppercase text-[#283500] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="btn-register-submit"
                         >
                             {loading ? 'Đang gửi thông tin...' : 'Tạo tài khoản'}
                         </button>
 
-                        <div className="relative flex items-center py-2">
-                            <div className="grow border-t border-white/10" />
-                            <span className="mx-4 shrink font-mono text-sm uppercase text-[#c8c6c5]">
+                        <div className="divider-row">
+                            <div className="divider-line" />
+                            <span className="divider-text">
                                 Hoặc đăng ký với
                             </span>
-                            <div className="grow border-t border-white/10" />
+                            <div className="divider-line" />
                         </div>
 
                         <button
                             type="button"
                             onClick={handleGoogleRegister}
-                            className="flex w-full items-center justify-center rounded-lg border border-white/10 bg-white/3 py-4 font-mono text-sm text-white transition-all hover:bg-white/10 active:scale-[0.98]"
+                            className="btn-google"
                         >
-                            <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
                                 <path
                                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                                     fill="#4285F4"
@@ -213,12 +248,12 @@ function RegisterPage({ }: RegisterPageProps) {
                         </button>
                     </form>
 
-                    <p className="mt-8 text-center text-[#b7b5b4]">
+                    <p className="login-redirect">
                         Đã có tài khoản?
                         <button
                             type="button"
                             onClick={switchToLogin}
-                            className="ml-1 font-bold text-[#c3f400] hover:underline"
+                            className="btn-login-link"
                         >
                             Đăng nhập tại đây
                         </button>
