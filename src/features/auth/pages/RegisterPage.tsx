@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
 import { registerUser } from '../services/authApi';
 import Swal from 'sweetalert2';
+import { Eye, EyeOff } from 'lucide-react';
 import './RegisterPage.css';
 
 type RegisterPageProps = {};
@@ -19,6 +20,7 @@ function RegisterPage({ }: RegisterPageProps) {
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -190,19 +192,27 @@ function RegisterPage({ }: RegisterPageProps) {
                             />
                         </div>
 
-                        <div>
+                        <div style={{ position: 'relative' }}>
                             <label className="register-input-label" htmlFor="reg-password">
                                 Mật khẩu
                             </label>
                             <input
                                 id="reg-password"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="register-input"
+                                className="register-input register-input-password"
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="btn-toggle-password"
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
                         </div>
 
                         <button

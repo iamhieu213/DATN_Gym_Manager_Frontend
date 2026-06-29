@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
 import { resetPassword } from '../services/authApi';
-import { KeyRound, ShieldCheck, RefreshCw, ArrowLeft } from 'lucide-react';
+import { KeyRound, ShieldCheck, RefreshCw, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import './ResetPasswordPage.css';
 
 type ResetPasswordPageProps = {};
@@ -15,6 +15,8 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // 1. Hiệu ứng di chuyển ảnh nền (Parallax) theo chuột
   useEffect(() => {
@@ -177,14 +179,22 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
               <div className="reset-input-wrapper">
                 <KeyRound className="reset-input-icon" />
                 <input
-                  className="reset-input-field"
+                  className="reset-input-field reset-input-field-password"
                   id="new_password"
                   name="new_password"
                   placeholder="••••••••"
-                  type="password"
+                  type={showNewPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="btn-toggle-password"
+                  tabIndex={-1}
+                >
+                  {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
             </div>
 
@@ -199,14 +209,22 @@ function ResetPasswordPage({}: ResetPasswordPageProps) {
               <div className="reset-input-wrapper">
                 <ShieldCheck className="reset-input-icon" />
                 <input
-                  className="reset-input-field"
+                  className="reset-input-field reset-input-field-password"
                   id="confirm_password"
                   name="confirm_password"
                   placeholder="••••••••"
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="btn-toggle-password"
+                  tabIndex={-1}
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
             </div>
 

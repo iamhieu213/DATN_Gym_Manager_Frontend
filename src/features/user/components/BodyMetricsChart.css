@@ -1,0 +1,105 @@
+/* d:/DATN/GYM-Frontend/src/features/user/components/BodyMetricsChart.css */
+
+.chart-card-metrics {
+  background-color: rgba(255, 255, 255, 0.015);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  border-radius: 12px;
+  height: 585px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.chart-title-header {
+  font-family: system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  color: #fff;
+}
+
+.chart-subtitle-desc {
+  font-size: 13px;
+  color: #71717a;
+  margin: 2px 0 24px 0;
+}
+
+.chart-svg-box {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-left: 16px;
+  margin-bottom: 28px;
+}
+
+.svg-element {
+  width: 100%;
+  height: 100%;
+}
+
+.svg-label-timeline {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #71717a;
+}
+
+.chart-metrics-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 0;
+  padding-top: 8px;
+  border-top: none;
+}
+
+.metric-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.legend-dot-lime {
+  width: 8px;
+  height: 8px;
+  background-color: #c3f400;
+  border-radius: 50%;
+}
+
+.legend-dot-white {
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.metric-legend-text {
+  font-size: 10px;
+  font-weight: 700;
+  color: #71717a;
+  text-transform: uppercase;
+}
+
+.metric-number {
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0;
+  color: #fff;
+}
+
+.metric-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: #71717a;
+}
