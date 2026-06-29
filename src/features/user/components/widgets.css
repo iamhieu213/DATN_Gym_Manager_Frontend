@@ -1,0 +1,480 @@
+/* src/features/user/components/widgets.css */
+
+/* 1. PAYMENT ALERT */
+.payment-alert {
+  background-color: #93000a; /* error-container */
+  color: #ffdad6; /* on-error-container */
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid rgba(255, 180, 171, 0.2);
+}
+
+@media (min-width: 640px) {
+  .payment-alert {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+.alert-message-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .alert-message-box {
+    text-align: left;
+  }
+}
+
+.alert-icon {
+  font-size: 30px;
+}
+
+.alert-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
+
+.alert-desc {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 2px 0 0 0;
+}
+
+.btn-alert-pay {
+  white-space: nowrap;
+  padding: 8px 24px;
+  background-color: #ffdad6;
+  color: #93000a;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-alert-pay:hover {
+  opacity: 0.9;
+}
+
+/* 2. MEMBERSHIP WIDGET */
+.membership-card {
+  background-color: #201f1f;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #444932;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.widget-tagline {
+  color: #c5c9ac;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 4px 0;
+}
+
+.widget-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #caf300;
+  margin: 0;
+}
+
+.widget-icon-lime {
+  color: #caf300;
+  font-size: 40px !important;
+}
+
+.progress-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.progress-value {
+  color: #e5e2e1;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.progress-sub {
+  color: #c5c9ac;
+  font-size: 14px;
+}
+
+.progress-track {
+  width: 100%;
+  background-color: #353534;
+  height: 12px;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background-color: #caf300;
+  height: 100%;
+  box-shadow: 0 0 10px rgba(176, 213, 0, 0.4);
+}
+
+/* 3. PT WIDGET */
+.pt-card {
+  background-color: #201f1f;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #444932;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+.pt-coach-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.coach-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #caf300;
+  object-fit: cover;
+}
+
+.coach-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #e5e2e1;
+  margin: 0;
+}
+
+.session-box {
+  background-color: #2a2a2a;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.session-label {
+  font-size: 14px;
+  color: #c5c9ac;
+  font-weight: 600;
+}
+
+.session-count {
+  font-size: 24px;
+  font-weight: 900;
+  color: #caf300;
+}
+
+.pt-card-time {
+  font-size: 10px;
+  color: #c5c9ac;
+  text-align: right;
+  margin: 8px 0 0 0;
+}
+
+/* 4. ATTENDANCE CHART */
+.chart-card-attendance {
+  background-color: #201f1f;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #444932;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.chart-title-box h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.chart-title-box p {
+  font-size: 14px;
+  color: #c5c9ac;
+  margin: 2px 0 0 0;
+}
+
+.chart-tabs-btn {
+  display: flex;
+  gap: 4px;
+  background-color: #2a2a2a;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.tab-btn {
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  background: none;
+  color: #c5c9ac;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.tab-btn.active {
+  background-color: #caf300;
+  color: #171e00;
+}
+
+.bar-chart-plot {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.bar-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-pill {
+  width: 100%;
+  background-color: rgba(202, 243, 0, 0.2);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.bar-pill-hover-tooltip {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #353534;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.bar-pill:hover .bar-pill-hover-tooltip {
+  opacity: 1;
+}
+
+.bar-pill.filled {
+  background-color: #caf300;
+}
+
+.bar-pill.filled:hover {
+  filter: brightness(1.1);
+}
+
+.bar-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #c5c9ac;
+  text-transform: uppercase;
+}
+
+.bar-label.active {
+  color: #caf300;
+  font-weight: 700;
+}
+
+/* 5. BODY METRICS CHART */
+.chart-card-metrics {
+  background-color: #201f1f;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #444932;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-svg-box {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(143, 147, 120, 0.3);
+  border-bottom: 1px solid rgba(143, 147, 120, 0.3);
+  margin-left: 16px;
+  margin-bottom: 16px;
+}
+
+.svg-label-timeline {
+  position: absolute;
+  bottom: -24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+  color: #c5c9ac;
+}
+
+.chart-metrics-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #444932;
+}
+
+.metric-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.legend-dot-lime {
+  width: 8px;
+  height: 8px;
+  background-color: #caf300;
+  border-radius: 50%;
+}
+
+.legend-dot-white {
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.metric-legend-text {
+  font-size: 10px;
+  font-weight: 600;
+  color: #c5c9ac;
+  text-transform: uppercase;
+}
+
+.metric-number {
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0;
+}
+
+.metric-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: #c5c9ac;
+}
+
+/* 6. QUICK ACTIONS */
+.quick-actions-section {
+  margin-top: 16px;
+}
+
+.quick-actions-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #c5c9ac;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .quick-actions-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.btn-quick-action {
+  padding: 20px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-quick-action.primary {
+  background-color: #caf300;
+  color: #171e00;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.btn-quick-action.primary:hover {
+  transform: scale(1.02);
+}
+
+.btn-quick-action.secondary {
+  background-color: #2a2a2a;
+  color: #e5e2e1;
+  border: 1px solid #444932;
+}
+
+.btn-quick-action.secondary:hover {
+  background-color: #353534;
+}
+
+.btn-quick-action span {
+  transition: transform 0.2s;
+}
+
+.btn-quick-action:hover span {
+  transform: scale(1.2) rotate(8deg);
+}

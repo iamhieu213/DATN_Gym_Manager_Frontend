@@ -105,11 +105,11 @@ function AdminLayout() {
 
   // Tách biệt menu điều hướng
   const menuItems = [
-    { path: '/dashboard', label: 'Bảng điều khiển', icon: LayoutDashboard, section: 'Tổng Quan' },
-    { path: '/dashboard/members', label: 'Hội viên', icon: Users, section: 'Tổng Quan' },
-    { path: '/dashboard/pts', label: 'Huấn luyện viên', icon: Dumbbell, section: 'Tổng Quan' },
+    { path: '/admin', label: 'Bảng điều khiển', icon: LayoutDashboard, section: 'Tổng Quan' },
+    { path: '/admin/members', label: 'Hội viên', icon: Users, section: 'Tổng Quan' },
+    { path: '/admin/pts', label: 'Huấn luyện viên', icon: Dumbbell, section: 'Tổng Quan' },
 
-    { path: '/dashboard/staff', label: 'Nhân sự', icon: UserCheck, section: 'Vận Hành' },
+    { path: '/admin/staff', label: 'Nhân sự', icon: UserCheck, section: 'Vận Hành' },
     { path: '/dashboard/packages', label: 'Gói tập', icon: Package, section: 'Vận Hành' },
     { path: '/dashboard/bookings', label: 'Lịch đặt chỗ', icon: Calendar, section: 'Vận Hành' },
     { path: '/dashboard/payments', label: 'Thanh toán', icon: CreditCard, section: 'Vận Hành' },

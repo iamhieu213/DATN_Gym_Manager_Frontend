@@ -1,0 +1,74 @@
+/* d:/DATN/GYM-Frontend/src/features/user/components/QuickActions.css */
+
+.quick-actions-section {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.quick-actions-title {
+  font-family: system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .quick-actions-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.btn-quick-action {
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: system-ui, sans-serif;
+}
+
+.btn-quick-action.primary {
+  background-color: #c3f400;
+  color: #000;
+  box-shadow: 0 4px 20px rgba(195, 244, 0, 0.2);
+}
+
+.btn-quick-action.primary:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+.btn-quick-action.secondary {
+  background-color: rgba(255, 255, 255, 0.015);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-quick-action.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-quick-action svg {
+  transition: transform 0.2s;
+}
+
+.btn-quick-action:hover svg {
+  transform: scale(1.1) rotate(8deg);
+}

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import heroImage from '../../../assets/kinetic-hero.png';
 import { loginUser } from '../services/authApi';
 import Swal from 'sweetalert2';
+import { Eye, EyeOff } from 'lucide-react';
 import './LoginPage.css';
 
 type LoginPageProps = {};
@@ -16,6 +17,7 @@ function LoginPage({ }: LoginPageProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // 2. Hiệu ứng di chuyển nền Parallax theo chuột
   useEffect(() => {
@@ -64,6 +66,7 @@ function LoginPage({ }: LoginPageProps) {
       // Lưu trữ tokens vào localStorage để dùng cho các yêu cầu sau
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);
+
 
       Swal.fire({
         icon: "success",
@@ -167,11 +170,11 @@ function LoginPage({ }: LoginPageProps) {
               <div className="login-input-group">
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder=" "
                   value={password} // <-- Gán state password
                   onChange={(event) => setPassword(event.target.value)} // <-- Cập nhật state
-                  className="login-input"
+                  className="login-input login-input-password"
                   required
                 />
                 <label
@@ -180,6 +183,14 @@ function LoginPage({ }: LoginPageProps) {
                 >
                   Mật khẩu
                 </label>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="btn-toggle-password"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
                 <div className="login-input-line" />
               </div>
 

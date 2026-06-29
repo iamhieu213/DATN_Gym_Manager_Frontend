@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
 import './App.css';
+import DashboardDispatcher from './components/DashboardDispatcher';
+import { userRoutes } from './routes/user.routes'; // Thêm dòng import này
 
 // Load lazy trang Landing chính
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -25,11 +27,14 @@ function App() {
           {/* 1. Trang chủ công khai */}
           <Route path="/" element={<LandingPage />} />
 
+          <Route path="/dashboard" element={<DashboardDispatcher />} />
+
           {/* 2. Nhóm Route Xác thực (Auth Module Routes) */}
           {authRoutes}
 
           {/* 3. Nhóm Route Quản lý Admin (Dashboard Layout & Routes) */}
           {adminRoutes}
+          {userRoutes} 
 
           {/* Tự động điều hướng về trang chủ nếu URL không khớp */}
           <Route path="*" element={<NotFoundPage />} />

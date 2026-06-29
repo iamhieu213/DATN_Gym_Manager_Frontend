@@ -1,0 +1,68 @@
+/* d:/DATN/GYM-Frontend/src/features/user/components/PaymentAlert.css */
+
+.payment-alert {
+  background-color: #93000a; /* error-container */
+  color: #ffdad6; /* on-error-container */
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid rgba(255, 180, 171, 0.2);
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .payment-alert {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+.alert-message-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .alert-message-box {
+    text-align: left;
+  }
+}
+
+.alert-icon {
+  font-size: 30px;
+}
+
+.alert-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
+
+.alert-desc {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 2px 0 0 0;
+  line-height: 1.4;
+}
+
+.btn-alert-pay {
+  white-space: nowrap;
+  padding: 8px 24px;
+  background-color: #ffdad6;
+  color: #93000a;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-alert-pay:hover {
+  opacity: 0.9;
+}

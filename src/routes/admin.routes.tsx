@@ -8,9 +8,9 @@ const DashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'));
 const AdminEquipmentPage = lazy(() => import('../pages/admin/AdminEquipmentPage'));
 export const adminRoutes = (
   <Route
-    path="/dashboard"
+    path="/admin"
     element={
-      <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+      <ProtectedRoute allowedRoles={['ADMIN']}>
         <AdminLayout />
       </ProtectedRoute>
     }
