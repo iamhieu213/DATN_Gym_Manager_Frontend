@@ -6,6 +6,8 @@ import { ProtectedRoute } from './ProtectedRoute';
 // Tải lazy Layout và Dashboard của User
 const UserLayout = lazy(() => import('../components/UserLayout'));
 const UserDashboardPage = lazy(() => import('../pages/user/UserDashboardPage'));
+const UserProfilePage = lazy(() => import('../pages/user/UserProfilePage'));
+const ChangePasswordPage = lazy(() => import('../pages/user/ChangePasswordPage'));
 
 export const userRoutes = (
   <Route
@@ -19,7 +21,10 @@ export const userRoutes = (
     {/* Trang chủ Dashboard của Hội viên */}
     <Route index element={<UserDashboardPage />} />
 
-    {/* Bạn có thể thêm các trang con khác của User tại đây sau này */}
-    {/* <Route path="profile" element={<div className="p-8 text-white">Trang thông tin cá nhân...</div>} /> */}
+    {/* Trang thông tin cá nhân */}
+    <Route path="profile" element={<UserProfilePage />} />
+
+    {/* Trang đổi mật khẩu */}
+    <Route path="change-password" element={<ChangePasswordPage />} />
   </Route>
 );
