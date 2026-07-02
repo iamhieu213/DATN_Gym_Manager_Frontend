@@ -54,3 +54,9 @@ export async function getMyProfile(): Promise<any> {
   const response = await apiClient.get<any>('/users/me');
   return response.data;
 }
+
+// 9. Đổi mật khẩu tài khoản
+export async function changePassword(payload: any): Promise<any> {
+  const response = await apiClient.post<any>('/auth/change-password', payload);
+  return response.data;
+}

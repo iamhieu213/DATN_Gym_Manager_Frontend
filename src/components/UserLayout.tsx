@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { getMyProfile } from '../features/auth/services/authApi';
 import './UserLayout.css';
 import {
   LayoutDashboard,
@@ -9,7 +10,6 @@ import {
   Users,
   Settings,
   ClipboardList,
-  HelpCircle,
   LogOut,
   Search,
   Bell,
@@ -24,6 +24,37 @@ export default function UserLayout() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [userProfile, setUserProfile] = useState<{
+    name: string;
+    email: string;
+    avatarUrl: string | null;
+  } | null>(null);
+
+  useEffect(() => {
+    getMyProfile()
+      .then((res: any) => {
+        if (res.success) {
+          setUserProfile(res.data);
+        }
+      })
+      .catch((err: any) => {
+        console.error("Lỗi khi tải thông tin cá nhân:", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Hàm xác định xem Link có đang được active hay không
   const isActive = (path: string) => location.pathname === path;
@@ -143,26 +174,7 @@ export default function UserLayout() {
               {!isCollapsed && <span className="nav-label">Kế Hoạch</span>}
             </Link>
           </div>
-        </nav>
-
-        <div className="user-profile-section">
-          <Link
-            to="/user/help"
-            className="nav-link"
-            title={isCollapsed ? "Hỗ Trợ" : undefined}
-          >
-            <HelpCircle size={18} className="shrink-0" />
-            {!isCollapsed && <span className="nav-label">Hỗ Trợ</span>}
-          </Link>
-          <button
-            className="nav-link logout-btn"
-            onClick={handleLogout}
-            title={isCollapsed ? "Đăng Xuất" : undefined}
-          >
-            <LogOut size={18} className="shrink-0" />
-            {!isCollapsed && <span className="nav-label">Đăng Xuất</span>}
-          </button>
-        </div>
+        </nav>  
       </aside>
 
       {/* 2. KHU VỰC NỘI DUNG CHÍNH */}
@@ -198,17 +210,59 @@ export default function UserLayout() {
             
             <div className="divider-vertical"></div>
 
-            {/* Avatar & Profile */}
-            <div className="header-profile">
-              <div className="profile-info">
-                <p className="profile-name">Alex Rivera</p>
-                <p className="profile-role">Thành Viên Pro</p>
+            {/* Avatar & Profile với Dropdown */}
+            <div ref={dropdownRef} className="header-profile-container">
+              <div 
+                className="header-profile"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                <div className="profile-info">
+                  <p className="profile-name">{userProfile?.name || 'Alex Rivera'}</p>
+                  <p className="profile-role">Thành Viên Pro</p>
+                </div>
+                <img
+                  src={userProfile?.avatarUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBxO4OlAjvwl5qEztoohbhVpG-tUQ-GjTMUUHxcmQ_wfYdM1f0vVhJrK38vDfnkhvPFXW_qzibllVHSWalEimchiYwyf2P1rCXuGsJXIgrNMieZJ_Vz_e0O50zreKchj5mP9rH3IgBnb789T1MkzF3XTFH0ZN-t2bY-NE6VCGekU7g1YB2MpAhf_osuxkO6TsmA6c3GI1KOfeNDQn8bSD2YKOPeOs46R4gUQyVPalAZSsnTVLOTsTOWoUFjw3o_5XyyQt3uC8ibOnk"}
+                  alt={userProfile?.name || "Alex Rivera"}
+                  className="profile-avatar"
+                />
               </div>
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxO4OlAjvwl5qEztoohbhVpG-tUQ-GjTMUUHxcmQ_wfYdM1f0vVhJrK38vDfnkhvPFXW_qzibllVHSWalEimchiYwyf2P1rCXuGsJXIgrNMieZJ_Vz_e0O50zreKchj5mP9rH3IgBnb789T1MkzF3XTFH0ZN-t2bY-NE6VCGekU7g1YB2MpAhf_osuxkO6TsmA6c3GI1KOfeNDQn8bSD2YKOPeOs46R4gUQyVPalAZSsnTVLOTsTOWoUFjw3o_5XyyQt3uC8ibOnk"
-                alt="Alex Rivera"
-                className="profile-avatar"
-              />
+
+              {isDropdownOpen && (
+                <div className="profile-dropdown-menu">
+                  <div className="dropdown-user-header">
+                    <p className="dropdown-name">{userProfile?.name || 'Alex Rivera'}</p>
+                    <p className="dropdown-email">{userProfile?.email || 'user@kinetic.com'}</p>
+                  </div>
+                  <div className="dropdown-divider" />
+                  <Link 
+                    to="/user/profile" 
+                    className="dropdown-item"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    <User size={16} />
+                    <span>Thông tin cá nhân</span>
+                  </Link>
+                  <Link 
+                    to="/user/change-password" 
+                    className="dropdown-item"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    <Settings size={16} />
+                    <span>Đổi mật khẩu</span>
+                  </Link>
+                  <div className="dropdown-divider" />
+                  <button 
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      handleLogout();
+                    }}
+                    className="dropdown-item logout-item"
+                  >
+                    <LogOut size={16} />
+                    <span>Đăng xuất</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>

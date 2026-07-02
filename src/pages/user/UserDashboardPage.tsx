@@ -6,18 +6,46 @@ import CheckInChart from '../../features/user/components/CheckInChart';
 import BodyMetricsChart from '../../features/user/components/BodyMetricsChart';
 import QuickActions from '../../features/user/components/QuickActions';
 import './UserDashboardPage.css';
+import { getMyProfile } from '../../features/auth/services/authApi';
 
 export default function UserDashboardPage() {
-  const [greeting, setGreeting] = useState('Chào Alex, hôm nay bạn tập gì?');
+  const [userName, setUserName] = useState<string>('');
 
+  // 1. Gọi API lấy thông tin người dùng đăng nhập khi component mount
   useEffect(() => {
+    getMyProfile()
+      .then((res: any) => {
+        if (res.success && res.data?.name) {
+          setUserName(res.data.name);
+        }
+      })
+      .catch((err: any) => {
+        console.error("Lỗi khi tải thông tin cá nhân:", err);
+      });
+  }, []);
+
+  const getGreeting = () => {
+    const name = userName || 'bạn'; // Fallback nếu chưa tải xong tên hoặc không có tên
     const hour = new Date().getHours();
     if (hour < 12) {
-      setGreeting('Chào buổi sáng Alex, tập luyện thôi?');
+      return `Chào buổi sáng ${name}, tập luyện thôi?`;
     } else if (hour > 18) {
-      setGreeting('Chào buổi tối Alex, kết thúc ngày thật mạnh nhé!');
+      return `Chào buổi tối ${name}, kết thúc ngày thật mạnh nhé!`;
     }
-  }, []);
+    return `Chào ${name}, hôm nay bạn tập gì?`;
+  };
+
+  const getFormattedDate = () => {
+    const days = ['CHỦ NHẬT', 'THỨ HAI', 'THỨ BA', 'THỨ TƯ', 'THỨ NĂM', 'THỨ SÁU', 'THỨ BẢY'];
+    const now = new Date();
+    
+    const dayName = days[now.getDay()];
+    const date = now.getDate();
+    const month = now.getMonth() + 1; // getMonth() bắt đầu từ 0
+    return `${dayName}, ${date} THÁNG ${month}`;
+  };
+
+
 
   return (
     <div className="dashboard-content-wrapper">
@@ -26,14 +54,9 @@ export default function UserDashboardPage() {
 
       {/* Chào hỏi */}
       <div className="dashboard-greeting-row">
-        <img
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxO4OlAjvwl5qEztoohbhVpG-tUQ-GjTMUUHxcmQ_wfYdM1f0vVhJrK38vDfnkhvPFXW_qzibllVHSWalEimchiYwyf2P1rCXuGsJXIgrNMieZJ_Vz_e0O50zreKchj5mP9rH3IgBnb789T1MkzF3XTFH0ZN-t2bY-NE6VCGekU7g1YB2MpAhf_osuxkO6TsmA6c3GI1KOfeNDQn8bSD2YKOPeOs46R4gUQyVPalAZSsnTVLOTsTOWoUFjw3o_5XyyQt3uC8ibOnk"
-          alt="Alex Rivera"
-          className="greeting-avatar"
-        />
         <div className="greeting-text">
-          <h1 className="welcome-text">{greeting}</h1>
-          <p className="welcome-date">THỨ HAI, 23 THÁNG 10</p>
+          <h1 className="welcome-text">{getGreeting()}</h1>
+          <p className="welcome-date">{getFormattedDate()}</p>
         </div>
       </div>
 
