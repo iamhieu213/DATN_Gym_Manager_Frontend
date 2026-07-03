@@ -8,11 +8,13 @@ const ForgotPasswordPage = lazy(() => import('../features/auth/pages/ForgotPassw
 const ResetPasswordPage = lazy(() => import('../features/auth/pages/ResetPasswordPage'));
 const VerifyRegisterPage = lazy(() => import('../features/auth/pages/VerifyRegisterPage'));
 const VerifyForgotPasswordPage = lazy(() => import('../features/auth/pages/VerifyForgotPasswordPage'));
+const OAuthSuccess = lazy(() => import('../features/auth/pages/OAuthSuccess'));
 
 export const authRoutes = (
   <>
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
+    <Route path="/oauth/success" element={<OAuthSuccess />} />
     <Route path="/verify-register" element={<VerifyRegisterPage />} />
     <Route path="/verify-forgot-password" element={<VerifyForgotPasswordPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
