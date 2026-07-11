@@ -4,7 +4,10 @@ import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
 import './App.css';
 import DashboardDispatcher from './components/DashboardDispatcher';
-import { userRoutes } from './routes/user.routes'; // Thêm dòng import này
+import { userRoutes } from './routes/user.routes'; 
+import { useEffect } from 'react';
+import { connectSocket, disconnectSocket } from './services/socket';
+import Swal from 'sweetalert2'; 
 
 // Load lazy trang Landing chính
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -20,6 +23,35 @@ const PageLoader = () => (
 );
 
 function App() {
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    if(token) {
+      //1. Ket noi toi server
+      const socket = connectSocket(token);
+
+      socket.on('new_notification', (data : any) => {
+        // Hiện thông báo dạng Toast (góc màn hình) nhanh 4 giây rồi tự ẩn
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'info',
+          title: data.title,
+          text: data.content,
+          showConfirmButton: false,
+          timer: 4000,
+          timerProgressBar: true,
+          background: '#1c1c1c',
+          color: '#fff',
+        })
+      })
+    }
+
+    return () => {
+      disconnectSocket(); // Ngắt kết nối khi component unmount
+    }
+  }, [])
   return (
     <BrowserRouter>
       <Suspense fallback={<PageLoader />}>
