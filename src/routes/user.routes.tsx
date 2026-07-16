@@ -5,9 +5,10 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 // Tải lazy Layout và Dashboard của User
 const UserLayout = lazy(() => import('../components/UserLayout'));
-const UserDashboardPage = lazy(() => import('../pages/user/UserDashboardPage'));
-const UserProfilePage = lazy(() => import('../pages/user/UserProfilePage'));
-const ChangePasswordPage = lazy(() => import('../pages/user/ChangePasswordPage'));
+const UserDashboardPage = lazy(() => import('../features/user/pages/UserDashboardPage'));
+const UserProfilePage = lazy(() => import('../features/user/pages/UserProfilePage'));
+const ChangePasswordPage = lazy(() => import('../features/user/pages/ChangePasswordPage'));
+const UserPlansPage = lazy(() => import('../features/user/pages/UserPlansPage'));
 
 export const userRoutes = (
   <Route
@@ -26,5 +27,8 @@ export const userRoutes = (
 
     {/* Trang đổi mật khẩu */}
     <Route path="change-password" element={<ChangePasswordPage />} />
+
+    {/* Trang kế hoạch & đăng ký gói dịch vụ */}
+    <Route path="plans" element={<UserPlansPage />} />
   </Route>
-);
+);
