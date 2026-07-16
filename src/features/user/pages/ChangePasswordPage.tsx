@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { KeyRound, ShieldAlert, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { changePassword } from '../../features/auth/services/authApi';
+import { changePassword } from '../../auth/services/authApi';
 import './ChangePasswordPage.css';
 
 export default function ChangePasswordPage() {

@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, type ChangeEvent } from 'react';
 import Swal from 'sweetalert2';
 import { Camera, Edit3, User, Activity, MapPin } from 'lucide-react';
-import { getMyProfile } from '../../features/auth/services/authApi';
+import { getMyProfile } from '../../auth/services/authApi';
 import {
   updateMyProfile,
   updateMyAvatar,
   getBodyMetricsHistory,
-  createBodyMetric,
-  getActiveMembership
-} from '../../features/user/services/userApi';
+  createBodyMetric
+} from '../services/userApi';
+import { getActiveMembership } from '../services/membershipApi';
 import './UserProfilePage.css';
 
 interface UserProfile {

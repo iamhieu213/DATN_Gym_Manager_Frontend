@@ -42,8 +42,17 @@ export async function createBodyMetric(payload: {
   return response.data;
 }
 
-// 5. Lấy gói hội viên đang hoạt động
-export async function getActiveMembership(): Promise<any> {
-  const response = await apiClient.get('/membership/active');
+// 5. Lấy lịch sử điểm danh/check-in của hội viên
+export async function getCheckInHistory(params?: { page?: number; limit?: number }): Promise<any> {
+  const response = await apiClient.get('/check-in/my-history', { params });
   return response.data;
 }
+
+// 6. Lấy lịch sử thanh toán / hóa đơn của hội viên
+export async function getPaymentHistory(): Promise<any> {
+  const response = await apiClient.get('/payments/my-history');
+  return response.data;
+}
+
+
+
