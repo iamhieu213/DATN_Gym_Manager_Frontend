@@ -30,3 +30,9 @@ export async function hirePT(payload: { coachId: number; ptPackageId: number; pa
   const response = await apiClient.post('/pt-booking/hire', payload);
   return response.data;
 }
+
+// 5. Lấy danh sách hợp đồng thuê PT của hội viên
+export async function getMyBookings(): Promise<any> {
+  const response = await apiClient.get('/pt-booking/my-bookings');
+  return response.data;
+}

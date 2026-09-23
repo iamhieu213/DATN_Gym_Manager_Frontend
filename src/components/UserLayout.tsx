@@ -183,10 +183,6 @@ export default function UserLayout() {
         <header className="top-header">
           <div className="header-left">
             <h2 className="mobile-brand-title">Kinetic</h2>
-            <nav className="header-tabs">
-              <Link to="/user" className="tab-item active">Tổng Quan</Link>
-              <Link to="/user/history" className="tab-item">Lịch Sử Tập</Link>
-            </nav>
           </div>
 
           <div className="header-tools">
