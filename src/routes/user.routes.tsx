@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
 // Tải lazy Layout và Dashboard của User
-const UserLayout = lazy(() => import('../components/UserLayout'));
+const UserLayout = lazy(() => import('../layouts/UserLayout'));
 const UserDashboardPage = lazy(() => import('../features/user/pages/UserDashboardPage'));
 const UserProfilePage = lazy(() => import('../features/user/pages/UserProfilePage'));
 const ChangePasswordPage = lazy(() => import('../features/user/pages/ChangePasswordPage'));
@@ -51,4 +51,4 @@ export const userRoutes = (
     <Route path="coaches" element={<div className="p-8 text-white">Tính năng Huấn luyện viên đang phát triển...</div>} />
     <Route path="coach-packages" element={<div className="p-8 text-white">Tính năng Đăng ký gói HLV đang phát triển...</div>} />
   </Route>
-);
+);

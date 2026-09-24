@@ -1,4 +1,4 @@
-import apiClient from '../../auth/services/apiClient'; // Điều chỉnh lại đường dẫn tương đối cho đúng với cấu trúc dự án của bạn
+import apiClient from '../../../shared/api/apiClient'; // Điều chỉnh lại đường dẫn tương đối cho đúng với cấu trúc dự án của bạn
 
 // ----------------- Định nghĩa các Kiểu Dữ Liệu (TypeScript Types) -----------------
 export type EquipmentStatus = 'OPERATIONAL' | 'UNDER_MAINTENANCE' | 'OUT_OF_SERVICE';

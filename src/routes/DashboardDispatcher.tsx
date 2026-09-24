@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { decodeJwt } from '../routes/ProtectedRoute'
+import { decodeJwt } from './ProtectedRoute'
 
 export default function DashboardDispatcher() {
     const navigate = useNavigate();
@@ -15,8 +15,7 @@ export default function DashboardDispatcher() {
         const payload = decodeJwt(token);
         const role = payload?.role;
 
-        if (role === 'ADMIN') navigate('/admin', { replace: true });
-        else if (role === 'STAFF') navigate('/staff', { replace: true });
+        if (role === 'ADMIN' || role === 'STAFF') navigate('/admin', { replace: true });
         else if (role === 'USER') navigate('/user', { replace: true });
         else if (role === 'COACH') navigate('/coach', { replace: true });
         else navigate('/', { replace: true });

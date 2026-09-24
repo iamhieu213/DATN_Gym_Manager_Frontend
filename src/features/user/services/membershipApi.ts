@@ -1,4 +1,4 @@
-import apiClient from '../../auth/services/apiClient';
+import apiClient from '../../../shared/api/apiClient';
 
 // 1. Lấy gói hội viên đang hoạt động của người dùng đăng nhập
 export async function getActiveMembership(): Promise<any> {

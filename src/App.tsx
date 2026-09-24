@@ -2,15 +2,16 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
-import DashboardDispatcher from './components/DashboardDispatcher';
+import DashboardDispatcher from './routes/DashboardDispatcher';
 import { userRoutes } from './routes/user.routes'; 
+import { coachRoutes } from './routes/coach.routes';
 import { useEffect } from 'react';
-import { connectSocket, disconnectSocket } from './services/socket';
+import { connectSocket, disconnectSocket } from './shared/lib/socket';
 import Swal from 'sweetalert2'; 
 
 // Load lazy trang Landing chính
-const LandingPage = lazy(() => import('./pages/LandingPage'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+const LandingPage = lazy(() => import('./features/public/pages/LandingPage'));
+const NotFoundPage = lazy(() => import('./features/public/pages/NotFoundPage'))
 // Giao diện loading đơn giản khi tải các trang lazy
 const PageLoader = () => (
   <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950 font-mono text-lg text-brand">
@@ -65,7 +66,8 @@ function App() {
 
           {/* 3. Nhóm Route Quản lý Admin (Dashboard Layout & Routes) */}
           {adminRoutes}
-          {userRoutes} 
+          {coachRoutes}
+          {userRoutes}
 
           {/* Tự động điều hướng về trang chủ nếu URL không khớp */}
           <Route path="*" element={<NotFoundPage />} />

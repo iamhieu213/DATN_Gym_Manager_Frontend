@@ -1,11 +1,11 @@
 import { useEffect, useRef, type PointerEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Heart, Dumbbell, HeartPulse } from 'lucide-react';
-import heroImage from '../assets/gym_hero_bg.png';
-import elenaVolkImage from '../assets/trainers/elena-volk.png';
-import jaxVanceImage from '../assets/trainers/jax-vance.png';
-import marcusReedImage from '../assets/trainers/marcus-reed.png';
-import sarahKaiImage from '../assets/trainers/sarah-kai.png';
+import heroImage from '../../../assets/gym_hero_bg.png';
+import elenaVolkImage from '../../../assets/trainers/elena-volk.png';
+import jaxVanceImage from '../../../assets/trainers/jax-vance.png';
+import marcusReedImage from '../../../assets/trainers/marcus-reed.png';
+import sarahKaiImage from '../../../assets/trainers/sarah-kai.png';
 
 const headline = 'HIỆU SUẤT ĐỈNH CAO';
 

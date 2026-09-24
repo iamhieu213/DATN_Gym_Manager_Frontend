@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, type ClipboardEvent, type FormEvent, type KeyboardEvent } from 'react';
 import heroImage from '../../../assets/kinetic-hero.png';
-import apiClient from '../services/apiClient';
+import apiClient from '../../../shared/api/apiClient';
 import { LockKeyhole } from 'lucide-react';
 import { requestForgotPasswordOtp } from '../services/authApi';
 import Swal from 'sweetalert2';

@@ -1,4 +1,4 @@
-import apiClient from '../../auth/services/apiClient';
+import apiClient from '../../../shared/api/apiClient';
 
 // 1. Lấy thông tin huấn luyện viên cá nhân đang hỗ trợ hiện tại
 export async function getMyActiveCoach(): Promise<any> {

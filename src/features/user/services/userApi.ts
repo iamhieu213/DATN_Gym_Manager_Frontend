@@ -1,4 +1,4 @@
-import apiClient from '../../auth/services/apiClient';
+import apiClient from '../../../shared/api/apiClient';
 
 // 1. Cập nhật thông tin cá nhân
 export async function updateMyProfile(payload: {

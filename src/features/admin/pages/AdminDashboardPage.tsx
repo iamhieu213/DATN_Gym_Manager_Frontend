@@ -8,8 +8,8 @@ import {
   AlertTriangle,
   MoreHorizontal
 } from 'lucide-react';
-import { getDashboardStats } from '../../features/dashboard/services/dashboardApi';
-import { decodeJwt } from '../../routes/ProtectedRoute';
+import { getDashboardStats } from '../services/dashboardApi';
+import { decodeJwt } from '../../../routes/ProtectedRoute';
 import { Link } from 'react-router-dom';
 
 function DashboardPage() {
@@ -273,7 +273,7 @@ function DashboardPage() {
         <div className="bg-white/[0.015] border border-white/5 rounded-xl overflow-hidden lg:col-span-8">
           <div className="p-6 border-b border-white/5 flex justify-between items-center">
             <h3 className="text-lg font-bold text-white m-0">Giao dịch gần đây</h3>
-            <Link to="/dashboard/payments" className="text-xs font-bold text-brand no-underline hover:underline">Xem tất cả</Link>
+            <Link to="/admin/payments" className="text-xs font-bold text-brand no-underline hover:underline">Xem tất cả</Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">

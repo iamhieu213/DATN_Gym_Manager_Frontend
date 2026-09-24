@@ -3,14 +3,15 @@ import { Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
 // Load lazy layout admin và trang dashboard
-const AdminLayout = lazy(() => import('../components/AdminLayout'));
-const DashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage'));
-const AdminEquipmentPage = lazy(() => import('../pages/admin/AdminEquipmentPage'));
+const AdminLayout = lazy(() => import('../layouts/AdminLayout'));
+const DashboardPage = lazy(() => import('../features/admin/pages/AdminDashboardPage'));
+const AdminEquipmentPage = lazy(() => import('../features/admin/pages/AdminEquipmentPage'));
+// Khu vực quản trị dùng chung cho ADMIN và STAFF (STAFF bị ẩn các mục chỉ dành cho ADMIN ở menu)
 export const adminRoutes = (
   <Route
     path="/admin"
     element={
-      <ProtectedRoute allowedRoles={['ADMIN']}>
+      <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
         <AdminLayout />
       </ProtectedRoute>
     }

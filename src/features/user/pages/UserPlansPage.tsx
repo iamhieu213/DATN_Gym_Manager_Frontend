@@ -18,7 +18,7 @@ import './UserPlansPage.animations.css';
 // Import các API từ các file phân tách
 import { getPlansList, buyMembership } from '../services/membershipApi';
 import { getCoachesList, getCoachDetail, hirePT } from '../services/ptBookingApi';
-import apiClient from '../../auth/services/apiClient';
+import apiClient from '../../../shared/api/apiClient';
 
 interface CoachItem {
   id: number;

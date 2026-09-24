@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { getMyProfile } from '../features/auth/services/authApi';
+import { useLogout } from '../features/auth/hooks/useLogout';
 import './UserLayout.animations.css';
 import {
   LayoutDashboard,
@@ -50,7 +50,7 @@ const sections = ['Tổng Quát', 'Tập Luyện', 'Hội Viên', 'HLV'];
 
 export default function UserLayout() {
   const location = useLocation();
-  const navigate = useNavigate();
+  const handleLogout = useLogout();
   const [searchQuery, setSearchQuery] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(false);
   // Trạng thái đóng/mở của từng nhóm menu (node cha), mặc định mở hết
@@ -95,40 +95,6 @@ export default function UserLayout() {
   // Đóng/mở một nhóm menu (node cha)
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
-  };
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Đăng xuất?',
-      text: 'Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy',
-      background: '#09090b',
-      color: '#fafafa',
-      confirmButtonColor: '#c3f400',
-      cancelButtonColor: '#27272a',
-      customClass: {
-        confirmButton: 'text-black font-bold',
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        Swal.fire({
-          title: 'Đã đăng xuất!',
-          text: 'Bạn đã đăng xuất thành công.',
-          icon: 'success',
-          timer: 1500,
-          showConfirmButton: false,
-          background: '#09090b',
-          color: '#fafafa',
-        }).then(() => {
-          navigate('/login');
-        });
-      }
-    });
   };
 
   return (

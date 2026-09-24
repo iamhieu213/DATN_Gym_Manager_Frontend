@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import { getMyProfile, logoutUser } from '../features/auth/services/authApi';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { getMyProfile } from '../features/auth/services/authApi';
+import { useLogout } from '../features/auth/hooks/useLogout';
 import {
   LayoutDashboard,
   Users,
@@ -19,12 +19,13 @@ import {
   Bell,
   Plus,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  type LucideIcon
 } from 'lucide-react';
 
 function AdminLayout() {
-  const navigate = useNavigate();
   const location = useLocation();
+  const handleLogout = useLogout();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [userProfile, setUserProfile] = useState<{
     name: string;
@@ -56,67 +57,28 @@ function AdminLayout() {
     }
   };
 
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Đăng xuất?',
-      text: 'Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy',
-      background: '#09090b',
-      color: '#fafafa',
-      confirmButtonColor: '#c3f400',
-      cancelButtonColor: '#27272a',
-      customClass: {
-        confirmButton: 'text-black font-bold',
-      }
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const refreshToken = localStorage.getItem('refreshToken');
-          if (refreshToken) {
-            await logoutUser(refreshToken);
-          }
-        } catch (err) {
-          console.error("Lỗi khi gọi API logout:", err);
-        } finally {
-          // Xóa token ở client trong mọi trường hợp
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          
-          // Thông báo đăng xuất thành công
-          Swal.fire({
-            title: 'Đã đăng xuất!',
-            text: 'Bạn đã đăng xuất khỏi hệ thống thành công.',
-            icon: 'success',
-            timer: 1500,
-            showConfirmButton: false,
-            background: '#09090b',
-            color: '#fafafa',
-          }).then(() => {
-            navigate('/login');
-          });
-        }
-      }
-    });
-  };
-
-  // Tách biệt menu điều hướng
-  const menuItems = [
+  // Menu điều hướng. `roles` (tuỳ chọn): chỉ các role được liệt kê mới thấy mục này.
+  // Không khai báo `roles` = ADMIN và STAFF đều thấy.
+  const menuItems: { path: string; label: string; icon: LucideIcon; section: string; roles?: string[] }[] = [
     { path: '/admin', label: 'Bảng điều khiển', icon: LayoutDashboard, section: 'Tổng Quan' },
     { path: '/admin/members', label: 'Hội viên', icon: Users, section: 'Tổng Quan' },
     { path: '/admin/pts', label: 'Huấn luyện viên', icon: Dumbbell, section: 'Tổng Quan' },
 
-    { path: '/admin/staff', label: 'Nhân sự', icon: UserCheck, section: 'Vận Hành' },
-    { path: '/dashboard/packages', label: 'Gói tập', icon: Package, section: 'Vận Hành' },
-    { path: '/dashboard/bookings', label: 'Lịch đặt chỗ', icon: Calendar, section: 'Vận Hành' },
-    { path: '/dashboard/payments', label: 'Thanh toán', icon: CreditCard, section: 'Vận Hành' },
+    { path: '/admin/staff', label: 'Nhân sự', icon: UserCheck, section: 'Vận Hành', roles: ['ADMIN'] },
+    { path: '/admin/packages', label: 'Gói tập', icon: Package, section: 'Vận Hành' },
+    { path: '/admin/bookings', label: 'Lịch đặt chỗ', icon: Calendar, section: 'Vận Hành' },
+    { path: '/admin/payments', label: 'Thanh toán', icon: CreditCard, section: 'Vận Hành' },
 
-    { path: '/dashboard/reports', label: 'Báo cáo', icon: TrendingUp, section: 'Hệ Thống' },
-    { path: '/dashboard/equipment', label: 'Trang thiết bị', icon: Settings, section: 'Hệ Thống' },
-    { path: '/dashboard/maintenance', label: 'Bảo trì', icon: Wrench, section: 'Hệ Thống' },
+    { path: '/admin/reports', label: 'Báo cáo', icon: TrendingUp, section: 'Hệ Thống', roles: ['ADMIN'] },
+    { path: '/admin/equipment', label: 'Trang thiết bị', icon: Settings, section: 'Hệ Thống' },
+    { path: '/admin/maintenance', label: 'Bảo trì', icon: Wrench, section: 'Hệ Thống' },
   ];
+
+  // Lọc theo role của tài khoản đang đăng nhập (chưa tải xong hồ sơ thì ẩn các mục giới hạn)
+  const currentRole = userProfile?.role;
+  const visibleItems = menuItems.filter(
+    (item) => !item.roles || (currentRole !== undefined && item.roles.includes(currentRole))
+  );
 
   // Gom nhóm theo Section
   const sections = ['Tổng Quan', 'Vận Hành', 'Hệ Thống'];
@@ -162,7 +124,7 @@ function AdminLayout() {
               ) : (
                 <div className="h-px bg-white/5 my-2" />
               )}
-              {menuItems
+              {visibleItems
                 .filter(item => item.section === section)
                 .map(item => {
                   const isActive = location.pathname === item.path;

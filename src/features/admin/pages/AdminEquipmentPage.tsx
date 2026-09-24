@@ -14,18 +14,18 @@ import {
   bulkUpdateEquipment,
   bulkDeleteEquipment,
   createMaintenanceTask
-} from '../../features/equipment/services/equipmentApi';
+} from '../../equipment/services/equipmentApi';
 
 // Import types dùng chung
-import type { EquipmentItem, EquipmentStatus, MaintenanceTask } from '../../features/equipment/types';
+import type { EquipmentItem, EquipmentStatus, MaintenanceTask } from '../../equipment/types';
 
 // Import các sub-component
-import EquipmentStats from '../../features/equipment/components/EquipmentStats';
-import EquipmentTable from '../../features/equipment/components/EquipmentTable';
-import MaintenanceCalendar from '../../features/equipment/components/MaintenanceCalendar';
-import AddEquipmentModal from '../../features/equipment/components/AddEquipmentModal';
-import MaintenanceModal from '../../features/equipment/components/MaintenanceModal';
-import EditEquipmentModal from '../../features/equipment/components/EditEquipmentModal';
+import EquipmentStats from '../../equipment/components/EquipmentStats';
+import EquipmentTable from '../../equipment/components/EquipmentTable';
+import MaintenanceCalendar from '../../equipment/components/MaintenanceCalendar';
+import AddEquipmentModal from '../../equipment/components/AddEquipmentModal';
+import MaintenanceModal from '../../equipment/components/MaintenanceModal';
+import EditEquipmentModal from '../../equipment/components/EditEquipmentModal';
 
 function AdminEquipmentPage() {
   // Thống kê động
