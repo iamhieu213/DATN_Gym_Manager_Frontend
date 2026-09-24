@@ -1,14 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { getMyProfile } from '../features/auth/services/authApi';
-import { useLogout } from '../features/auth/hooks/useLogout';
+import Header from '../shared/components/Header';
 import './UserLayout.animations.css';
 import {
   LayoutDashboard,
   Dumbbell,
   Calendar,
   Users,
-  Settings,
   ClipboardList,
   ListChecks,
   BookOpen,
@@ -17,9 +16,6 @@ import {
   Activity,
   Apple,
   UserPlus,
-  LogOut,
-  Search,
-  Bell,
   QrCode,
   User,
   ChevronLeft,
@@ -50,15 +46,11 @@ const sections = ['Tổng Quát', 'Tập Luyện', 'Hội Viên', 'HLV'];
 
 export default function UserLayout() {
   const location = useLocation();
-  const handleLogout = useLogout();
-  const [searchQuery, setSearchQuery] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(false);
   // Trạng thái đóng/mở của từng nhóm menu (node cha), mặc định mở hết
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(
     () => Object.fromEntries(sections.map((section) => [section, true]))
   );
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [userProfile, setUserProfile] = useState<{
     name: string;
     email: string;
@@ -75,18 +67,6 @@ export default function UserLayout() {
       .catch((err: any) => {
         console.error("Lỗi khi tải thông tin cá nhân:", err);
       });
-  }, []);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
   }, []);
 
   // Hàm xác định xem Link có đang được active hay không
@@ -170,89 +150,7 @@ export default function UserLayout() {
 
       {/* 2. KHU VỰC NỘI DUNG CHÍNH */}
       <div className={`flex-1 min-h-screen flex flex-col box-border transition-[margin-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${isCollapsed ? 'lg:ml-16' : 'lg:ml-64'}`}>
-        {/* Top App Bar */}
-        <header className="h-16 border-b border-white/5 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-40 px-4 md:px-8 flex items-center justify-between box-border">
-          <div className="flex items-center gap-6">
-            <h2 className="font-sans text-2xl font-black text-brand m-0 tracking-tighter uppercase lg:hidden">Kinetic</h2>
-          </div>
-
-          <div className="flex items-center gap-4 md:gap-6">
-            {/* Thanh tìm kiếm */}
-            <div className="hidden sm:flex items-center gap-3 bg-white/3 border border-white/5 py-1.5 px-3 rounded-md w-[200px]">
-              <Search className="text-zinc-500" size={16} />
-              <input
-                className="bg-transparent border-none text-white text-[0.825rem] w-full outline-none placeholder:text-zinc-500"
-                type="text"
-                placeholder="Tìm kiếm..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button className="bg-transparent border-none p-1 text-zinc-500 cursor-pointer flex items-center justify-center transition-colors duration-200 hover:text-white">
-                <Bell size={18} />
-              </button>
-            </div>
-
-            <div className="h-6 w-px bg-white/10"></div>
-
-            {/* Avatar & Profile với Dropdown */}
-            <div ref={dropdownRef} className="relative">
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                <div className="hidden sm:block text-right">
-                  <p className="text-xs font-bold text-white m-0 whitespace-nowrap">{userProfile?.name || 'Alex Rivera'}</p>
-                  <p className="text-[10px] text-zinc-500 m-0 whitespace-nowrap">Thành Viên Pro</p>
-                </div>
-                <img
-                  src={userProfile?.avatarUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBxO4OlAjvwl5qEztoohbhVpG-tUQ-GjTMUUHxcmQ_wfYdM1f0vVhJrK38vDfnkhvPFXW_qzibllVHSWalEimchiYwyf2P1rCXuGsJXIgrNMieZJ_Vz_e0O50zreKchj5mP9rH3IgBnb789T1MkzF3XTFH0ZN-t2bY-NE6VCGekU7g1YB2MpAhf_osuxkO6TsmA6c3GI1KOfeNDQn8bSD2YKOPeOs46R4gUQyVPalAZSsnTVLOTsTOWoUFjw3o_5XyyQt3uC8ibOnk"}
-                  alt={userProfile?.name || "Alex Rivera"}
-                  className="w-8 h-8 rounded-full border border-white/10 object-cover shrink-0"
-                />
-              </div>
-
-              {isDropdownOpen && (
-                <div className="profile-dropdown-menu absolute top-[calc(100%+12px)] right-0 w-[220px] bg-zinc-900 border border-white/8 rounded-lg shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_8px_10px_-6px_rgba(0,0,0,0.5)] py-2 z-[100]">
-                  <div className="py-2.5 px-4 flex flex-col gap-0.5 text-left">
-                    <p className="text-sm font-semibold text-white m-0 truncate">{userProfile?.name || 'Alex Rivera'}</p>
-                    <p className="text-xs text-zinc-500 m-0 truncate">{userProfile?.email || 'user@kinetic.com'}</p>
-                  </div>
-                  <div className="h-px bg-white/6 my-1.5" />
-                  <Link
-                    to="/user/profile"
-                    className="flex items-center gap-2.5 py-2.5 px-4 text-zinc-400 no-underline text-[0.825rem] transition-all duration-200 bg-transparent border-none w-full text-left cursor-pointer box-border hover:text-white hover:bg-white/5"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    <User size={16} className="shrink-0" />
-                    <span>Thông tin cá nhân</span>
-                  </Link>
-                  <Link
-                    to="/user/change-password"
-                    className="flex items-center gap-2.5 py-2.5 px-4 text-zinc-400 no-underline text-[0.825rem] transition-all duration-200 bg-transparent border-none w-full text-left cursor-pointer box-border hover:text-white hover:bg-white/5"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    <Settings size={16} className="shrink-0" />
-                    <span>Đổi mật khẩu</span>
-                  </Link>
-                  <div className="h-px bg-white/6 my-1.5" />
-                  <button
-                    onClick={() => {
-                      setIsDropdownOpen(false);
-                      handleLogout();
-                    }}
-                    className="flex items-center gap-2.5 py-2.5 px-4 text-red-400 text-[0.825rem] transition-all duration-200 bg-transparent border-none w-full text-left cursor-pointer box-border hover:bg-red-500/8 hover:text-red-500"
-                  >
-                    <LogOut size={16} className="shrink-0" />
-                    <span>Đăng xuất</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </header>
+        <Header userProfile={userProfile ? { ...userProfile, role: 'USER' } : null} />
 
         {/* Nội dung trang con */}
         <main className="flex-1 flex flex-col">

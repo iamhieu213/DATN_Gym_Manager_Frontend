@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { getMyProfile } from '../features/auth/services/authApi';
 import { useLogout } from '../features/auth/hooks/useLogout';
+import Header from '../shared/components/Header';
 import {
   LayoutDashboard,
   Users,
@@ -15,8 +16,6 @@ import {
   Wrench,
   Zap,
   LogOut,
-  Search,
-  Bell,
   Plus,
   ChevronLeft,
   ChevronRight,
@@ -187,39 +186,20 @@ function AdminLayout() {
 
       {/* MAIN CONTENT AREA */}
       <div className={`flex-1 min-h-screen flex flex-col transition-[margin-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${isCollapsed ? 'ml-16' : 'ml-64'}`}>
-        {/* Top Header Bar */}
-        <header className="h-16 border-b border-white/5 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-40 px-8 flex items-center justify-between">
-          {/* Thanh tìm kiếm */}
-          <div className="flex items-center gap-3 w-1/3">
-            <Search className="h-5 w-5 text-zinc-500" />
-            <input
-              className="bg-transparent border-none text-white text-sm w-full outline-none placeholder:text-zinc-500"
-              placeholder="Tìm kiếm vận hành, hội viên hoặc giao dịch..."
-              type="text"
-            />
-          </div>
-
-          {/* Công cụ góc phải */}
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 py-1 px-3 bg-brand/10 rounded-full">
-              <div className="w-2 h-2 rounded-full bg-brand animate-pulse"></div>
-              <span className="text-[11px] font-bold text-brand tracking-wider uppercase">Hệ thống tối ưu</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button className="relative bg-transparent border-none p-1 text-zinc-500 cursor-pointer flex items-center justify-center transition-colors duration-200 hover:text-white">
-                <Bell className="h-5 w-5 text-zinc-500" />
-                <span className="absolute top-0 right-0 w-2 h-2 bg-brand rounded-full border-2 border-zinc-950"></span>
+        <Header
+          userProfile={userProfile}
+          extraActions={
+            <>
+              <div className="flex items-center gap-2 py-1 px-3 bg-brand/10 rounded-full">
+                <div className="w-2 h-2 rounded-full bg-brand animate-pulse"></div>
+                <span className="text-[11px] font-bold text-brand tracking-wider uppercase">Hệ thống tối ưu</span>
+              </div>
+              <button className="bg-brand text-black py-2 px-4 rounded-md border-none text-xs font-bold uppercase tracking-wider cursor-pointer shadow-[0_0_15px_rgba(195,244,0,0.2)] transition-all duration-200 hover:brightness-110 active:scale-95">
+                Tạo Bản Ghi
               </button>
-              <button className="relative bg-transparent border-none p-1 text-zinc-500 cursor-pointer flex items-center justify-center transition-colors duration-200 hover:text-white">
-                <Settings className="h-5 w-5 text-zinc-500" />
-              </button>
-            </div>
-            <div className="h-6 w-px bg-white/10"></div>
-            <button className="bg-brand text-black py-2 px-4 rounded-md border-none text-xs font-bold uppercase tracking-wider cursor-pointer shadow-[0_0_15px_rgba(195,244,0,0.2)] transition-all duration-200 hover:brightness-110 active:scale-95">
-              Tạo Bản Ghi
-            </button>
-          </div>
-        </header>
+            </>
+          }
+        />
 
         {/* Nội dung trang con sẽ được render ở đây */}
         <main className="flex-1 flex flex-col">

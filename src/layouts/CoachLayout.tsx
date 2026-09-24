@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Users, CalendarClock, UserCircle, LogOut, Dumbbell } from 'lucide-react';
 import { getMyProfile } from '../features/auth/services/authApi';
 import { useLogout } from '../features/auth/hooks/useLogout';
+import Header from '../shared/components/Header';
 
 const menuItems = [
   { path: '/coach', label: 'Tổng quan', icon: LayoutDashboard },
@@ -67,20 +68,7 @@ export default function CoachLayout() {
 
       {/* Khu vực nội dung */}
       <div className="flex min-h-screen flex-1 flex-col lg:ml-64">
-        <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-white/5 bg-zinc-950/80 px-4 backdrop-blur-md md:px-8">
-          <h2 className="m-0 text-xl font-black uppercase tracking-tighter text-brand lg:hidden">Kinetic</h2>
-          <div className="ml-auto flex items-center gap-3">
-            <div className="hidden text-right sm:block">
-              <p className="m-0 text-xs font-bold text-white">{profile?.name || 'Huấn luyện viên'}</p>
-              <p className="m-0 text-[10px] text-zinc-500">Huấn luyện viên</p>
-            </div>
-            <img
-              src={profile?.avatarUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'}
-              alt={profile?.name || 'Avatar'}
-              className="h-8 w-8 shrink-0 rounded-full border border-white/10 object-cover"
-            />
-          </div>
-        </header>
+        <Header userProfile={profile ? { ...profile, role: 'COACH' } : null} />
 
         {/* Thanh điều hướng ngang cho màn hình nhỏ */}
         <nav className="flex gap-2 overflow-x-auto border-b border-white/5 p-2 lg:hidden">
