@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, Settings, LogOut, ChevronDown, Check } from 'lucide-react';
+import { Bell, User, Settings, LogOut, ChevronDown, Check, Sun, Moon } from 'lucide-react';
 import 'flag-icons/css/flag-icons.min.css';
 import { useLogout } from '../../features/auth/hooks/useLogout';
+import { useTheme } from '../context/ThemeContext';
 
 export interface UserProfileHeader {
   name?: string;
@@ -30,6 +31,7 @@ export const LANGUAGES: LanguageOption[] = [
 
 export default function Header({ userProfile, extraActions }: HeaderProps) {
   const handleLogout = useLogout();
+  const { theme, toggleTheme } = useTheme();
 
   // Ngôn ngữ hiện tại
   const [currentLang, setCurrentLang] = useState<LanguageOption>(() => {
@@ -140,6 +142,19 @@ export default function Header({ userProfile, extraActions }: HeaderProps) {
             </div>
           )}
         </div>
+
+        {/* NÚT CHUYỂN ĐỔI GIAO DIỆN SÁNG / TỐI (THEME TOGGLE) */}
+        <button
+          onClick={toggleTheme}
+          className="flex items-center justify-center rounded-lg border border-white/10 bg-white/5 p-2 text-zinc-300 transition-all hover:bg-white/10 hover:text-white cursor-pointer"
+          title={theme === 'dark' ? 'Chuyển sang Giao diện Sáng (Light Mode)' : 'Chuyển sang Giao diện Tối (Dark Mode)'}
+        >
+          {theme === 'dark' ? (
+            <Sun size={17} className="text-amber-400 transition-transform duration-300 hover:rotate-45" />
+          ) : (
+            <Moon size={17} className="text-amber-500 transition-transform duration-300 hover:-rotate-12" />
+          )}
+        </button>
 
         {/* ICON THÔNG BÁO (NOTIFICATION BELL) */}
         <button

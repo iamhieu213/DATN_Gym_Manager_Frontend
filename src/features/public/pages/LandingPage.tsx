@@ -118,6 +118,24 @@ function LandingPage() {
   const spotlightRef = useRef<HTMLDivElement | null>(null);
   const dashboardMockupRef = useRef<HTMLDivElement | null>(null);
 
+  // Luôn giữ LandingPage ở Giao diện Tối (Dark mode)
+  useEffect(() => {
+    const root = document.documentElement;
+    const previousTheme = localStorage.getItem('app_theme') || 'dark';
+    root.classList.add('dark');
+    root.classList.remove('light');
+
+    return () => {
+      if (previousTheme === 'light') {
+        root.classList.add('light');
+        root.classList.remove('dark');
+      } else {
+        root.classList.add('dark');
+        root.classList.remove('light');
+      }
+    };
+  }, []);
+
   // 2. Lắng nghe sự kiện cuộn chuột để phóng to Mockup Dashboard (Scroll Zoom)
   useEffect(() => {
     const handleScroll = () => {
