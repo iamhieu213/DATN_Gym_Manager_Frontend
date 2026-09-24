@@ -10,6 +10,7 @@ const UserProfilePage = lazy(() => import('../features/user/pages/UserProfilePag
 const ChangePasswordPage = lazy(() => import('../features/user/pages/ChangePasswordPage'));
 const UserPlansPage = lazy(() => import('../features/user/pages/UserPlansPage'));
 const UserSchedulePage = lazy(() => import('../features/user/pages/UserSchedulePage'));
+const UserMembershipCardPage = lazy(() => import('../features/user/pages/UserMembershipCardPage'));
 
 export const userRoutes = (
   <Route
@@ -42,7 +43,7 @@ export const userRoutes = (
     <Route path="lesson-library" element={<div className="p-8 text-white">Tính năng Thư viện giáo án đang phát triển...</div>} />
 
     {/* Các trang thuộc nhóm Hội Viên */}
-    <Route path="membership-card" element={<div className="p-8 text-white">Tính năng Thẻ hội viên đang phát triển...</div>} />
+    <Route path="membership-card" element={<UserMembershipCardPage />} />
     <Route path="body-metrics" element={<div className="p-8 text-white">Tính năng Chỉ số cơ thể đang phát triển...</div>} />
     <Route path="nutrition" element={<div className="p-8 text-white">Tính năng Tra cứu dinh dưỡng đang phát triển...</div>} />
 

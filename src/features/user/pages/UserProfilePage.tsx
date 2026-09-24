@@ -27,12 +27,17 @@ interface UserProfile {
 }
 
 interface ActiveMembership {
-  membershipId: number;
-  planId: number;
-  planName: string;
-  startDate: string;
-  endDate: string;
-  status?: string;
+  id: number;
+  user_id: number;
+  plan_id: number;
+  start_date: string;
+  end_date: string;
+  status: string;
+  plan: {
+    id: number;
+    name: string;
+    code: string;
+  };
 }
 
 export default function UserProfilePage() {
@@ -383,7 +388,7 @@ export default function UserProfilePage() {
           <div className="flex items-center justify-center gap-3 md:justify-start">
             {membership && (
               <span className="bg-brand text-[#171e00] text-[10px] font-black tracking-widest px-3 py-1 uppercase rounded">
-                {membership.planName.replace('KINETIC ', '')}
+                {membership.plan.name.replace('KINETIC ', '')}
               </span>
             )}
             <span className="text-sm text-zinc-500 font-medium">ID: {formattedUserId}</span>

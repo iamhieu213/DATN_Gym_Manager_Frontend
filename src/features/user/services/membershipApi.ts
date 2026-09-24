@@ -17,3 +17,9 @@ export async function buyMembership(payload: { planId: number; paymentMethod: st
   const response = await apiClient.post('/membership/buy', payload);
   return response.data;
 }
+
+// 4. Lấy lịch sử đăng ký gói hội viên (tất cả các gói đã từng đăng ký)
+export async function getMembershipHistory(): Promise<any> {
+  const response = await apiClient.get('/membership/my-history');
+  return response.data;
+}
