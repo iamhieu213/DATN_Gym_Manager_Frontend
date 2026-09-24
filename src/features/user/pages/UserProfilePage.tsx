@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, type ChangeEvent } from 'react';
 import Swal from 'sweetalert2';
-import { Camera, Edit3, User, Activity, MapPin } from 'lucide-react';
+import { Camera, Edit3, User, Activity } from 'lucide-react';
 import { getMyProfile } from '../../auth/services/authApi';
 import {
   updateMyProfile,
@@ -22,7 +22,6 @@ interface UserProfile {
   address: string;
   emergencyContact: string;
   avatarUrl: string | null;
-  branchName?: string;
   status?: string;
 }
 
@@ -57,7 +56,6 @@ export default function UserProfilePage() {
     address: '',
     emergencyContact: '',
     avatarUrl: null,
-    branchName: '',
     status: ''
   });
 
@@ -102,7 +100,6 @@ export default function UserProfilePage() {
           address: u.address || '',
           emergencyContact: u.emergencyContact || '',
           avatarUrl: u.avatarUrl,
-          branchName: u.branch?.name || '',
           status: u.status || ''
         };
         setProfile(formattedProfile);
@@ -637,15 +634,6 @@ export default function UserProfilePage() {
 
           <div className="bg-[#201f1f] border border-[#333333] p-8 box-border rounded-2xl lg:flex-1 xl:flex-none">
             <div className="flex flex-col gap-6">
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Chi nhánh gốc</label>
-                <div className="flex items-center gap-3">
-                  <MapPin className="text-brand" size={24} />
-                  <span className="font-[Montserrat,_sans-serif] text-xl font-bold text-white">
-                    {profile.branchName || 'Không có'}
-                  </span>
-                </div>
-              </div>
               <div className="flex flex-col gap-2">
                 <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Trạng thái thẻ</label>
                 <div className="flex items-center gap-3">
