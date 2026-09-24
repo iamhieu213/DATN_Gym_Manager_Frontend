@@ -24,7 +24,7 @@ export default function WeatherWidget() {
 
   useEffect(() => {
     fetch(
-      'https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,wind_speed_10m&forecast_days=1'
+      'https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,wind_speed_10m&forecast_days=1&timezone=Asia%2FBangkok'
     )
       .then((res) => res.json())
       .then((data) => {
