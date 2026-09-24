@@ -1,0 +1,52 @@
+/* Residual CSS for interactions that cannot be expressed as pure Tailwind utility
+ * classes:
+ *  - the accordion open/close effect for each nav section, which relies on
+ *    animating between two different `grid-template-rows` values (no Tailwind
+ *    utility can transition between two arbitrary grid-template-rows values);
+ *  - the chevron rotation that accompanies it;
+ *  - the profile dropdown menu's fade/slide-in animation, which needs a real
+ *    @keyframes reference.
+ * Every other rule that used to live in UserLayout.css has been converted to
+ * Tailwind utility classes directly on the JSX elements in UserLayout.tsx.
+ */
+
+.nav-section-items {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.nav-section-items.is-closed {
+  grid-template-rows: 0fr;
+}
+
+.nav-section-items-inner {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.section-chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.section-chevron.is-closed {
+  transform: rotate(-90deg);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profile-dropdown-menu {
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -88,7 +88,7 @@ export default function UserDashboardPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 min-h-[400px] text-zinc-400 text-sm">
-        <div className="w-8 h-8 border-3 border-zinc-700 border-t-[#c3f400] rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-zinc-700 border-t-brand rounded-full animate-spin" />
         <span>Đang tải thông tin Tổng quan Hội viên...</span>
       </div>
     );

@@ -39,32 +39,9 @@ export default function OAuthSuccess() {
   }, [searchParams, navigate]);
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      backgroundColor: '#131313',
-      color: '#caf300',
-      fontFamily: 'monospace'
-    }}>
-      <div style={{
-        border: '4px solid #caf300',
-        borderTop: '4px solid transparent',
-        borderRadius: '50%',
-        width: '50px',
-        height: '50px',
-        animation: 'spin 1s linear infinite',
-        marginBottom: '20px'
-      }} />
-      <span style={{ letterSpacing: '2px', fontWeight: 'bold' }}>ĐANG XỬ LÝ ĐĂNG NHẬP GOOGLE...</span>
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
+    <div className="flex h-screen flex-col items-center justify-center bg-[#131313] font-mono text-brand">
+      <div className="mb-5 h-[50px] w-[50px] animate-spin rounded-full border-4 border-brand border-t-transparent" />
+      <span className="tracking-[2px] font-bold">ĐANG XỬ LÝ ĐĂNG NHẬP GOOGLE...</span>
     </div>
   );
 }

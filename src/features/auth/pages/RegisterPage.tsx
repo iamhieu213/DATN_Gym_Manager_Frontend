@@ -4,7 +4,6 @@ import heroImage from '../../../assets/kinetic-hero.png';
 import { registerUser } from '../services/authApi';
 import Swal from 'sweetalert2';
 import { Eye, EyeOff } from 'lucide-react';
-import './RegisterPage.css';
 
 type RegisterPageProps = {};
 
@@ -90,51 +89,51 @@ function RegisterPage({ }: RegisterPageProps) {
     }
 
     return (
-        <div className="register-overlay">
-            <div className="register-bg-container">
+        <div className="register-overlay fixed inset-0 z-[100] flex min-h-screen flex-col overflow-y-auto box-border bg-[#131313] text-[#e5e2e1] font-sans">
+            <div className="fixed inset-0 z-0 overflow-hidden">
                 <img
                     ref={bgRef}
-                    className="register-bg-img"
+                    className="h-full w-full object-cover opacity-55 grayscale brightness-75 blur-[1px] transition-transform duration-100 ease-out"
                     src={heroImage}
                     alt="Nền phòng gym cao cấp"
                 />
-                <div className="register-bg-gradient" />
-                <div className="register-bg-radial" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#131313]/90 via-[#131313]/35 via-50% to-[#131313]/80" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.2),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.14),transparent_42%)]" />
                 <div ref={spotlightRef} className="mouse-spotlight" />
             </div>
 
-            <nav className="register-nav">
-                <div className="register-logo">
+            <nav className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between border-b border-white/10 bg-[#131313]/10 box-border px-5 py-4 backdrop-blur-xl md:px-16">
+                <div className="text-xl font-black tracking-tight text-white md:text-2xl">
                     KINETIC NOIR
                 </div>
 
                 <button
                     type="button"
                     onClick={() => navigate('/')}
-                    className="btn-close"
+                    className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-brand hover:text-brand"
                     aria-label="Đóng đăng ký"
                 >
                     X
                 </button>
             </nav>
 
-            <main className="register-main">
-                <section className="register-panel">
-                    <div className="register-panel-header">
-                        <span className="register-tagline">
+            <main className="relative z-10 flex flex-1 items-center justify-center box-border px-5 py-12">
+                <section className="relative z-10 w-full max-w-lg rounded-2xl border border-white/10 bg-white/3 p-8 shadow-2xl/50 backdrop-blur-2xl box-border md:p-10">
+                    <div className="mb-10 text-center">
+                        <span className="mb-2 block font-mono text-sm uppercase tracking-[0.15em] text-brand">
                             Nâng cấp hành trình tập luyện
                         </span>
-                        <h1 className="register-title">
+                        <h1 className="mb-4 mt-0 text-3xl font-black tracking-tight text-white md:text-4xl">
                             BẮT ĐẦU NGAY
                         </h1>
-                        <p className="register-desc">
+                        <p className="mx-auto my-0 leading-normal text-[#c8c6c5]">
                             Tham gia cộng đồng KINETIC NOIR dành cho những người theo đuổi hiệu suất đỉnh cao.
                         </p>
                     </div>
 
-                    <form className="register-form" onSubmit={handleSubmit}>
+                    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
                         <div>
-                            <label className="register-input-label" htmlFor="reg-name">
+                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]" htmlFor="reg-name">
                                 Họ và tên
                             </label>
                             <input
@@ -144,11 +143,11 @@ function RegisterPage({ }: RegisterPageProps) {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Nguyễn Văn A"
-                                className="register-input"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all duration-300 box-border focus:border-brand"
                             />
                         </div>
                         <div>
-                            <label className="register-input-label" htmlFor="reg-email">
+                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]" htmlFor="reg-email">
                                 Email
                             </label>
                             <input
@@ -158,12 +157,12 @@ function RegisterPage({ }: RegisterPageProps) {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="email@example.com"
-                                className="register-input"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all duration-300 box-border focus:border-brand"
                             />
                         </div>
 
                         <div>
-                            <label className="register-input-label" htmlFor="reg-phone">
+                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]" htmlFor="reg-phone">
                                 Số điện thoại
                             </label>
                             <input
@@ -173,12 +172,12 @@ function RegisterPage({ }: RegisterPageProps) {
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                                 placeholder="09xxxxxxxx"
-                                className="register-input"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all duration-300 box-border focus:border-brand"
                             />
                         </div>
 
                         <div>
-                            <label className="register-input-label" htmlFor="reg-dob">
+                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]" htmlFor="reg-dob">
                                 Ngày sinh
                             </label>
                             <input
@@ -188,12 +187,12 @@ function RegisterPage({ }: RegisterPageProps) {
                                 value={dateOfBirth}
                                 onChange={(e) => setDateOfBirth(e.target.value)}
                                 placeholder="dd/mm/yyyy"
-                                className="register-input"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 text-white outline-none transition-all duration-300 box-border focus:border-brand"
                             />
                         </div>
 
-                        <div style={{ position: 'relative' }}>
-                            <label className="register-input-label" htmlFor="reg-password">
+                        <div className="relative">
+                            <label className="mb-2 block font-mono text-sm uppercase text-[#c8c6c5]" htmlFor="reg-password">
                                 Mật khẩu
                             </label>
                             <input
@@ -203,12 +202,12 @@ function RegisterPage({ }: RegisterPageProps) {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="register-input register-input-password"
+                                className="w-full rounded-t-lg border-0 border-b border-white/20 bg-white/5 p-4 pr-12 text-white outline-none transition-all duration-300 box-border focus:border-brand"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="btn-toggle-password"
+                                className="absolute bottom-4 right-4 z-10 flex cursor-pointer items-center justify-center border-none bg-transparent p-0 text-[#c8c6c5] transition-colors duration-200 hover:text-brand"
                                 tabIndex={-1}
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -218,23 +217,23 @@ function RegisterPage({ }: RegisterPageProps) {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="btn-register-submit"
+                            className="w-full cursor-pointer rounded-lg border-none bg-brand py-5 text-xl font-black uppercase text-[#283500] transition-all duration-200 hover:brightness-110 active:scale-98 disabled:cursor-not-allowed disabled:opacity-70"
                         >
                             {loading ? 'Đang gửi thông tin...' : 'Tạo tài khoản'}
                         </button>
 
-                        <div className="divider-row">
-                            <div className="divider-line" />
-                            <span className="divider-text">
+                        <div className="flex items-center py-2">
+                            <div className="h-px flex-grow bg-white/10" />
+                            <span className="mx-4 font-mono text-sm uppercase text-[#c8c6c5]">
                                 Hoặc đăng ký với
                             </span>
-                            <div className="divider-line" />
+                            <div className="h-px flex-grow bg-white/10" />
                         </div>
 
                         <button
                             type="button"
                             onClick={handleGoogleRegister}
-                            className="btn-google"
+                            className="flex w-full cursor-pointer items-center justify-center rounded-lg border border-white/10 bg-white/3 py-4 font-mono text-sm text-white transition-all duration-300 hover:bg-white/10 active:scale-98"
                         >
                             <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
                                 <path
@@ -258,12 +257,12 @@ function RegisterPage({ }: RegisterPageProps) {
                         </button>
                     </form>
 
-                    <p className="login-redirect">
+                    <p className="mt-8 text-center text-[#b7b5b4]">
                         Đã có tài khoản?
                         <button
                             type="button"
                             onClick={switchToLogin}
-                            className="btn-login-link"
+                            className="ml-1 cursor-pointer border-none bg-transparent font-bold text-brand hover:underline"
                         >
                             Đăng nhập tại đây
                         </button>

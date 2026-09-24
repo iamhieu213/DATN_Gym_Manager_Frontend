@@ -1,5 +1,4 @@
 import { AlertTriangle } from 'lucide-react';
-import './PaymentAlert.css';
 
 interface PaymentAlertProps {
   payments?: any[];
@@ -12,17 +11,17 @@ export default function PaymentAlert({ payments = [] }: PaymentAlertProps) {
   if (!pendingInvoice) return null;
 
   return (
-    <div className="payment-alert">
-      <div className="alert-message-box">
-        <AlertTriangle className="alert-icon" size={24} />
+    <div className="bg-[#93000a] text-[#ffdad6] p-4 rounded-xl flex flex-col items-center justify-between gap-4 border border-[#ffb4ab]/20 box-border sm:flex-row sm:text-left">
+      <div className="flex items-center gap-3 text-center sm:text-left">
+        <AlertTriangle className="text-[30px]" size={24} />
         <div>
-          <p className="alert-title">Thông báo thanh toán</p>
-          <p className="alert-desc">
+          <p className="font-bold text-sm m-0">Thông báo thanh toán</p>
+          <p className="text-sm opacity-90 m-0 mt-0.5 leading-[1.4]">
             Bạn đang có 1 hóa đơn trị giá <strong>{Number(pendingInvoice.amount).toLocaleString('vi-VN')} đ</strong> chưa thanh toán. Vui lòng hoàn tất thanh toán để tránh gián đoạn dịch vụ.
           </p>
         </div>
       </div>
-      <button className="btn-alert-pay">
+      <button className="whitespace-nowrap px-6 py-2 bg-[#ffdad6] text-[#93000a] font-bold rounded-lg border-none cursor-pointer transition-opacity hover:opacity-90">
         Thanh toán ngay
       </button>
     </div>

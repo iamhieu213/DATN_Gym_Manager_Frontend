@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import Swal from 'sweetalert2';
-import './AddEquipmentModal.css';
 
 interface AddEquipmentModalProps {
   isOpen: boolean;
@@ -66,16 +65,16 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <h3 className="modal-title">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 box-border">
+      <div className="relative box-border flex w-full max-w-md flex-col gap-4 rounded-xl border border-white/10 bg-zinc-950 p-6 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]">
+        <h3 className="m-0 flex items-center gap-2 text-lg font-bold text-white [&_svg]:h-5 [&_svg]:w-5 [&_svg]:text-brand">
           <Plus />
           Thêm Mới Thiết Bị Hàng Loạt
         </h3>
 
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="form-field">
-            <label className="form-label">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-left text-xs">
+          <div className="flex flex-col gap-1">
+            <label className="font-bold uppercase tracking-wide text-zinc-500">
               Tên loại máy tập
             </label>
             <input
@@ -83,14 +82,14 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
               placeholder="Ví dụ: Máy đạp đùi Leg Press..."
               value={name}
               onChange={e => setName(e.target.value)}
-              className="form-input"
+              className="w-full box-border rounded-lg border border-white/5 bg-white/5 p-2.5 text-white outline-none transition-all duration-200 placeholder:text-zinc-500 focus:border-brand"
               required
             />
           </div>
 
-          <div className="form-grid-2">
-            <div className="form-field">
-              <label className="form-label">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="font-bold uppercase tracking-wide text-zinc-500">
                 Mã tiền tố (Prefix)
               </label>
               <input
@@ -98,13 +97,13 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
                 placeholder="Ví dụ: EQ-LEG"
                 value={baseCode}
                 onChange={e => setBaseCode(e.target.value)}
-                className="form-input"
+                className="w-full box-border rounded-lg border border-white/5 bg-white/5 p-2.5 text-white outline-none transition-all duration-200 placeholder:text-zinc-500 focus:border-brand"
                 required
               />
             </div>
 
-            <div className="form-field">
-              <label className="form-label">
+            <div className="flex flex-col gap-1">
+              <label className="font-bold uppercase tracking-wide text-zinc-500">
                 Số lượng mua
               </label>
               <input
@@ -112,49 +111,49 @@ export default function AddEquipmentModal({ isOpen, onClose, onSubmit }: AddEqui
                 min={1}
                 value={quantity}
                 onChange={e => setQuantity(Number(e.target.value))}
-                className="form-input"
+                className="w-full box-border rounded-lg border border-white/5 bg-white/5 p-2.5 text-white outline-none transition-all duration-200 placeholder:text-zinc-500 focus:border-brand"
                 required
               />
             </div>
           </div>
 
-          <div className="form-field">
-            <label className="form-label">
+          <div className="flex flex-col gap-1">
+            <label className="font-bold uppercase tracking-wide text-zinc-500">
               Ngày mua thiết bị
             </label>
             <input
               type="date"
               value={purchaseDate}
               onChange={e => setPurchaseDate(e.target.value)}
-              className="form-input"
+              className="w-full box-border rounded-lg border border-white/5 bg-white/5 p-2.5 text-white outline-none transition-all duration-200 placeholder:text-zinc-500 focus:border-brand"
             />
           </div>
 
-          <div className="form-field">
-            <label className="form-label">
+          <div className="flex flex-col gap-1">
+            <label className="font-bold uppercase tracking-wide text-zinc-500">
               Ghi chú (Gốc mua/Xuất xứ)
             </label>
             <textarea
               placeholder="Nhập ghi chú xuất xứ máy tập..."
               value={note}
               onChange={e => setNote(e.target.value)}
-              className="form-textarea"
+              className="h-20 w-full box-border resize-none rounded-lg border border-white/5 bg-white/5 p-2.5 text-white outline-none transition-all duration-200 placeholder:text-zinc-500 focus:border-brand"
             />
           </div>
 
-          <div className="modal-footer">
+          <div className="flex justify-end gap-3 border-t border-white/5 pt-4">
             <button
               type="button"
               onClick={onClose}
               disabled={submitting}
-              className="btn-modal-cancel"
+              className="rounded-lg bg-white/5 px-4 py-2 font-bold text-white transition-all duration-200 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Hủy
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="btn-modal-submit"
+              className="rounded-lg bg-brand px-5 py-2 font-bold text-black transition-all duration-200 hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {submitting ? 'Đang thêm...' : 'Thêm máy'}
             </button>

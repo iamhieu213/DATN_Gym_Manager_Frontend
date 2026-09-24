@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './CheckInChart.css';
 
 interface CheckInChartProps {
   checkIns?: any[];
@@ -25,43 +24,53 @@ export default function CheckInChart({ checkIns = [] }: CheckInChartProps) {
   });
 
   return (
-    <div className="chart-card-attendance">
-      <div className="chart-header-row">
-        <div className="chart-title-box">
-          <h3>Tần Suất Check-in</h3>
-          <p>Lịch sử đi tập tuần này</p>
+    <div className="bg-white/[0.015] backdrop-blur-md border border-white/5 p-6 rounded-xl h-[585px] flex flex-col box-border">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h3 className="font-sans text-xl font-extrabold m-0 text-white">Tần Suất Check-in</h3>
+          <p className="text-[13px] text-zinc-500 mt-0.5 mb-0">Lịch sử đi tập tuần này</p>
         </div>
-        <div className="chart-tabs-btn">
+        <div className="flex gap-1 bg-white/[0.03] p-1 rounded-lg border border-white/5">
           <button
             onClick={() => setTab('week')}
-            className={`tab-btn ${tab === 'week' ? 'active' : ''}`}
+            className={`px-3 py-1 text-[11px] font-bold border-none rounded transition-all cursor-pointer ${
+              tab === 'week' ? 'bg-brand text-black' : 'bg-transparent text-zinc-500'
+            }`}
           >
             Tuần
           </button>
           <button
             onClick={() => setTab('month')}
-            className={`tab-btn ${tab === 'month' ? 'active' : ''}`}
+            className={`px-3 py-1 text-[11px] font-bold border-none rounded transition-all cursor-pointer ${
+              tab === 'month' ? 'bg-brand text-black' : 'bg-transparent text-zinc-500'
+            }`}
             disabled
           >
             Tháng
           </button>
         </div>
       </div>
-      <div className="bar-chart-plot">
+      <div className="flex-1 flex items-end justify-between gap-2 px-2">
         {days.map((day, index) => {
           const heightPct = hasVisited[index];
           const isToday = new Date().getDay() === (index === 6 ? 0 : index + 1);
           return (
-            <div key={day} className="bar-column">
+            <div key={day} className="flex-1 flex flex-col items-center gap-3 h-full justify-end">
               <div
-                className={`bar-pill ${isToday ? 'filled' : ''}`}
+                className={`group w-full rounded-t relative cursor-pointer transition-all min-h-1 ${
+                  isToday
+                    ? 'bg-brand shadow-[0_0_12px_rgba(195,244,0,0.2)] hover:brightness-110'
+                    : 'bg-brand/[0.15] hover:bg-brand/30'
+                }`}
                 style={{ height: heightPct > 0 ? `${heightPct}%` : '4px' }}
               >
                 {heightPct > 0 && (
-                  <div className="bar-pill-hover-tooltip">Đã tập</div>
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-zinc-900 text-white px-2 py-1 rounded text-[10px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 border border-white/5">
+                    Đã tập
+                  </div>
                 )}
               </div>
-              <span className={`bar-label ${isToday ? 'active' : ''}`}>{day}</span>
+              <span className={`text-[10px] font-semibold uppercase ${isToday ? 'text-brand font-bold' : 'text-zinc-500'}`}>{day}</span>
             </div>
           );
         })}

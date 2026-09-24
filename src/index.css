@@ -1,6 +1,21 @@
 
 @import "tailwindcss";
 
+/*
+ * Token màu thương hiệu dùng chung cho toàn bộ app (Tailwind v4, @theme).
+ * Sinh ra các utility: bg-brand, text-brand, border-brand, ring-brand...
+ * kèm modifier độ trong suốt: bg-brand/10, border-brand/40, v.v.
+ * Toàn bộ mã hex xanh chanh cũ (#c3f400 / #caf300 / #abd600 / #b0d500...)
+ * quy về DUY NHẤT giá trị này để đồng bộ trong toàn bộ codebase.
+ * Các màu xám/đen/đỏ hiện có (#09090b, #18181b, #71717a, #a1a1aa, #27272a,
+ * #f87171, #ef4444...) đã trùng khớp chính xác với thang zinc/red có sẵn
+ * của Tailwind (zinc-950, zinc-900, zinc-500, zinc-400, zinc-800, red-400,
+ * red-500) nên dùng trực tiếp, không cần khai báo token riêng.
+ */
+@theme {
+  --color-brand: #c3f400;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -14,7 +29,7 @@ body,
 body {
   margin: 0;
   overflow-x: hidden;
-  background: #131313;
+  background: var(--color-zinc-950); /* đồng bộ với nền #09090b dùng ở toàn bộ layout */
 }
 
 #mesh-canvas {
@@ -154,11 +169,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #131313;
+  background: var(--color-zinc-950);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #abd600;
+  background: var(--color-brand);
   border-radius: 2px;
 }
 

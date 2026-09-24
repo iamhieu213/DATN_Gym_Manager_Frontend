@@ -23,7 +23,7 @@ export default function DashboardDispatcher() {
     }, [navigate]);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#131313', color: '#caf300', fontFamily: 'monospace' }}>
+        <div className="flex justify-center items-center h-screen bg-[#131313] text-brand font-mono">
             ĐANG XÁC THỰC QUYỀN TRUY CẬP...
         </div>
     )

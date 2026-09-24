@@ -4,7 +4,6 @@ import apiClient from '../services/apiClient';
 import { LockKeyhole } from 'lucide-react';
 import { requestForgotPasswordOtp } from '../services/authApi';
 import Swal from 'sweetalert2';
-import './OtpVerificationForm.css';
 
 type OtpMode = 'register' | 'forgot-password';
 
@@ -185,39 +184,39 @@ function OtpVerificationForm({
   };
 
   return (
-    <div className="otp-overlay">
-      <div className="otp-bg-container">
+    <div className="fixed inset-0 z-[100] min-h-screen overflow-y-auto bg-[#131313] text-[#e5e2e1]">
+      <div className="fixed inset-0 z-0 overflow-hidden">
         <img
-          className="otp-bg-img"
+          className="h-full w-full scale-110 object-cover brightness-20 blur-xs"
           src={heroImage}
           alt="Nền phòng gym hiệu suất cao"
         />
-        <div className="otp-bg-gradient" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/60 via-[#131313]/90 to-[#131313]" />
       </div>
 
-      <main className="otp-main">
-        <div className="otp-logo-container">
-          <h1 className="otp-logo-text">
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center box-border px-5 py-12 md:px-16">
+        <div className="mb-12 text-center">
+          <h1 className="text-2xl font-black uppercase tracking-tight text-brand">
             KINETIC NOIR
           </h1>
         </div>
 
-        <section className="otp-panel">
-          <div className="otp-icon-wrapper">
-            <LockKeyhole className="otp-icon" />
+        <section className="flex w-full max-w-120 flex-col items-center rounded-4xl border border-white/10 bg-white/3 p-8 backdrop-blur-2xl box-border md:p-12">
+          <div className="mb-8 flex items-center justify-center rounded-full border border-brand/20 bg-brand/10 p-4">
+            <LockKeyhole className="h-10 w-10 text-brand" />
           </div>
 
-          <div className="otp-header-text">
-            <h2 className="otp-title">
+          <div className="mb-10 text-center">
+            <h2 className="mb-4 mt-0 text-3xl font-black text-white md:text-4xl">
               {config.title}
             </h2>
-            <p className="otp-desc">
+            <p className="mx-auto max-w-80 leading-normal text-[#c4c9ac]">
               {config.description}
             </p>
           </div>
 
-          <form className="otp-form" onSubmit={handleSubmit}>
-            <div className="otp-inputs-row">
+          <form className="flex w-full flex-col gap-10" onSubmit={handleSubmit}>
+            <div className="flex justify-between gap-2 md:gap-3">
               {otp.map((value, index) => (
                 <input
                   key={index}
@@ -230,7 +229,7 @@ function OtpVerificationForm({
                   onPaste={handlePaste}
                   inputMode="numeric"
                   maxLength={1}
-                  className="otp-input-field"
+                  className="aspect-square w-full border-0 border-b-2 border-white/10 bg-white/5 text-center text-2xl font-bold text-brand outline-none transition-all duration-200 box-border focus:scale-105 focus:border-brand focus:bg-brand/5 md:h-16 md:w-14"
                 />
               ))}
             </div>
@@ -238,38 +237,38 @@ function OtpVerificationForm({
             <button
               type="submit"
               disabled={loading}
-              className="btn-otp-submit"
+              className="w-full cursor-pointer rounded-full border-none bg-brand py-5 text-xl font-black uppercase tracking-widest text-black shadow-[0_10px_40px_-10px_rgba(195,244,0,0.5)] transition-all duration-200 hover:scale-102 active:scale-95 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {loading ? 'Đang xác thực...' : config.submitText}
             </button>
           </form>
 
-          <div className="otp-footer-actions">
+          <div className="mt-10 flex flex-col items-center gap-4">
             <button
               type="button"
               onClick={handleResend}
               disabled={timeLeft > 0}
-              className={`btn-otp-resend ${timeLeft > 0 ? 'disabled' : 'active'}`}
+              className={`border-none bg-transparent font-mono text-sm uppercase transition-all duration-200 ${timeLeft > 0 ? 'cursor-not-allowed text-brand/50' : 'cursor-pointer text-brand hover:brightness-125'}`}
             >
-              {config.resendText} <span style={{ fontSize: '10px', opacity: 0.6 }}>({formatTime(timeLeft)})</span>
+              {config.resendText} <span className="text-[10px] opacity-60">({formatTime(timeLeft)})</span>
             </button>
 
             <button
               type="button"
               onClick={onBack}
-              className="btn-otp-back"
+              className="cursor-pointer border-none bg-transparent font-mono text-sm uppercase text-[#c4c9ac] underline decoration-white/20 underline-offset-4 transition-all duration-200 hover:text-white"
             >
               {config.backText}
             </button>
           </div>
         </section>
 
-        <div className="otp-protocol">
-          <div className="protocol-line" />
-          <span className="protocol-text">
+        <div className="mt-12 flex items-center gap-6 opacity-30">
+          <div className="h-px w-12 bg-white" />
+          <span className="font-mono text-sm uppercase tracking-[0.4em] text-white">
             {config.protocol}
           </span>
-          <div className="protocol-line" />
+          <div className="h-px w-12 bg-white" />
         </div>
       </main>
     </div>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Download, Plus, Wrench, Sliders } from 'lucide-react';
 import Swal from 'sweetalert2';
-import './AdminEquipmentPage.css';
 
 // CHỈ IMPORT các hàm gọi API
 import {
@@ -350,27 +349,27 @@ function AdminEquipmentPage() {
   }, []);
 
   return (
-    <div className="equipment-page-container">
+    <div className="p-8 w-full flex flex-col gap-8 flex-1 box-border">
       {/* Tiêu đề & Nút thao tác Header */}
-      <div className="equipment-header">
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-end">
         <div>
-          <h1 className="equipment-title">
-            <Sliders className="equipment-title-icon" />
+          <h1 className="text-3xl font-extrabold tracking-tight text-white flex items-center gap-2 m-0">
+            <Sliders className="text-brand h-8 w-8" />
             Quản Lý Trang Thiết Bị
           </h1>
-          <p className="equipment-subtitle">
+          <p className="text-zinc-500 text-sm mt-1 mb-0">
             Theo dõi, phân tích trạng thái bảo trì và quản lý cơ sở vật chất phòng gym Kinetic.
           </p>
         </div>
-        <div className="equipment-header-actions">
-          <button className="btn-action-outline">
+        <div className="flex gap-3">
+          <button className="px-4 py-2.5 bg-white/[0.03] border border-white/5 rounded-lg text-xs font-bold text-white flex items-center gap-2 cursor-pointer transition-all duration-200 hover:bg-white/5 active:scale-95">
             <Download size={14} /> Xuất file báo cáo
           </button>
 
           {/* Nút lên lịch bảo trì */}
           <button
             onClick={() => setIsMaintenanceModalOpen(true)}
-            className="btn-action-warning"
+            className="px-4 py-2.5 bg-amber-500/10 border border-amber-500/20 rounded-lg text-xs font-bold text-amber-500 flex items-center gap-2 cursor-pointer transition-all duration-200 hover:bg-amber-500/20 active:scale-95"
           >
             <Wrench size={14} /> Lên lịch bảo trì
           </button>
@@ -378,7 +377,7 @@ function AdminEquipmentPage() {
           {/* Nút thêm thiết bị */}
           <button
             onClick={() => setIsAddEquipmentModalOpen(true)}
-            className="btn-action-primary"
+            className="px-5 py-2.5 bg-brand text-black rounded-lg text-xs font-bold flex items-center gap-2 border-none cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-95"
           >
             <Plus size={14} /> Thêm thiết bị mới
           </button>
@@ -394,7 +393,7 @@ function AdminEquipmentPage() {
       />
 
       {/* Main Layout Grid */}
-      <div className="equipment-layout-grid">
+      <div className="grid grid-cols-1 gap-8 items-start xl:grid-cols-3">
         {/* Cột Trái: Bảng danh sách thiết bị */}
         <EquipmentTable
           equipments={equipments}
@@ -441,7 +440,7 @@ function AdminEquipmentPage() {
       />
 
       {/* Glow background */}
-      <div className="glow-bottom-right"></div>
+      <div className="fixed bottom-0 right-0 -z-10 w-[600px] h-[400px] bg-brand/[0.03] rounded-full blur-[120px] pointer-events-none"></div>
     </div>
   );
 }

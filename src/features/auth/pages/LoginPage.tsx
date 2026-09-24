@@ -4,7 +4,6 @@ import heroImage from '../../../assets/kinetic-hero.png';
 import { loginUser } from '../services/authApi';
 import Swal from 'sweetalert2';
 import { Eye, EyeOff } from 'lucide-react';
-import './LoginPage.css';
 
 type LoginPageProps = {};
 
@@ -96,30 +95,30 @@ function LoginPage({ }: LoginPageProps) {
   };
 
   return (
-    <div className="login-overlay">
+    <div className="login-overlay fixed inset-0 z-[100] flex min-h-screen flex-col overflow-hidden box-border bg-[#131313] text-[#e5e2e1] font-sans">
       {/* Background Section */}
-      <div className="login-bg-container">
+      <div className="fixed inset-0 z-0 overflow-hidden">
         <img
           ref={bgRef}
-          className="login-bg-img"
+          className="h-full w-full object-cover opacity-55 grayscale brightness-75 blur-[1px] transition-transform duration-100 ease-out"
           src={heroImage}
           alt="Nền phòng gym cao cấp phong cách điện ảnh"
         />
-        <div className="login-bg-gradient" />
-        <div className="login-bg-radial" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#131313]/90 via-[#131313]/35 via-50% to-[#131313]/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(195,244,0,0.2),transparent_38%),radial-gradient(circle_at_100%_100%,rgba(195,244,0,0.14),transparent_42%)]" />
         <div ref={spotlightRef} className="mouse-spotlight" />
       </div>
 
       {/* Navigation */}
-      <nav className="login-nav">
-        <div className="login-logo">
+      <nav className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between border-b border-white/10 bg-[#131313]/10 box-border px-5 py-4 backdrop-blur-xl md:px-16">
+        <div className="text-xl font-black tracking-tight text-white md:text-2xl">
           KINETIC NOIR
         </div>
 
         <button
           type="button"
           onClick={() => navigate('/')}
-          className="btn-close"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white cursor-pointer transition-all duration-300 hover:border-brand hover:text-brand"
           aria-label="Đóng đăng nhập"
         >
           X
@@ -127,107 +126,107 @@ function LoginPage({ }: LoginPageProps) {
       </nav>
 
       {/* Main Form container */}
-      <main className="login-main">
-        <div className="login-form-wrapper">
-          <div className="form-glow-container">
-            <div className="form-glow-pulse" />
+      <main className="relative z-10 flex flex-1 items-center justify-center box-border px-5 py-12">
+        <div className="relative w-full max-w-md">
+          <div className="pointer-events-none absolute -inset-12 overflow-hidden opacity-20 blur-3xl">
+            <div className="h-full w-full rounded-full bg-brand mix-blend-screen animate-pulse" />
           </div>
 
-          <section className="login-panel">
-            <div className="login-panel-header">
-              <h1 className="login-title">
+          <section className="login-panel relative z-10 rounded-4xl border border-white/10 bg-white/3 p-8 shadow-2xl/50 backdrop-blur-2xl box-border md:p-10">
+            <div className="mb-10 text-center">
+              <h1 className="mb-2 mt-0 text-3xl font-black tracking-tight text-white md:text-4xl">
                 CHÀO MỪNG TRỞ LẠI
               </h1>
-              <p className="login-subtitle">
+              <p className="m-0 font-mono text-sm uppercase tracking-[0.15em] text-[#c8c6c5]">
                 Kích hoạt hiệu suất
               </p>
             </div>
 
             {/* Thẻ Form kết nối onSubmit */}
-            <form className="login-form" onSubmit={handleSubmit}>
+            <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
 
               {/* Input Email */}
-              <div className="login-input-group">
+              <div className="group relative">
                 <input
                   id="email"
                   type="email"
                   placeholder=" "
                   value={email} // <-- Gán state email
                   onChange={(event) => setEmail(event.target.value)} // <-- Cập nhật state
-                  className="login-input"
+                  className="peer block w-full rounded-lg border-0 border-b border-white/20 bg-white/5 px-4 pb-2 pt-6 text-white outline-none transition-all duration-300 box-border focus:border-brand"
                   required
                 />
                 <label
                   htmlFor="email"
-                  className="login-input-label"
+                  className="pointer-events-none absolute left-4 top-4 origin-left font-mono text-sm uppercase text-[#c8c6c5] transition-all duration-300 peer-focus:-translate-y-3 peer-focus:scale-85 peer-focus:text-brand peer-[:not(:placeholder-shown)]:-translate-y-3 peer-[:not(:placeholder-shown)]:scale-85 peer-[:not(:placeholder-shown)]:text-brand"
                 >
                   Địa chỉ email
                 </label>
-                <div className="login-input-line" />
+                <div className="absolute bottom-0 left-0 h-px w-0 bg-brand transition-all duration-500 group-focus-within:w-full" />
               </div>
 
               {/* Input Password */}
-              <div className="login-input-group">
+              <div className="group relative">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder=" "
                   value={password} // <-- Gán state password
                   onChange={(event) => setPassword(event.target.value)} // <-- Cập nhật state
-                  className="login-input login-input-password"
+                  className="peer block w-full rounded-lg border-0 border-b border-white/20 bg-white/5 px-4 pb-2 pt-6 pr-12 text-white outline-none transition-all duration-300 box-border focus:border-brand"
                   required
                 />
                 <label
                   htmlFor="password"
-                  className="login-input-label"
+                  className="pointer-events-none absolute left-4 top-4 origin-left font-mono text-sm uppercase text-[#c8c6c5] transition-all duration-300 peer-focus:-translate-y-3 peer-focus:scale-85 peer-focus:text-brand peer-[:not(:placeholder-shown)]:-translate-y-3 peer-[:not(:placeholder-shown)]:scale-85 peer-[:not(:placeholder-shown)]:text-brand"
                 >
                   Mật khẩu
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="btn-toggle-password"
+                  className="absolute right-4 top-[55%] z-10 flex -translate-y-1/2 cursor-pointer items-center justify-center border-none bg-transparent p-0 text-[#c8c6c5] transition-colors duration-200 hover:text-brand"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
-                <div className="login-input-line" />
+                <div className="absolute bottom-0 left-0 h-px w-0 bg-brand transition-all duration-500 group-focus-within:w-full" />
               </div>
 
               {/* Quên mật khẩu */}
-              <div className="forgot-row">
+              <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={() => navigate('/forgot-password')}
-                  className="btn-forgot"
+                  className="cursor-pointer border-none bg-transparent font-mono text-sm text-[#c8c6c5] transition-colors duration-200 hover:text-white"
                 >
                   Quên mật khẩu?
                 </button>
               </div>
 
               {/* Nút hành động */}
-              <div className="login-actions-wrapper">
+              <div className="flex flex-col gap-4 pt-4">
                 <button
                   type="submit"
                   disabled={loading} // <-- Disable khi đang gọi API
-                  className="btn-login-submit"
+                  className="w-full rounded-full bg-brand py-4 text-xl font-black uppercase tracking-[-0.01em] text-[#556d00] border-none cursor-pointer transition-all duration-300"
                 >
                   {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                 </button>
 
-                <div className="divider-row">
-                  <div className="divider-line" />
-                  <span className="divider-text">
+                <div className="flex items-center py-4">
+                  <div className="h-px flex-grow bg-white/10" />
+                  <span className="mx-4 font-mono text-sm uppercase text-[#c8c6c5]">
                     Hoặc tiếp tục với
                   </span>
-                  <div className="divider-line" />
+                  <div className="h-px flex-grow bg-white/10" />
                 </div>
 
                 {/* Đăng nhập bằng Google */}
                 <button
                   type="button"
                   onClick={handleGoogleLogin}
-                  className="btn-google"
+                  className="flex w-full items-center justify-center rounded-full border border-white/10 bg-white/3 py-3 font-mono text-sm text-white backdrop-blur-xl cursor-pointer transition-all duration-300 hover:bg-white/10 active:scale-95"
                 >
                   <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -241,12 +240,12 @@ function LoginPage({ }: LoginPageProps) {
             </form>
 
             {/* Chuyển hướng sang trang đăng ký */}
-            <p className="register-redirect">
+            <p className="mt-10 text-center text-[#b7b5b4]">
               Chưa có tài khoản?
               <button
                 type="button"
                 onClick={() => navigate('/register')}
-                className="btn-register-link"
+                className="ml-1 border-none bg-transparent font-bold text-brand cursor-pointer hover:underline"
               >
                 Tham gia ngay
               </button>

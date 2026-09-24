@@ -1,5 +1,4 @@
 import { ShieldCheck } from 'lucide-react';
-import './MembershipCard.css';
 
 interface MembershipCardProps {
   membership?: any;
@@ -8,21 +7,21 @@ interface MembershipCardProps {
 export default function MembershipCard({ membership }: MembershipCardProps) {
   if (!membership) {
     return (
-      <div className="membership-card">
-        <div className="widget-header">
+      <div className="bg-white/[0.015] backdrop-blur-md border border-white/5 hover:border-brand/20 p-6 rounded-xl flex flex-col justify-between min-h-[200px] box-border transition-[transform,border-color] duration-200">
+        <div className="flex justify-between items-start">
           <div>
-            <p className="widget-tagline">Gói thành viên hiện tại</p>
-            <h3 className="widget-title">Chưa đăng ký gói tập</h3>
+            <p className="text-zinc-500 text-[11px] font-bold uppercase tracking-[0.1em] m-0 mb-1">Gói thành viên hiện tại</p>
+            <h3 className="font-sans text-xl font-extrabold text-brand m-0">Chưa đăng ký gói tập</h3>
           </div>
-          <ShieldCheck className="widget-icon-lime" style={{ opacity: 0.5 }} size={32} />
+          <ShieldCheck className="text-brand" style={{ opacity: 0.5 }} size={32} />
         </div>
-        <div className="progress-box">
-          <div className="progress-info">
-            <span className="progress-value">Không hoạt động</span>
-            <span className="progress-sub">Vui lòng đăng ký gói thành viên để bắt đầu</span>
+        <div className="flex flex-col gap-2 mt-4">
+          <div className="flex justify-between items-end gap-3">
+            <span className="text-white text-2xl font-black">Không hoạt động</span>
+            <span className="text-zinc-500 text-[13px]">Vui lòng đăng ký gói thành viên để bắt đầu</span>
           </div>
-          <div className="progress-track">
-            <div className="progress-bar-fill" style={{ width: '0%' }}></div>
+          <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+            <div className="bg-brand h-full shadow-[0_0_10px_rgba(195,244,0,0.4)]" style={{ width: '0%' }}></div>
           </div>
         </div>
       </div>
@@ -45,21 +44,21 @@ export default function MembershipCard({ membership }: MembershipCardProps) {
   const progressPercent = Math.min(100, Math.max(0, (daysLeft / totalDays) * 100));
 
   return (
-    <div className="membership-card">
-      <div className="widget-header">
+    <div className="bg-white/[0.015] backdrop-blur-md border border-white/5 hover:border-brand/20 p-6 rounded-xl flex flex-col justify-between min-h-[200px] box-border transition-[transform,border-color] duration-200">
+      <div className="flex justify-between items-start">
         <div>
-          <p className="widget-tagline">Gói thành viên hiện tại</p>
-          <h3 className="widget-title">{plan?.name || 'KINETIC PRO ELITE'}</h3>
+          <p className="text-zinc-500 text-[11px] font-bold uppercase tracking-[0.1em] m-0 mb-1">Gói thành viên hiện tại</p>
+          <h3 className="font-sans text-xl font-extrabold text-brand m-0">{plan?.name || 'KINETIC PRO ELITE'}</h3>
         </div>
-        <ShieldCheck className="widget-icon-lime" size={32} />
+        <ShieldCheck className="text-brand" size={32} />
       </div>
-      <div className="progress-box">
-        <div className="progress-info">
-          <span className="progress-value">{daysLeft > 0 ? `Còn ${daysLeft} ngày` : 'Đã hết hạn'}</span>
-          <span className="progress-sub">Hết hạn: {formattedExpiredDate}</span>
+      <div className="flex flex-col gap-2 mt-4">
+        <div className="flex justify-between items-end gap-3">
+          <span className="text-white text-2xl font-black">{daysLeft > 0 ? `Còn ${daysLeft} ngày` : 'Đã hết hạn'}</span>
+          <span className="text-zinc-500 text-[13px]">Hết hạn: {formattedExpiredDate}</span>
         </div>
-        <div className="progress-track">
-          <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }}></div>
+        <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+          <div className="bg-brand h-full shadow-[0_0_10px_rgba(195,244,0,0.4)]" style={{ width: `${progressPercent}%` }}></div>
         </div>
       </div>
     </div>

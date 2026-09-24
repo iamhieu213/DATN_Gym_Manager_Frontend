@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
-import './App.css';
 import DashboardDispatcher from './components/DashboardDispatcher';
 import { userRoutes } from './routes/user.routes'; 
 import { useEffect } from 'react';
@@ -14,10 +13,10 @@ const LandingPage = lazy(() => import('./pages/LandingPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 // Giao diện loading đơn giản khi tải các trang lazy
 const PageLoader = () => (
-  <div className="page-loader">
-    <div className="loader-content">
-      <div className="loader-spinner" />
-      <span className="loader-text">ĐANG TẢI DỮ LIỆU...</span>
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950 font-mono text-lg text-brand">
+    <div className="flex flex-col items-center gap-4">
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand/20 border-t-brand" />
+      <span className="text-xs tracking-[0.1em] uppercase">ĐANG TẢI DỮ LIỆU...</span>
     </div>
   </div>
 );

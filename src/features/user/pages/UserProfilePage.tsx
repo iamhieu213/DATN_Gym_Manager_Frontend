@@ -9,7 +9,7 @@ import {
   createBodyMetric
 } from '../services/userApi';
 import { getActiveMembership } from '../services/membershipApi';
-import './UserProfilePage.css';
+import './UserProfilePage.animations.css';
 
 interface UserProfile {
   id: number;
@@ -333,7 +333,7 @@ export default function UserProfilePage() {
     return (
       <div className="flex-1 flex items-center justify-center p-12 text-white">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-[#caf300] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-brand border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-zinc-400 font-medium tracking-wider">ĐANG TẢI HỒ SƠ CỦA BẠN...</p>
         </div>
       </div>
@@ -344,7 +344,7 @@ export default function UserProfilePage() {
   const formattedUserId = `KNT-${String(profile.id).padStart(5, '0')}`;
 
   return (
-    <div className="profile-page-wrapper">
+    <div className="w-full max-w-[1600px] mx-auto box-border pt-10 pb-20 px-6 lg:p-10">
       {/* File Upload Input (Hidden) */}
       <input
         type="file"
@@ -355,55 +355,56 @@ export default function UserProfilePage() {
       />
 
       {/* Profile Header */}
-      <section className="profile-header-section">
-        <div className="profile-avatar-container" onClick={handleAvatarClick} title="Nhấn để đổi ảnh đại diện">
-          <div className="profile-avatar-box">
+      <section className="flex flex-col items-center gap-6 mb-10 w-full md:flex-row md:items-end">
+        <div className="group relative cursor-pointer shrink-0" onClick={handleAvatarClick} title="Nhấn để đổi ảnh đại diện">
+          <div className="relative w-32 h-32 rounded-3xl overflow-hidden border-2 border-brand bg-[#201f1f] transition-colors duration-200 md:w-40 md:h-40">
             {avatarPreview ? (
-              <img 
-                src={avatarPreview} 
-                alt={formData.name || 'Hội viên'} 
+              <img
+                src={avatarPreview}
+                alt={formData.name || 'Hội viên'}
+                className="w-full h-full object-cover"
               />
             ) : (
-              <div className="avatar-placeholder">
+              <div className="w-full h-full flex items-center justify-center bg-zinc-800 text-brand font-[Montserrat,_sans-serif] text-5xl font-black">
                 <span>{formData.name ? formData.name.charAt(0).toUpperCase() : 'U'}</span>
               </div>
             )}
-            <div className="avatar-upload-overlay">
-              <Camera size={32} className="text-[#caf300]" />
+            <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+              <Camera size={32} className="text-brand" />
             </div>
           </div>
-          <button className="avatar-edit-btn" aria-label="Đổi ảnh đại diện">
+          <button className="absolute -bottom-2 -right-2 bg-brand text-[#171e00] border-none p-2 cursor-pointer flex items-center justify-center rounded-full shadow-[0_10px_15px_-3px_rgba(0,0,0,0.3)] transition-transform duration-200 hover:scale-105 active:scale-95" aria-label="Đổi ảnh đại diện">
             <Edit3 size={14} />
           </button>
         </div>
 
-        <div className="profile-meta-info">
-          <h2 className="profile-meta-name">{formData.name || 'HỘI VIÊN KINETIC'}</h2>
-          <div className="profile-meta-tags">
+        <div className="text-center flex-1 md:text-left">
+          <h2 className="font-[Montserrat,_sans-serif] text-[2rem] lg:text-5xl font-black text-white m-0 mb-2 tracking-[-0.02em] uppercase">{formData.name || 'HỘI VIÊN KINETIC'}</h2>
+          <div className="flex items-center justify-center gap-3 md:justify-start">
             {membership && (
-              <span className="profile-badge-pro">
+              <span className="bg-brand text-[#171e00] text-[10px] font-black tracking-widest px-3 py-1 uppercase rounded">
                 {membership.planName.replace('KINETIC ', '')}
               </span>
             )}
-            <span className="profile-meta-id">ID: {formattedUserId}</span>
+            <span className="text-sm text-zinc-500 font-medium">ID: {formattedUserId}</span>
           </div>
         </div>
 
       </section>
 
       {/* Bento Grid */}
-      <div className="profile-bento-grid">
+      <div className="grid grid-cols-12 gap-6 w-full">
         {/* Section 1: Thông tin cá nhân */}
-        <div className="bento-card bento-col-personal">
-          <div className="card-title-row">
+        <div className="bg-[#201f1f] border border-[#333333] p-8 box-border rounded-2xl col-span-12 lg:col-span-6 xl:col-span-5">
+          <div className="flex items-center gap-3 mb-8">
             <User size={24} />
-            <h3 className="card-title-text">Thông tin cá nhân</h3>
+            <h3 className="font-[Montserrat,_sans-serif] text-xl font-bold text-white uppercase m-0 tracking-[-0.02em]">Thông tin cá nhân</h3>
           </div>
-          <div className="form-layout-grid">
-            <div className={`form-field-group ${focusedField === 'name' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Họ và tên</label>
+          <div className="grid grid-cols-1 gap-y-8 gap-x-12 md:grid-cols-2">
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'name' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Họ và tên</label>
               <input
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] px-3.5 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] disabled:text-zinc-500 disabled:bg-[#131313]/40 disabled:border-[#222222] disabled:cursor-not-allowed"
                 type="text"
                 name="name"
                 value={formData.name}
@@ -413,10 +414,10 @@ export default function UserProfilePage() {
                 required
               />
             </div>
-            <div className={`form-field-group ${focusedField === 'phone' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Số điện thoại</label>
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'phone' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Số điện thoại</label>
               <input
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] px-3.5 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] disabled:text-zinc-500 disabled:bg-[#131313]/40 disabled:border-[#222222] disabled:cursor-not-allowed"
                 type="text"
                 name="phone"
                 value={formData.phone}
@@ -425,19 +426,19 @@ export default function UserProfilePage() {
                 onBlur={() => setFocusedField(null)}
               />
             </div>
-            <div className={`form-field-group ${focusedField === 'email' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Email (Không thể thay đổi)</label>
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'email' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Email (Không thể thay đổi)</label>
               <input
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] px-3.5 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] disabled:text-zinc-500 disabled:bg-[#131313]/40 disabled:border-[#222222] disabled:cursor-not-allowed"
                 type="email"
                 value={formData.email}
                 disabled
               />
             </div>
-            <div className={`form-field-group ${focusedField === 'dateOfBirth' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Ngày sinh</label>
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'dateOfBirth' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Ngày sinh</label>
               <input
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] px-3.5 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] disabled:text-zinc-500 disabled:bg-[#131313]/40 disabled:border-[#222222] disabled:cursor-not-allowed"
                 type="date"
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
@@ -446,10 +447,15 @@ export default function UserProfilePage() {
                 onBlur={() => setFocusedField(null)}
               />
             </div>
-            <div className={`form-field-group ${focusedField === 'gender' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Giới tính</label>
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'gender' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Giới tính</label>
               <select
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] pl-3.5 pr-6 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] appearance-none"
+                style={{
+                  backgroundImage: "url(\"data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>\")",
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 4px center'
+                }}
                 name="gender"
                 value={formData.gender}
                 onChange={handleInputChange}
@@ -462,10 +468,10 @@ export default function UserProfilePage() {
                 <option value="OTHER">Khác</option>
               </select>
             </div>
-            <div className={`form-field-group ${focusedField === 'address' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Địa chỉ</label>
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'address' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Địa chỉ</label>
               <input
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] px-3.5 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] disabled:text-zinc-500 disabled:bg-[#131313]/40 disabled:border-[#222222] disabled:cursor-not-allowed"
                 type="text"
                 name="address"
                 value={formData.address}
@@ -474,10 +480,10 @@ export default function UserProfilePage() {
                 onBlur={() => setFocusedField(null)}
               />
             </div>
-            <div className={`form-field-group ${focusedField === 'citizenId' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Số CCCD / CMND</label>
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'citizenId' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Số CCCD / CMND</label>
               <input
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] px-3.5 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] disabled:text-zinc-500 disabled:bg-[#131313]/40 disabled:border-[#222222] disabled:cursor-not-allowed"
                 type="text"
                 name="citizenId"
                 value={formData.citizenId}
@@ -486,10 +492,10 @@ export default function UserProfilePage() {
                 onBlur={() => setFocusedField(null)}
               />
             </div>
-            <div className={`form-field-group ${focusedField === 'emergencyContact' ? 'focus-effect' : ''}`}>
-              <label className="field-label">Liên hệ khẩn cấp (SĐT người thân)</label>
+            <div className={`flex flex-col gap-2 transition-transform duration-200 ${focusedField === 'emergencyContact' ? 'scale-[1.01]' : ''}`}>
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Liên hệ khẩn cấp (SĐT người thân)</label>
               <input
-                className="field-input"
+                className="bg-[#131313] border border-[#333333] text-[#e5e2e1] px-3.5 py-3 text-sm font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)] disabled:text-zinc-500 disabled:bg-[#131313]/40 disabled:border-[#222222] disabled:cursor-not-allowed"
                 type="text"
                 name="emergencyContact"
                 value={formData.emergencyContact}
@@ -499,16 +505,16 @@ export default function UserProfilePage() {
               />
             </div>
           </div>
-          <div className="profile-actions-wrapper">
+          <div className="flex gap-4 mt-8 w-full justify-end">
             <button
-              className="btn-cancel"
+              className="px-6 py-3 border border-[#333333] bg-transparent text-[#e5e2e1] text-sm font-semibold cursor-pointer rounded-lg transition-colors duration-200 hover:bg-[#201f1f] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleCancelChanges}
               disabled={!hasChanges() || saving}
             >
               Hủy
             </button>
             <button
-              className="btn-save"
+              className="px-6 py-3 bg-brand text-[#171e00] border-none text-sm font-bold cursor-pointer rounded-lg [transition:filter_0.2s,transform_0.1s] hover:brightness-110 active:scale-[0.98] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:scale-100"
               onClick={handleSaveChanges}
               disabled={!hasChanges() || saving}
             >
@@ -518,14 +524,14 @@ export default function UserProfilePage() {
         </div>
 
         {/* Section 2: Sức khỏe & Mục tiêu */}
-        <div className="bento-card bento-col-health">
-          <div className="health-card-header">
-            <div className="card-title-row" style={{ marginBottom: 0 }}>
+        <div className="bg-[#201f1f] border border-[#333333] p-8 box-border rounded-2xl col-span-12 lg:col-span-6 xl:col-span-4">
+          <div className="flex flex-col justify-between items-start gap-6 mb-8 md:flex-row md:items-center">
+            <div className="flex items-center gap-3" style={{ marginBottom: 0 }}>
               <Activity size={24} />
-              <h3 className="card-title-text">Sức khỏe &amp; Mục tiêu</h3>
+              <h3 className="font-[Montserrat,_sans-serif] text-xl font-bold text-white uppercase m-0 tracking-[-0.02em]">Sức khỏe &amp; Mục tiêu</h3>
             </div>
-            <button 
-              className="btn-update-health"
+            <button
+              className="bg-brand text-[#171e00] border-none px-8 py-3 text-sm font-black uppercase tracking-[-0.02em] cursor-pointer rounded-lg [transition:filter_0.2s,transform_0.1s] hover:brightness-110 active:scale-[0.98]"
               onClick={handleUpdateHealthMetrics}
               disabled={saving}
             >
@@ -533,35 +539,35 @@ export default function UserProfilePage() {
             </button>
           </div>
 
-          <div className="health-metrics-container">
-            <div className="health-metric-box">
-              <label className="health-metric-label">Chiều cao (CM)</label>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="bg-[#131313]/50 border-l-2 border-brand p-6 box-border rounded-xl">
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Chiều cao (CM)</label>
               <input
-                className="field-input health-metric-number"
+                className="border border-[#333333] text-white py-3 px-3.5 font-[Montserrat,_sans-serif] text-[2rem] font-black rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)]"
                 style={{ backgroundColor: 'transparent', width: '120px' }}
                 type="number"
                 value={height}
                 onChange={(e) => setHeight(e.target.value)}
               />
-              <span className="health-metric-unit">CM</span>
+              <span className="text-brand text-sm font-semibold ml-1">CM</span>
             </div>
 
-            <div className="health-metric-box">
-              <label className="health-metric-label">Cân nặng (KG)</label>
+            <div className="bg-[#131313]/50 border-l-2 border-brand p-6 box-border rounded-xl">
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Cân nặng (KG)</label>
               <input
-                className="field-input health-metric-number"
+                className="border border-[#333333] text-white py-3 px-3.5 font-[Montserrat,_sans-serif] text-[2rem] font-black rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)]"
                 style={{ backgroundColor: 'transparent', width: '120px' }}
                 type="number"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
               />
-              <span className="health-metric-unit">KG</span>
+              <span className="text-brand text-sm font-semibold ml-1">KG</span>
             </div>
 
-            <div className="health-metric-box">
-              <label className="health-metric-label">Mục tiêu luyện tập</label>
+            <div className="bg-[#131313]/50 border-l-2 border-brand p-6 box-border rounded-xl">
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Mục tiêu luyện tập</label>
               <input
-                className="field-input health-metric-text"
+                className="border border-[#333333] text-white py-3 px-3.5 font-[Montserrat,_sans-serif] text-xl font-bold leading-[1.2] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)]"
                 style={{ backgroundColor: 'transparent', marginTop: '8px' }}
                 type="text"
                 value={goal}
@@ -569,10 +575,10 @@ export default function UserProfilePage() {
               />
             </div>
 
-            <div className="health-metric-box error-border">
-              <label className="health-metric-label">Ghi chú sức khỏe</label>
+            <div className="bg-[#131313]/50 border-l-2 border-[#ffb4ab] p-6 box-border rounded-xl">
+              <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Ghi chú sức khỏe</label>
               <input
-                className="field-input health-metric-desc"
+                className="border border-[#333333] text-[#e5e2e1] py-3 px-3.5 text-base font-[Inter,_sans-serif] rounded-lg outline-none w-full box-border transition-[border-color,box-shadow] duration-200 focus:border-brand focus:shadow-[0_0_0_2px_rgba(202,243,0,0.15)]"
                 style={{ backgroundColor: 'transparent', marginTop: '8px' }}
                 type="text"
                 value={healthNotes}
@@ -581,64 +587,65 @@ export default function UserProfilePage() {
             </div>
           </div>
 
-          <div className="progress-bar-section">
-            <label className="field-label">Tiến độ mục tiêu: {progress}%</label>
+          <div className="mt-12">
+            <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Tiến độ mục tiêu: {progress}%</label>
             <div style={{ marginTop: '12px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <div className="progress-track-wrapper" style={{ flex: 1 }}>
-                <div className="progress-fill-lime" style={{ width: `${progress}%` }}></div>
-                <div className="progress-percentage-label">
-                  <span>{progress}%</span>
+              <div className="relative h-4 w-full bg-[#131313] overflow-hidden border border-[#333333] rounded-lg" style={{ flex: 1 }}>
+                <div className="absolute top-0 left-0 h-full bg-brand rounded-lg [transition:width_0.5s_ease-out]" style={{ width: `${progress}%` }}></div>
+                <div className="absolute top-0 right-0 h-full pr-2 flex items-center">
+                  <span className="text-[10px] font-black text-zinc-500 uppercase">{progress}%</span>
                 </div>
               </div>
-              <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                value={progress} 
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={progress}
                 onChange={(e) => setProgress(Number(e.target.value))}
-                style={{ accentColor: '#caf300', width: '120px' }}
+                className="accent-brand"
+                style={{ width: '120px' }}
               />
             </div>
           </div>
         </div>
 
         {/* Section 3: Thẻ hội viên & Checkin QR */}
-        <div className="bento-col-qr">
-          <div className="bento-card qr-checkin-card">
-            <h3 className="qr-title">Mã Check-in của bạn</h3>
-            <div className="qr-code-wrapper">
-              <div className="qr-mock-canvas">
-                <div className="qr-mock-grid">
-                  <div className="qr-black-block col-span-2 row-span-2"></div>
-                  <div className="qr-white-block"></div>
-                  <div className="qr-black-block"></div>
-                  <div className="qr-black-block col-span-2 row-span-2 absolute right-1 top-1 w-8 h-8"></div>
-                  <div className="qr-black-block absolute bottom-1 left-1 w-8 h-8"></div>
-                  <div className="qr-black-block absolute bottom-3 right-3 w-4 h-4"></div>
-                  <div className="qr-black-block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6"></div>
+        <div className="col-span-12 flex flex-col gap-6 lg:flex-row xl:col-span-3 xl:flex-col">
+          <div className="bg-[#201f1f] border border-[#333333] p-8 box-border rounded-2xl flex flex-col items-center text-center lg:flex-1 xl:flex-none">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-6">Mã Check-in của bạn</h3>
+            <div className="bg-white p-4 mb-6 inline-block">
+              <div className="w-32 h-32 bg-black relative overflow-hidden">
+                <div className="absolute inset-0 bg-white grid grid-cols-8 grid-rows-8 gap-1 p-1">
+                  <div className="bg-black col-span-2 row-span-2"></div>
+                  <div className="bg-white"></div>
+                  <div className="bg-black"></div>
+                  <div className="bg-black col-span-2 row-span-2 absolute right-1 top-1 w-8 h-8"></div>
+                  <div className="bg-black absolute bottom-1 left-1 w-8 h-8"></div>
+                  <div className="bg-black absolute bottom-3 right-3 w-4 h-4"></div>
+                  <div className="bg-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6"></div>
                 </div>
               </div>
             </div>
-            <p className="qr-code-id">{formattedUserId}</p>
-            <p className="qr-code-desc">Đưa mã này cho quầy lễ tân</p>
+            <p className="font-[Montserrat,_sans-serif] text-xl font-bold text-brand m-0 mb-1">{formattedUserId}</p>
+            <p className="text-[11px] text-zinc-500 uppercase tracking-widest m-0">Đưa mã này cho quầy lễ tân</p>
           </div>
 
-          <div className="bento-card">
-            <div className="status-card-fields">
-              <div className="status-info-row">
-                <label className="status-label">Chi nhánh gốc</label>
-                <div className="status-value-box">
-                  <MapPin className="status-icon-lime" size={24} />
-                  <span className="status-text-bold">
+          <div className="bg-[#201f1f] border border-[#333333] p-8 box-border rounded-2xl lg:flex-1 xl:flex-none">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Chi nhánh gốc</label>
+                <div className="flex items-center gap-3">
+                  <MapPin className="text-brand" size={24} />
+                  <span className="font-[Montserrat,_sans-serif] text-xl font-bold text-white">
                     {profile.branchName || 'Không có'}
                   </span>
                 </div>
               </div>
-              <div className="status-info-row">
-                <label className="status-label">Trạng thái thẻ</label>
-                <div className="status-value-box">
-                  <div className="status-pulse-dot"></div>
-                  <span className="status-text-normal">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Trạng thái thẻ</label>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-brand shadow-[0_0_0_0_rgba(202,243,0,0.7)] animate-[pulseAnimation_2s_infinite]"></div>
+                  <span className="text-base text-[#e5e2e1]">
                     {profile.status === 'ACTIVE' ? 'Đang hoạt động' : 'Tạm khóa'}
                   </span>
                 </div>
